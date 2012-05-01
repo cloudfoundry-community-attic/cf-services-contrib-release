@@ -26,14 +26,14 @@ by default. The provided schemas are:
   schemas. Similar to a sum type.
 * _List_       - Accepts arrays where each element of the array validates
   against a supplied schema.
-* _Record_     - Accepts hashes with known keys. Each key has a supplied schema
-  and against which its value must validate.
+* _Record_     - Accepts hashes with known keys. Each key has a supplied schema,
+  against which its value must validate.
 * _Value_      - Accepts values using ```==```.
 
 ## Usage
 
 Membrane schemas are typically created using a concise DSL. For example, the
-following creates a schema that will validate a hash expecting the key "ints"
+following creates a schema that will validate a hash where the key "ints"
 maps to a list of integers and the key "string" maps to a string.
 
     schema = Membrane::SchemaParser.parse do
@@ -74,10 +74,12 @@ can be used as a schema:
 
     # @param [Object] The object being validated.
     #
-    # @return [String, nil]  On success, nil is returned. On failure, a
-    # description of the validation error is returned.
+    # @raise [Membrane::SchemaValidationError] Raised when a supplied object is
+    # invalid.
+    #
+    # @return [nil]
     def validate(object)
 
 If you wish to include your new schema as part of the DSL, you'll need to
 modify ```membrane/schema_parser.rb``` and have your class inherit from
-```Membrane::Schema::Base```.
+```Membrane::Schema::Base```
