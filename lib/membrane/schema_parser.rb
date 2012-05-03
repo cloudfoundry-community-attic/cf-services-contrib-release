@@ -50,13 +50,14 @@ class Membrane::SchemaParser
       parse_list(object)
     when Class
       Membrane::Schema::Class.new(object)
+    when Regexp
+      Membrane::Schema::Regexp.new(object)
     when Dsl::DictionaryMarker
       Membrane::Schema::Dictionary.new(do_parse(object.key_schema),
                                        do_parse(object.value_schema))
     when Dsl::EnumMarker
       elem_schemas = object.elem_schemas.map { |s| do_parse(s) }
       Membrane::Schema::Enum.new(*elem_schemas)
-
     when Membrane::Schema::Base
       object
     else

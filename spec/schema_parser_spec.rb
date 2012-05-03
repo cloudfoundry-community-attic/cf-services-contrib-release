@@ -55,6 +55,16 @@ describe Membrane::SchemaParser do
       schema.klass.should == String
     end
 
+    it "should translate regexps into Membrane::Schema::Regexp" do
+      regexp = /foo/
+
+      schema = parser.parse { regexp }
+
+      schema.class.should == Membrane::Schema::Regexp
+
+      schema.regexp.should == regexp
+    end
+
     it "should fall back to Membrane::Schema::Value" do
       schema = parser.parse { 5 }
 
