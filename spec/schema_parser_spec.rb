@@ -47,6 +47,20 @@ describe Membrane::SchemaParser do
       schema.value_schema.klass.should == Integer
     end
 
+    it "should translate 'tuple' into Membrane::Schema::Tuple" do
+      schema = parser.parse { tuple(String, any, Integer) }
+
+      schema.class.should == Membrane::Schema::Tuple
+
+      schema.elem_schemas[0].class.should == Membrane::Schema::Class
+      schema.elem_schemas[0].klass.should == String
+
+      schema.elem_schemas[1].class == Membrane::Schema::Any
+
+      schema.elem_schemas[2].class.should == Membrane::Schema::Class
+      schema.elem_schemas[2].klass.should == Integer
+    end
+
     it "should translate classes into Membrane::Schema::Class" do
       schema = parser.parse { String }
 

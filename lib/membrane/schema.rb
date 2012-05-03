@@ -7,6 +7,7 @@ require "membrane/schema/enum"
 require "membrane/schema/list"
 require "membrane/schema/record"
 require "membrane/schema/regexp"
+require "membrane/schema/tuple"
 require "membrane/schema/value"
 
 module Membrane

@@ -8,6 +8,7 @@ class Membrane::SchemaParser
     OptionalKeyMarker = Struct.new(:key)
     DictionaryMarker = Struct.new(:key_schema, :value_schema)
     EnumMarker = Struct.new(:elem_schemas)
+    TupleMarker = Struct.new(:elem_schemas)
 
     def any
       Membrane::Schema::Any.new
@@ -27,6 +28,10 @@ class Membrane::SchemaParser
 
     def optional(key)
       Dsl::OptionalKeyMarker.new(key)
+    end
+
+    def tuple(*elem_schemas)
+      TupleMarker.new(elem_schemas)
     end
   end
 
@@ -58,6 +63,9 @@ class Membrane::SchemaParser
     when Dsl::EnumMarker
       elem_schemas = object.elem_schemas.map { |s| do_parse(s) }
       Membrane::Schema::Enum.new(*elem_schemas)
+    when Dsl::TupleMarker
+      elem_schemas = object.elem_schemas.map { |s| do_parse(s) }
+      Membrane::Schema::Tuple.new(*elem_schemas)
     when Membrane::Schema::Base
       object
     else

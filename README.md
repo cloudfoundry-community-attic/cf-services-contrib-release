@@ -29,6 +29,8 @@ by default. The provided schemas are:
 * _Record_     - Accepts hashes with known keys. Each key has a supplied schema,
   against which its value must validate.
 * _Regexp_     - Accepts strings that match a supplied regular expression.
+* _Tuple_      - Accepts arrays of a given length whose elements validate
+  against their respective schemas.
 * _Value_      - Accepts values using ```==```.
 
 ## Usage
@@ -66,6 +68,7 @@ be self-explanatory.
         "one_or_two"    => enum(1, 2),
         "strs_to_ints"  => dict(String, Integer),
         "foo_prefix"    => /^foo/,
+        "three_ints"    => tuple(Integer, Integer, Integer),
       }
     end
 
