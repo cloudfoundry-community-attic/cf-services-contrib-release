@@ -89,6 +89,16 @@ EOT
       schema.regexp.should_receive(:inspect)
       parser.deparse(schema)
     end
+
+    it "should deparse the element schemas of a Membrane::Schema::Tuple schema" do
+      schemas = [String, Integer].map { |c| Membrane::Schema::Class.new(c) }
+      schemas << Membrane::Schema::Value.new("test")
+
+      enum_schema = Membrane::Schema::Tuple.new(*schemas)
+
+      parser.deparse(enum_schema).should == 'tuple(String, Integer, "test")'
+    end
+
   end
 
   describe "#parse" do

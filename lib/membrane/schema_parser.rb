@@ -72,6 +72,8 @@ class Membrane::SchemaParser
       deparse_record(schema)
     when Membrane::Schema::Regexp
       schema.regexp.inspect
+    when Membrane::Schema::Tuple
+      "tuple(%s)" % [schema.elem_schemas.map { |es| deparse(es) }.join(", ")]
     else
       schema.inspect
     end
