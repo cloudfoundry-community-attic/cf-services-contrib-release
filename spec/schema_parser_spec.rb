@@ -49,6 +49,16 @@ describe Membrane::SchemaParser do
 
       parser.deparse(enum_schema).should == "enum(String, Integer, Float)"
     end
+
+    it "should deparse the element schema of a Membrane::Schema::List schema" do
+      key_schema = Membrane::Schema::Class.new(String)
+      val_schema = Membrane::Schema::Class.new(Integer)
+      item_schema = Membrane::Schema::Dictionary.new(key_schema, val_schema)
+
+      list_schema = Membrane::Schema::List.new(item_schema)
+
+      parser.deparse(list_schema).should == "[dict(String, Integer)]"
+    end
   end
 
   describe "#parse" do

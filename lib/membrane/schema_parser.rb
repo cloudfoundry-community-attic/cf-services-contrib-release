@@ -64,6 +64,8 @@ class Membrane::SchemaParser
                         deparse(schema.value_schema)]
     when Membrane::Schema::Enum
       "enum(%s)" % [schema.elem_schemas.map { |es| deparse(es) }.join(", ")]
+    when Membrane::Schema::List
+      "[%s]" % [deparse(schema.elem_schema)]
     else
       schema.inspect
     end
