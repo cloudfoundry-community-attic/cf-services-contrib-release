@@ -53,6 +53,8 @@ class Membrane::SchemaParser
     case schema
     when Membrane::Schema::Value
       schema.value.inspect
+    when Membrane::Schema::Any
+      "any"
     else
       schema.inspect
     end

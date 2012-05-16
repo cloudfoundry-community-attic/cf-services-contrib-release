@@ -11,6 +11,12 @@ describe Membrane::SchemaParser do
 
       Membrane::SchemaParser.deparse(schema).should == val.inspect
     end
+
+    it "should return 'any' for instance of Membrane::Schema::Any" do
+      schema = Membrane::Schema::Any.new
+
+      Membrane::SchemaParser.deparse(schema).should == "any"
+    end
   end
 
   describe "#parse" do
