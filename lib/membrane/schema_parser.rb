@@ -53,8 +53,6 @@ class Membrane::SchemaParser
 
   def deparse(schema)
     case schema
-    when Membrane::Schema::Value
-      schema.value.inspect
     when Membrane::Schema::Any
       "any"
     when Membrane::Schema::Bool
@@ -74,6 +72,8 @@ class Membrane::SchemaParser
       schema.regexp.inspect
     when Membrane::Schema::Tuple
       "tuple(%s)" % [schema.elem_schemas.map { |es| deparse(es) }.join(", ")]
+    when Membrane::Schema::Value
+      schema.value.inspect
     else
       schema.inspect
     end
