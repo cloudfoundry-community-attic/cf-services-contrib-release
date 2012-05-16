@@ -4,6 +4,8 @@ module Membrane
 end
 
 class Membrane::SchemaParser
+  DEPARSE_INDENT = "  ".freeze
+
   class Dsl
     OptionalKeyMarker = Struct.new(:key)
     DictionaryMarker  = Struct.new(:key_schema, :value_schema)
@@ -66,6 +68,8 @@ class Membrane::SchemaParser
       "enum(%s)" % [schema.elem_schemas.map { |es| deparse(es) }.join(", ")]
     when Membrane::Schema::List
       "[%s]" % [deparse(schema.elem_schema)]
+    when Membrane::Schema::Record
+      deparse_record(schema)
     else
       schema.inspect
     end
@@ -128,5 +132,43 @@ class Membrane::SchemaParser
     end
 
     Membrane::Schema::Record.new(parsed, optional_keys)
+  end
+
+  def deparse_record(schema)
+    lines = ["{"]
+
+    schema.schemas.each do |key, val_schema|
+      dep_key = nil
+      if schema.optional_keys.include?(key)
+        dep_key = "optional(%s)" % [key.inspect]
+      else
+        dep_key = key.inspect
+      end
+
+      dep_val_schema_lines = deparse(val_schema).split("\n")
+
+      dep_val_schema_lines.each_with_index do |line, line_idx|
+        to_append = nil
+
+        if 0 == line_idx
+          to_append = "%s => %s" % [dep_key, line]
+        else
+          # Indent continuation lines
+          to_append = DEPARSE_INDENT + line
+        end
+
+        # This concludes the deparsed schema, append a comma in preparation
+        # for the next k-v pair.
+        if dep_val_schema_lines.size - 1 == line_idx
+          to_append += ","
+        end
+
+        lines << to_append
+      end
+    end
+
+    lines << "}"
+
+    lines.join("\n")
   end
 end

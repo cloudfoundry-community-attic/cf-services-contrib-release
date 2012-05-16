@@ -59,6 +59,30 @@ describe Membrane::SchemaParser do
 
       parser.deparse(list_schema).should == "[dict(String, Integer)]"
     end
+
+    it "should deparse elem schemas of a Membrane::Schema::Record schema" do
+      str_schema = Membrane::Schema::Class.new(String)
+      int_schema = Membrane::Schema::Class.new(Integer)
+      dict_schema = Membrane::Schema::Dictionary.new(str_schema, int_schema)
+
+      int_rec_schema = Membrane::Schema::Record.new({:str => str_schema,
+                                                      :dict => dict_schema})
+
+      rec_schema = Membrane::Schema::Record.new({"str" => str_schema,
+                                                  "rec" => int_rec_schema,
+                                                  "int" => int_schema})
+      exp_deparse =<<EOT
+{
+"str" => String,
+"rec" => {
+  :str => String,
+  :dict => dict(String, Integer),
+  },
+"int" => Integer,
+}
+EOT
+      parser.deparse(rec_schema).should == exp_deparse.strip
+    end
   end
 
   describe "#parse" do
