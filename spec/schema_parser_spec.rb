@@ -83,6 +83,12 @@ describe Membrane::SchemaParser do
 EOT
       parser.deparse(rec_schema).should == exp_deparse.strip
     end
+
+    it "should call inspect on regexps for Membrane::Schema::Regexp" do
+      schema = Membrane::Schema::Regexp.new(/test/)
+      schema.regexp.should_receive(:inspect)
+      parser.deparse(schema)
+    end
   end
 
   describe "#parse" do

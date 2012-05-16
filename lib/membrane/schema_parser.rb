@@ -70,6 +70,8 @@ class Membrane::SchemaParser
       "[%s]" % [deparse(schema.elem_schema)]
     when Membrane::Schema::Record
       deparse_record(schema)
+    when Membrane::Schema::Regexp
+      schema.regexp.inspect
     else
       schema.inspect
     end
