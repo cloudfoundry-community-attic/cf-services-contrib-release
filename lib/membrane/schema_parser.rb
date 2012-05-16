@@ -74,6 +74,12 @@ class Membrane::SchemaParser
       "tuple(%s)" % [schema.elem_schemas.map { |es| deparse(es) }.join(", ")]
     when Membrane::Schema::Value
       schema.value.inspect
+    when Membrane::Schema::Base
+      if schema.respond_to?(:deparse)
+        schema.deparse
+      else
+        schema.inspect
+      end
     else
       schema.inspect
     end
