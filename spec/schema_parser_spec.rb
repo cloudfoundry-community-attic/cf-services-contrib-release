@@ -23,6 +23,14 @@ describe Membrane::SchemaParser do
 
       parser.deparse(schema).should == "bool"
     end
+
+    it "should call inspect on the class of a Membrane::Schema::Class schema" do
+      klass = String
+      klass.should_receive(:inspect).twice
+      schema = Membrane::Schema::Class.new(klass)
+
+      parser.deparse(schema).should == klass.inspect
+    end
   end
 
   describe "#parse" do

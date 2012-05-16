@@ -57,6 +57,8 @@ class Membrane::SchemaParser
       "any"
     when Membrane::Schema::Bool
       "bool"
+    when Membrane::Schema::Class
+      schema.klass.inspect
     else
       schema.inspect
     end
