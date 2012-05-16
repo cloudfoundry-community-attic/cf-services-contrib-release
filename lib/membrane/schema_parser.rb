@@ -6,9 +6,9 @@ end
 class Membrane::SchemaParser
   class Dsl
     OptionalKeyMarker = Struct.new(:key)
-    DictionaryMarker = Struct.new(:key_schema, :value_schema)
-    EnumMarker = Struct.new(:elem_schemas)
-    TupleMarker = Struct.new(:elem_schemas)
+    DictionaryMarker  = Struct.new(:key_schema, :value_schema)
+    EnumMarker        = Struct.new(:elem_schemas)
+    TupleMarker       = Struct.new(:elem_schemas)
 
     def any
       Membrane::Schema::Any.new
@@ -39,10 +39,23 @@ class Membrane::SchemaParser
     new.parse(&blk)
   end
 
+  def self.deparse(schema)
+    new.deparse(schema)
+  end
+
   def parse(&blk)
     intermediate_schema = Dsl.new.instance_eval(&blk)
 
     do_parse(intermediate_schema)
+  end
+
+  def deparse(schema)
+    case schema
+    when Membrane::Schema::Value
+      schema.value.inspect
+    else
+      schema.inspect
+    end
   end
 
   private

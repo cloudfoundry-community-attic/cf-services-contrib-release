@@ -3,6 +3,16 @@ require "spec_helper"
 describe Membrane::SchemaParser do
   let(:parser) { Membrane::SchemaParser.new }
 
+  describe "#deparse" do
+    it "should call inspect on the value of a Value schema" do
+      val = "test"
+      val.should_receive(:inspect).twice
+      schema = Membrane::Schema::Value.new(val)
+
+      Membrane::SchemaParser.deparse(schema).should == val.inspect
+    end
+  end
+
   describe "#parse" do
     it "should leave instances derived from Membrane::Schema::Base unchanged" do
       old_schema = Membrane::Schema::ANY
