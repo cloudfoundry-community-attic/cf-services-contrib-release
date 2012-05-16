@@ -81,7 +81,9 @@ class Membrane::SchemaParser
         schema.inspect
       end
     else
-      schema.inspect
+      emsg = "Expected instance of Membrane::Schema::Base, given instance of" \
+             + " #{schema.class}"
+      raise ArgumentError.new(emsg)
     end
   end
 

@@ -99,6 +99,11 @@ EOT
       parser.deparse(enum_schema).should == 'tuple(String, Integer, "test")'
     end
 
+    it "should raise an error if given a non-schema" do
+      expect do
+        parser.deparse({})
+      end.to raise_error(ArgumentError, /Expected instance/)
+    end
   end
 
   describe "#parse" do
