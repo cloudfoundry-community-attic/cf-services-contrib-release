@@ -9,13 +9,19 @@ describe Membrane::SchemaParser do
       val.should_receive(:inspect).twice
       schema = Membrane::Schema::Value.new(val)
 
-      Membrane::SchemaParser.deparse(schema).should == val.inspect
+      parser.deparse(schema).should == val.inspect
     end
 
     it "should return 'any' for instance of Membrane::Schema::Any" do
       schema = Membrane::Schema::Any.new
 
-      Membrane::SchemaParser.deparse(schema).should == "any"
+      parser.deparse(schema).should == "any"
+    end
+
+    it "should return 'bool' for instances of Membrane::Schema::Bool" do
+      schema = Membrane::Schema::Bool.new
+
+      parser.deparse(schema).should == "bool"
     end
   end
 
