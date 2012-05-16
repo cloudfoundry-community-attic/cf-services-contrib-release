@@ -31,6 +31,15 @@ describe Membrane::SchemaParser do
 
       parser.deparse(schema).should == klass.inspect
     end
+
+    it "should deparse the k/v schemas of a Membrane::Schema::Dictionary schema" do
+      key_schema = Membrane::Schema::Class.new(String)
+      val_schema = Membrane::Schema::Class.new(Integer)
+
+      dict_schema = Membrane::Schema::Dictionary.new(key_schema, val_schema)
+
+      parser.deparse(dict_schema).should == "dict(String, Integer)"
+    end
   end
 
   describe "#parse" do

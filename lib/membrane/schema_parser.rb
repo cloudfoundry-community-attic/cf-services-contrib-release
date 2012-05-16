@@ -59,6 +59,9 @@ class Membrane::SchemaParser
       "bool"
     when Membrane::Schema::Class
       schema.klass.inspect
+    when Membrane::Schema::Dictionary
+      "dict(%s, %s)" % [deparse(schema.key_schema),
+                        deparse(schema.value_schema)]
     else
       schema.inspect
     end
