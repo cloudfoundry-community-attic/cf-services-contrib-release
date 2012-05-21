@@ -1,7 +1,11 @@
 <% if properties.syslog_aggregator %>
 $ModLoad imuxsock                       # local message reception (rsyslog uses a datagram socket)
 $MaxMessageSize 4k                      # default is 2k
-$WorkDirectory /var/vcap/sys/rsyslog/buffered # where messages should be buffered on disk
+
+$ModLoad imudp                          # the java log4j appender only works with udp
+$UDPServerRun 514
+
+$WorkDirectory /var/vcap/sys/rsyslog/buffered  # where messages should be buffered on disk
 
 # Forward vcap messages to the aggregator
 #
