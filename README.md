@@ -17,7 +17,8 @@ Membrane provides a handful of useful schemas out of the box. You should be
 able to construct the majority of your schemas using only what is provided
 by default. The provided schemas are:
 
-* _Any_        - Accepts all values. Use it sparingly.
+* _Any_        - Accepts all values. Use it sparingly. It is synonymous to
+  class Object in Ruby.
 * _Bool_       - Accepts ```true``` and ```false```.
 * _Class_      - Accepts instances of a supplied class.
 * _Dictionary_ - Accepts hashes whose keys and values validate against their
@@ -63,7 +64,7 @@ be self-explanatory.
     Membrane::SchemaParser.parse do
       { "ints"          => [Integer]
         "true_or_false" => bool,
-        "anything"      => any,
+        "anything"      => any, # You can also use Object instead.
         optional("_")   => any,
         "one_or_two"    => enum(1, 2),
         "strs_to_ints"  => dict(String, Integer),
