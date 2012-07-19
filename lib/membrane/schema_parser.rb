@@ -58,7 +58,7 @@ class Membrane::SchemaParser
     when Membrane::Schema::Bool
       "bool"
     when Membrane::Schema::Class
-      schema.klass.inspect
+      schema.klass.name
     when Membrane::Schema::Dictionary
       "dict(%s, %s)" % [deparse(schema.key_schema),
                         deparse(schema.value_schema)]
@@ -75,11 +75,7 @@ class Membrane::SchemaParser
     when Membrane::Schema::Value
       schema.value.inspect
     when Membrane::Schema::Base
-      if schema.respond_to?(:deparse)
-        schema.deparse
-      else
-        schema.inspect
-      end
+      schema.inspect
     else
       emsg = "Expected instance of Membrane::Schema::Base, given instance of" \
              + " #{schema.class}"

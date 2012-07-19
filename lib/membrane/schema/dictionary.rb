@@ -6,7 +6,7 @@ module Membrane
   end
 end
 
-class Membrane::Schema::Dictionary
+class Membrane::Schema::Dictionary < Membrane::Schema::Base
   attr_reader :key_schema
   attr_reader :value_schema
 

@@ -24,12 +24,12 @@ describe Membrane::SchemaParser do
       parser.deparse(schema).should == "bool"
     end
 
-    it "should call inspect on the class of a Membrane::Schema::Class schema" do
+    it "should call name on the class of a Membrane::Schema::Class schema" do
       klass = String
-      klass.should_receive(:inspect).twice
+      klass.should_receive(:name).twice
       schema = Membrane::Schema::Class.new(klass)
 
-      parser.deparse(schema).should == klass.inspect
+      parser.deparse(schema).should == klass.name
     end
 
     it "should deparse the k/v schemas of a Membrane::Schema::Dictionary schema" do
@@ -97,6 +97,11 @@ EOT
       enum_schema = Membrane::Schema::Tuple.new(*schemas)
 
       parser.deparse(enum_schema).should == 'tuple(String, Integer, "test")'
+    end
+
+    it "should call inspect on a Membrane::Schema::Base schema" do
+      schema = Membrane::Schema::Base.new
+      parser.deparse(schema).should == schema.inspect
     end
 
     it "should raise an error if given a non-schema" do

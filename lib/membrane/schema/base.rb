@@ -14,4 +14,8 @@ class Membrane::Schema::Base
   def validate(object)
     raise NotImplementedError
   end
+
+  def deparse
+    Membrane::SchemaParser.deparse(self)
+  end
 end
