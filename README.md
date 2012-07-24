@@ -89,3 +89,8 @@ can be used as a schema:
 If you wish to include your new schema as part of the DSL, you'll need to
 modify ```membrane/schema_parser.rb``` and have your class inherit from
 ```Membrane::Schema::Base```
+
+## File a Bug
+
+To file a bug against Cloud Foundry Open Source and its components, sign up and use our
+bug tracking system: [http://cloudfoundry.atlassian.net](http://cloudfoundry.atlassian.net)
