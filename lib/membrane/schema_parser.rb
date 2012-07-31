@@ -153,6 +153,7 @@ class Membrane::SchemaParser
         dep_key = key.inspect
       end
 
+      dep_key = DEPARSE_INDENT + dep_key
       dep_val_schema_lines = deparse(val_schema).split("\n")
 
       dep_val_schema_lines.each_with_index do |line, line_idx|

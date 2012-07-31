@@ -65,20 +65,24 @@ describe Membrane::SchemaParser do
       int_schema = Membrane::Schema::Class.new(Integer)
       dict_schema = Membrane::Schema::Dictionary.new(str_schema, int_schema)
 
-      int_rec_schema = Membrane::Schema::Record.new({:str => str_schema,
-                                                      :dict => dict_schema})
-
-      rec_schema = Membrane::Schema::Record.new({"str" => str_schema,
+      int_rec_schema = Membrane::Schema::Record.new({
+                                                     :str => str_schema,
+                                                     :dict => dict_schema
+                                                    })
+      rec_schema = Membrane::Schema::Record.new({
+                                                  "str" => str_schema,
                                                   "rec" => int_rec_schema,
-                                                  "int" => int_schema})
+                                                  "int" => int_schema
+                                                })
+
       exp_deparse =<<EOT
 {
-"str" => String,
-"rec" => {
-  :str => String,
-  :dict => dict(String, Integer),
+  "str" => String,
+  "rec" => {
+    :str => String,
+    :dict => dict(String, Integer),
   },
-"int" => Integer,
+  "int" => Integer,
 }
 EOT
       parser.deparse(rec_schema).should == exp_deparse.strip
