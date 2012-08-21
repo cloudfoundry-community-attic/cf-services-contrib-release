@@ -7,38 +7,137 @@ decide what data to let in and what to keep out.
 
 ## Overview
 
-The core concept behind Membrane is the ```schema```. A ```schema```
-represents an invariant about a piece of data (similar to a type) and is
-capable of verifying whether or not a supplied datum satisfies the
-invariant. Schemas may be composed together to produce more expressive
-constructs.
+The core concept behind Membrane is the ```schema```. A ```schema``` represents
+an invariant about a piece of data (similar to a type) and is capable of
+verifying whether or not a supplied datum satisfies the invariant. Schemas may
+be composed to produce more expressive constructs.
 
 Membrane provides a handful of useful schemas out of the box. You should be
 able to construct the majority of your schemas using only what is provided
-by default. The provided schemas are:
+by default.
 
-* _Any_        - Accepts all values. Use it sparingly. It is synonymous to
-  class Object in Ruby.
-* _Bool_       - Accepts ```true``` and ```false```.
-* _Class_      - Accepts instances of a supplied class.
-* _Dictionary_ - Accepts hashes whose keys and values validate against their
-  respective schemas.
-* _Enum_       - Accepts values that validate against _any_ of the supplied
-  schemas. Similar to a sum type.
-* _List_       - Accepts arrays where each element of the array validates
-  against a supplied schema.
-* _Record_     - Accepts hashes with known keys. Each key has a supplied schema,
-  against which its value must validate.
-* _Regexp_     - Accepts strings that match a supplied regular expression.
-* _Tuple_      - Accepts arrays of a given length whose elements validate
-  against their respective schemas.
-* _Value_      - Accepts values using ```==```.
+
+*Any*
+
+The ```Any``` schema accepts all values; use it sparingly. It is synonymous to
+the Object class in Ruby.
+
+*Bool*
+
+The ```Bool``` schema accepts only the values ```true``` and ```false```.
+
+*Class*
+
+The ```Class``` schema is parameterized by an instance of
+```Class```. It accepts any values that are instances of the supplied class.
+This is verified using ```kind_of?```.
+
+*Dictionary*
+
+The ```Dictionary``` schema is parameterized by a key schema and a
+value schema.  It accepts hashes whose keys and values validate against their
+respective schemas.
+
+*Enum*
+
+The ```Enum``` parameterized by an arbitrary number of value schemas. It
+accepts any values that are accepted by at least one of the supplied schemas.
+
+*List*
+
+The ```List``` schema is parameterized by a single element schema. It accepts
+arrays whose elements are accepted by the supplied schema.
+
+*Record*
+
+The ```Record``` schema is parameterized by a set of known keys and their
+respective schemas. It accepts hashes that contain all the supplied keys,
+assuming the corresponding values are accepted by their respective schemas.
+
+*Regexp*
+
+The ```Regexp``` schema is parameterized by a regular expression. It accepts
+strings that match the supplied regular expression.
+
+*Tuple*
+
+The ```Tuple``` schema is parameterized by a fixed number of schemas. It accepts
+arrays of the same length, where each element is accepted by its associated
+schema.
+
+*Value*
+
+The ```Value``` schema is parameterized by a single value. It accepts values
+who are equal to the parameterizing value using ```==```.
+
+## DSL
+
+Membrane schemas are typically created using a concise DSL. The aforementioned
+schemas are represented in the DSL as follows:
+
+*Any*
+
+The ```Any``` schema is represented by the keyword ```any```.
+
+*Bool*
+
+The ```Bool``` schema is represented by the keyword ```bool```.
+
+*Class*
+
+The ```Class``` schema is represented by the parameterizing instance of ```Class```.
+For example, an instance of the Class schema that validates strings would be
+represented as ```String```.
+
+*Dictionary*
+
+The ```Dictionary``` schema is represented by ```dict(key_schema,
+value_schema```, where ```key_schema``` is the schema used to validate keys,
+and ```value_schema``` is the schema used to validate values.
+
+*Enum*
+
+The ```Enum``` schema is represented by ```enum(schema1, ..., schemaN)```
+where ```schema1``` through ```schemaN``` are the possible value schemas.
+
+*List*
+
+The ```List``` schema is represented by ```[elem_schema]```, where
+```elem_schema``` is the schema that all list elements must validate against.
+
+*Record*
+
+The ```Record``` schema is represented as follows:
+
+    { "key1"           => value1_schema,
+      optional("key2") => value2_schema,
+      ...
+    }
+
+Here ```key1``` must be contained in the hash and the corresponding value must
+be accepted by ```value1_schema```. Note that ```key2``` is marked as optional.
+If present, its corresponding value must be accepted by ```value2_schema```.
+
+*Regexp*
+
+The ```Regexp``` schema is represented by regexp literals. For example,
+```/foo|bar/``` matches strings containing "foo" or "bar".
+
+*Tuple*
+
+The ```Tuple``` schema is represented as ```tuple(schema0, ..., schemaN)```,
+where the Ith element of an array must be accepted by ```schemaI```.
+
+*Value*
+
+The ```Value``` schema is represented by the value to be validated. For example,
+```"foo"``` accepts only the string "foo".
 
 ## Usage
 
-Membrane schemas are typically created using a concise DSL. For example, the
-following creates a schema that will validate a hash where the key "ints"
-maps to a list of integers and the key "string" maps to a string.
+While the previous section was a bit abstract, the DSL is fairly intuitive.
+For example, the following creates a schema that will validate a hash where the
+key "ints" maps to a list of integers and the key "string" maps to a string.
 
     schema = Membrane::SchemaParser.parse do
       { "ints"   => [Integer],
@@ -58,8 +157,8 @@ maps to a list of integers and the key "string" maps to a string.
       "ints" => "invalid",
     })
 
-This is a more complicated example that illustrate the entire DSL. It should
-be self-explanatory.
+This is a more complicated example that illustrate the entire DSL. Hopefully
+it is self-explanatory:
 
     Membrane::SchemaParser.parse do
       { "ints"          => [Integer]
