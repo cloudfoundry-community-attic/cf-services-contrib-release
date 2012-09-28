@@ -1,8 +1,8 @@
 ---
-name: vblob_node
+name: memcached_node_ng
 dependencies:
 - sqlite
 - ruby
 files:
-- services/vblob/**/*
+- services/ng/memcached/**/*
 - pkg_utils/*

@@ -16,7 +16,7 @@ export PATH=/var/vcap/packages/ruby/bin:$PATH
 RUN_DIR=/var/vcap/sys/run/vblob_node
 LOG_DIR=/var/vcap/sys/log/vblob_node
 PIDFILE=$RUN_DIR/vblob_node.pid
-CONF_DIR=/var/vcap/jobs/vblob_node/config
+CONF_DIR=/var/vcap/jobs/vblob_node_ng/config
 SERV_LOG_DIR=/var/vcap/sys/service-log/vblob
 <%
   has_nfs=(properties.vblob_node.nfs_server && properties.vblob_node.nfs_server.address && properties.vblob_node.nfs_server.export_dir)
@@ -51,13 +51,13 @@ case $1 in
     check_mount "$MT_OPTS" "$MT_EXPORT" "$NFS_DIR"
     <% end %>
 
-    (crontab -l | sed /vblob_logrotate/d; cat /var/vcap/jobs/vblob_node/config/vblob_logrotate.cron) | sed /^$/d | crontab
+    (crontab -l | sed /vblob_logrotate/d; cat /var/vcap/jobs/vblob_node_ng/config/vblob_logrotate.cron) | sed /^$/d | crontab
 
-    exec /var/vcap/packages/vblob_node/services/vblob/bin/vblob_node -c /var/vcap/jobs/vblob_node/config/vblob_node.yml >>$LOG_DIR/vblob_node.stdout.log 2>>$LOG_DIR/vblob_node.stderr.log
+    exec /var/vcap/packages/vblob_node_ng/services/ng/vblob/bin/vblob_node -c /var/vcap/jobs/vblob_node_ng/config/vblob_node.yml >>$LOG_DIR/vblob_node.stdout.log 2>>$LOG_DIR/vblob_node.stderr.log
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
+    kill_and_wait $PIDFILE 400 0
 
     crontab -l | sed /vblob_logrotate/d | crontab
 
