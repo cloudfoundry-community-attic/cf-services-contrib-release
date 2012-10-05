@@ -1,8 +1,8 @@
 ---
-name: memcached_gateway
+name: memcached_node_ng
 dependencies:
-- ruby
 - sqlite
+- ruby
 files:
 - services/ng/memcached/**/*
 - pkg_utils/*
