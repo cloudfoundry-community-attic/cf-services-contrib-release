@@ -8,6 +8,8 @@ properties:
   micro: true
   domain: vcap.me
   env:
+  cc_props: ccng
+  hm_props: health_manager_ccng
   networks:
     apps: local
     management: local
@@ -30,6 +32,7 @@ properties:
     password:
     address: 127.0.0.1
     port: 4222
+
   ccdb:
     template: postgres
     address: 127.0.0.1
@@ -51,6 +54,36 @@ properties:
     - name: uaa
       password:
       tag: uaa
+
+  ccdb_ng:
+    address: 127.0.0.1
+    port: 2544
+    pool_size: 10
+    databases:
+    - tag: cc
+      name: appcloud_ng
+      citext: true
+    - tag: acm
+      name: acm_ng
+      citext: true
+    - tag: uaa
+      name: uaa_ng
+      citext: true
+    roles:
+    - name: root
+      password:
+      tag: admin
+    - name: acm
+      password:
+      tag: acm
+    - name: uaa
+      password:
+      tag: uaa
+
+  health_manager_ccng:
+    shadow_mode: disable
+    cc_partition: ng
+
   cc:
     description: "VMware's Micro Cloud Application Platform"
     srv_api_uri: http://api.vcap.me
@@ -81,6 +114,39 @@ properties:
       service_lifecycle:
         max_upload_size: 5
     use_nginx: true
+
+  ccng:
+    srv_api_uri: http://ccng.vcap.me
+    external_host: ccng
+    logging_level: debug
+    bulk_api_password:
+    uaa_resource_id: cloud_controller
+    staging_upload_user:
+    staging_upload_password:
+    quota_definitions:
+      free:
+        non_basic_services_allowed: false
+        total_services: 10
+        free_memory_limit: 256
+        paid_memory_limit: 1024
+      paid:
+        non_basic_services_allowed: false
+        total_services: 10
+        free_memory_limit: 256
+        paid_memory_limit: 1024
+      runaway:
+        non_basic_services_allowed: false
+        total_services: 10
+        free_memory_limit: 256
+        paid_memory_limit: 1024
+    default_quota_definition: free
+    bootstrap_admin_email:
+    admins:
+    directories:
+      droplets: /var/vcap/shared/droplets
+      resources: /var/vcap/shared/resources
+      staging_manifests: /var/vcap/jobs/cloud_controller_ng/config/staging
+      tmpdir: /var/vcap/data/cloud_controller_ng/tmp
   mysql_gateway:
     ip_route: 127.0.0.1
     token:
@@ -208,13 +274,13 @@ properties:
       password:
     databases:
     - tag: uaa
-      name: uaa
+      name: uaa_ng
   vcap_redis:
     address: 127.0.0.1
     port: 3456
     password:
     maxmemory: 500000000
-  db: ccdb
+  db: ccdb_ng
   service_plans:
     mysql:
       free:
