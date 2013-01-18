@@ -1,7 +1,7 @@
 ---
-name: mongodb_proxy
+name: daylimit
 dependencies:
 - golang
 files:
-- services/tools/mongodb_proxy/**/*
+- services/tools/daylimit/**/*
 - services/govendor/**/*
