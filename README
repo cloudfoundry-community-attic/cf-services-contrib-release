@@ -8,10 +8,12 @@ deployment to multiple clouds.
 
 == What is this component
 
-The services repo contains a collection of sample cloud foundry services.
-The repo has a position in the overall vcap namespace at
-vcap/services and uses the git submodule mechanism to be mounted in that location.
-The code is exposed via the vcap-services repo.
+The cf-services-contrib repo contains a collection of cloud foundry services that have
+been written by the community at large. These services are not "officially" supported by the CF
+team.
+
+Submit pull requests to this repository if you'd like to publish a new service for the
+community to use.
 
 == License
 
