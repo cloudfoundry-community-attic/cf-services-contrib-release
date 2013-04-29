@@ -5,7 +5,7 @@ gem "datamapper", ">= 0.10.2"
 gem "do_sqlite3", :require => nil
 gem "dm-sqlite-adapter"
 gem "dm-mysql-adapter"
-gem 'eventmachine'
+gem 'eventmachine', :git => 'git://github.com/cloudfoundry/eventmachine.git', :branch => 'release-0.12.11-cf'
 gem "em-http-request"
 gem "json"
 gem "mysql2", "~> 0.3.11"
