@@ -18,6 +18,10 @@ See the [documentation for deploying Cloud Foundry](http://docs.cloudfoundry.com
 
 In order to deploy Cloud Foundry with BOSH, you will need to create a manifest. You can find a [sample manifest in the documentation](http://cloudfoundry.github.com/docs/running/deploying-cf/vsphere/cloud-foundry-example-manifest.html).
 
+## Source Code
+
+The Service Contrib source code can be found at http://github.com/cloudfoundry.com/cf-services-contrib/
+
 ## OSS Contributions
 
 The Cloud Foundry team uses GitHub and accepts contributions via [pull request](https://help.github.com/articles/using-pull-requests)
