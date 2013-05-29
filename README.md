@@ -1,7 +1,3 @@
-# Welcome to Cloud Foundry
-
-Cloud Foundry is an open platform as a service (PaaS), providing a choice of clouds, developer frameworks and application services. Cloud Foundry makes it faster and easier to build, test, deploy and scale applications.
-
 ## Cloud Foundry Contrib
 
 This repository contains legacy components which are not under active development. We can cannot vouch for their functionality. Feel free to use them as-is or enhance them as you need.
