@@ -1,60 +1,76 @@
 ---
 sqlite/sqlite-autoconf-3070500.tar.gz:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2ExMWUxMjEwMDRlNGU3ZDUxMWY4MjEwNGYzMDY4%0ANjYxY2NmYSIsInNpZyI6ImRUWDZ0ejVOd0lRNlhvWWE2S0V3RFRUdHhvST0i%0AfQ==%0A
-  sha: 4e1338497b8da50b84307191bb3418e9ec5715d7
+  object_id: 618efa31-b7c3-4dd9-9674-369dee2a6c73
+  sha: !binary |-
+    NGUxMzM4NDk3YjhkYTUwYjg0MzA3MTkxYmIzNDE4ZTllYzU3MTVkNw==
   size: 1551070
-node/node-v0.6.8.tar.gz:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2E1MWUxMjIwMDRlNGU4ZWM2ODQwNzcwNGYzMDY4%0ANmM2NjU0MyIsInNpZyI6IlJONFNPTkxUMEhoaUlxRk03V2VrVkIweVZtYz0i%0AfQ==%0A
-  sha: c3f755b5dfd0de3f306d06573fa9433d845623dd
-  size: 10488841
-node/node-v0.4.12.tar.gz:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2E2MWUxMjEwMDRlNGU3ZDUxZDk1MGUwNGYzMDY4%0ANzYwZjY3ZiIsInNpZyI6ImI2clVsYnpCbFllWGhOMjUwbSt4Tmk2S2pVTT0i%0AfQ==%0A
-  sha: 1c6e34b90ad6b989658ee85e0d0cb16797b16460
-  size: 12421469
-ruby/rubygems-1.7.2.tgz:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2ExMWUxMjIwMDRlNGU4ZWM2NDg0MzEwNGYzMDY5%0AMDc2OWNkMiIsInNpZyI6IklQQk1BNmxodmNGTHNiTDRkcFR5eDRyWXljRT0i%0AfQ==%0A
-  sha: d878ae52f40eb71e59708afc57303172f0327fad
-  size: 245606
-ruby/ruby-1.9.2-p180.tar.gz:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2EyMWUxMjEwMDRlNGU3ZDUxMWY1NTMwNGYzMDY5%0AMGM4OGZkOSIsInNpZyI6IkE1VlllWVduMVpadFNHbGRpeGM1STgzTU9Jaz0i%0AfQ==%0A
-  sha: 6a482bc07239b37bcadf68dda63c65d20dc19ebe
-  size: 11158935
-ruby/rake-0.8.7.gem:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2E1MWUxMjEwMDRlNGU3ZDUxOTA2Y2QwNGYzMDY5%0AMWM0NWFlMCIsInNpZyI6Img0aWh0QVo0cGNrWWxsYXRpZUhTU251TzArUT0i%0AfQ==%0A
-  sha: 91daad079d404b68a7dd179716b9fdd0c195144c
-  size: 104960
-node/npm-v1.0.106.tgz:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2ExMWUxMjIwMDRlNGU4ZWM2NDg0MzEwNGY2NmFj%0AMDdjNjdiZCIsInNpZyI6IkhrR0RjWUFrdU94MFJBaGZlTVJTYlk0dFVBWT0i%0AfQ==%0A
-  sha: ef1830b68a1537a606dae3bdee71fd1153d7e71e
 memcached/libevent-2.0.19-stable.tar.gz:
-  object_id: eyJzaWciOiJIaWtwTHBwS3QyMjZQUDdycHJuTlFYQWlFRDA9Iiwib2lkIjoi%0ANGU0ZTc4YmNhMTFlMTIyMDA0ZTRlOGVjNjQ4NDMxMDRmYjZkNjI0M2ViZmMi%0AfQ==%0A
-  sha: 28c109190345ce5469add8cf3f45c5dd57fe2a85
+  object_id: f91b81e9-50a2-4666-9f08-92ed7988d4a6
+  sha: !binary |-
+    MjhjMTA5MTkwMzQ1Y2U1NDY5YWRkOGNmM2Y0NWM1ZGQ1N2ZlMmE4NQ==
   size: 842961
 memcached/memcached-1.4.13.tar.gz:
-  object_id: eyJzaWciOiIyRy9MK0JsbEtTYnF2SjgwLzZ2Qm5qbE93VDA9Iiwib2lkIjoi%0ANGU0ZTc4YmNhMTFlMTIyMjA0ZTRlOTg2MzhiNzYzMDRmYjZkNjI4ZDI4Y2Ii%0AfQ==%0A
+  object_id: 7d2229a8-76ca-4a6e-bafc-6bf2fd2a02ac
+  sha: !binary |-
+    ZDlhNDhkMjIyZGU1M2EyNjAzZmJhYjYxNTZkNDhkMGU4OTM2ZWU5Mg==
   size: 320751
-  sha: d9a48d222de53a2603fbab6156d48d0e8936ee92
-ruby/rubygems-1.8.24.tgz:
-  object_id: eyJzaWciOiJkZkdFQ2k0aXFua1pESmZvalNKa09tSGtySkU9Iiwib2lkIjoi%0ANGU0ZTc4YmNhNDFlMTIyMjA0ZTRlOTg2M2QwNzYzMDRmYTFjYzI4Nzk3YTki%0AfQ==%0A
-  sha: 30f27047e74f7943117736a0d3e224994fee0905
-  size: 380101
-git/git-1.7.11.2.tar.gz:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2E2MWUxMjEyMDRlNGU4NmVlYmU1OTEwNGZmZjEy%0AZDdlNDljNiIsInNpZyI6IkdvaUhZdDA2OFpDcUowVzhYOFdLYUVyV2RLRT0i%0AfQ==%0A
-  sha: f67b4f6c0277250411c6872ae7b8a872ae11d313
-  size: 4015780
-node/node-v0.8.2.tar.gz:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2E2MWUxMjIyMDRlNGU5ODY0M2Q5YWUwNGZmYjVk%0AOTY1MWJhMCIsInNpZyI6ImpQUzhLRTFOWE5XbENkYnhUbjlPQU9wQ3JJbz0i%0AfQ==%0A
-  sha: 0e743d21b487151e67950f09198def058db19a1e
-  size: 11727164
-libyaml/yaml-0.1.4.tgz:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2E1MWUxMjIwMDRlNGU4ZWM2ODQwNzcwNTExZDM1%0AZmZjOTFiZCIsInNpZyI6IlIwQk51U2ZSTVQ1czgzVHpPQkZBVVFxYjJWaz0i%0AfQ==%0A
-  sha: e0e5e09192ab10a607e3da2970db492118f560f2
-  size: 471759
+ruby/rubygems-1.7.2.tgz:
+  object_id: 946b8af4-62ce-476e-83f7-83c821c38c04
+  sha: !binary |-
+    ZDg3OGFlNTJmNDBlYjcxZTU5NzA4YWZjNTczMDMxNzJmMDMyN2ZhZA==
+  size: 245606
 ruby/bundler-1.2.1.gem:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2EzMWUxMjEyMDRlNGU4NmVlMzk2OTIwNTBhMTYy%0ANTJmMDUyZiIsInNpZyI6InZYOFl0dktMN3k5NWNHWTZnbnpVcFpHY2tUMD0i%0AfQ==%0A
-  sha: 0cbe6ad7a41f064d6c11c1058465fffb1bd58069
+  object_id: 0571d9dc-9649-47d1-a892-8d9efcb38f01
+  sha: !binary |-
+    MGNiZTZhZDdhNDFmMDY0ZDZjMTFjMTA1ODQ2NWZmZmIxYmQ1ODA2OQ==
   size: 226816
+ruby/rake-0.8.7.gem:
+  object_id: 816dbeff-a6d8-4644-8a8a-3578f0b2ce33
+  sha: !binary |-
+    OTFkYWFkMDc5ZDQwNGI2OGE3ZGQxNzk3MTZiOWZkZDBjMTk1MTQ0Yw==
+  size: 104960
+ruby/ruby-1.9.2-p180.tar.gz:
+  object_id: a439cf0d-1f6c-4ac8-8709-23d6170b54d6
+  sha: !binary |-
+    NmE0ODJiYzA3MjM5YjM3YmNhZGY2OGRkYTYzYzY1ZDIwZGMxOWViZQ==
+  size: 11158935
+ruby/rubygems-1.8.24.tgz:
+  object_id: b89a02b5-0d5b-454e-bd5c-a322fd86ca47
+  sha: !binary |-
+    MzBmMjcwNDdlNzRmNzk0MzExNzczNmEwZDNlMjI0OTk0ZmVlMDkwNQ==
+  size: 380101
 ruby/ruby-1.9.3-p392.tar.gz:
-  object_id: eyJvaWQiOiI0ZTRlNzhiY2E2MWUxMjEyMDRlNGU4NmVlYmU1OTEwNTEzYTMy%0ANzA5NjhmMyIsInNpZyI6IlRXUWlidzkzcDQyVG1STEtnR1dIKzg5UHlqYz0i%0AfQ==%0A
-  sha: ec75fcbd3b6b46ce6ec997ee4c86145b4abd5748
+  object_id: 485d6468-6587-4cf2-9737-f1affaa07974
+  sha: !binary |-
+    ZWM3NWZjYmQzYjZiNDZjZTZlYzk5N2VlNGM4NjE0NWI0YWJkNTc0OA==
   size: 12557294
+libyaml/yaml-0.1.4.tgz:
+  object_id: d3045ea9-b279-4f34-9455-898de29ee2c3
+  sha: !binary |-
+    ZTBlNWUwOTE5MmFiMTBhNjA3ZTNkYTI5NzBkYjQ5MjExOGY1NjBmMg==
+  size: 471759
+node/node-v0.6.8.tar.gz:
+  object_id: 7b580327-b416-43ff-9d00-d983543aca65
+  sha: !binary |-
+    YzNmNzU1YjVkZmQwZGUzZjMwNmQwNjU3M2ZhOTQzM2Q4NDU2MjNkZA==
+  size: 10488841
+node/node-v0.4.12.tar.gz:
+  object_id: 9083d445-8759-47b2-90c7-87ebcd00d1d8
+  sha: !binary |-
+    MWM2ZTM0YjkwYWQ2Yjk4OTY1OGVlODVlMGQwY2IxNjc5N2IxNjQ2MA==
+  size: 12421469
+node/npm-v1.0.106.tgz:
+  object_id: 9ffc7142-5794-4433-bec0-519d1f217427
+  sha: !binary |-
+    ZWYxODMwYjY4YTE1MzdhNjA2ZGFlM2JkZWU3MWZkMTE1M2Q3ZTcxZQ==
+  size: 1187840
+node/node-v0.8.2.tar.gz:
+  object_id: 8a5f97e3-e266-4b14-87a4-c46eaff353d3
+  sha: !binary |-
+    MGU3NDNkMjFiNDg3MTUxZTY3OTUwZjA5MTk4ZGVmMDU4ZGIxOWExZQ==
+  size: 11727164
+git/git-1.7.11.2.tar.gz:
+  object_id: 6ae717a8-b207-4340-8674-a869896f2b62
+  sha: !binary |-
+    ZjY3YjRmNmMwMjc3MjUwNDExYzY4NzJhZTdiOGE4NzJhZTExZDMxMw==
+  size: 4015780
