@@ -6,4 +6,4 @@
 	url = git@github.com:cloudfoundry/warden.git
 [submodule "src/services"]
 	path = src/services
-	url = git://github.com/cloudfoundry/cf-services-contrib.git
+	url = git://github.com/cloudfoundry-community/cf-services-contrib.git
