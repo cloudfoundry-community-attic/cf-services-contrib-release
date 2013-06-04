@@ -1,9 +1,9 @@
 [submodule "src/vblob_src"]
 	path = src/vblob_src
-	url = git@github.com:cloudfoundry/vblob.git
+	url = https://github.com:cloudfoundry/vblob.git
 [submodule "src/services_warden"]
 	path = src/services_warden
-	url = git@github.com:cloudfoundry/warden.git
+	url = https://github.com:cloudfoundry/warden.git
 [submodule "src/services"]
 	path = src/services
-	url = git://github.com/cloudfoundry-community/cf-services-contrib.git
+	url = https://github.com/cloudfoundry-community/cf-services-contrib.git
