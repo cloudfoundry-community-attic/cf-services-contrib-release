@@ -17,6 +17,7 @@ packages:
   - common
   - memcached_node_ng
   - memcached
+  - rootfs_lucid64
   - ruby
   - ruby_next
   - sqlite
