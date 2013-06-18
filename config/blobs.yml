@@ -74,3 +74,8 @@ git/git-1.7.11.2.tar.gz:
   sha: !binary |-
     ZjY3YjRmNmMwMjc3MjUwNDExYzY4NzJhZTdiOGE4NzJhZTExZDMxMw==
   size: 4015780
+rootfs/lucid64.tar.gz:
+  object_id: 6fa09ac2-5463-40c0-962b-8228621d7b11
+  sha: !binary |-
+    YjI2MzNiMmFiNDk2NGY5MTQwMmJiMmQ4ODlmMmYxMjQ0OWE4YjgyOA==
+  size: 199489185
