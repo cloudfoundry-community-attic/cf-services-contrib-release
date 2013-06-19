@@ -1,0 +1,10 @@
+---
+name: elasticsearch_gateway
+
+dependencies:
+- ruby
+- sqlite
+
+files:
+- services/elasticsearch/**/*
+- pkg_utils/*
