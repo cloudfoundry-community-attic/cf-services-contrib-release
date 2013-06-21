@@ -3,12 +3,21 @@
 service = "elasticsearch"
 gateway = eval("properties.#{service}_gateway")
 acls = gateway.acls
+plan_enabled = properties.service_plans && properties.service_plans.send(service.to_sym)
+plan_mgmt = plan_enabled && properties.service_plans.send(service.to_sym)
+supported_plans = properties.supported_plans
+if supported_plans
+  plan_mgmt.instance_eval("def fields; @table.keys.select { |v| #{supported_plans}.include? v.to_s }; end;") if plan_mgmt
+else
+  plan_mgmt.instance_eval("def fields; @table.keys; end;") if plan_mgmt
+end
+supported_versions = gateway.supported_versions
+version_aliases = gateway.version_aliases
+version_aliases.instance_eval("def fields; @table.keys; end;") if version_aliases
 nats_props_name = properties.nats_props || "nats"
 nats_props = properties.send(nats_props_name)
 nats = "nats://#{nats_props.user}:#{nats_props.password}@#{nats_props.address}:#{nats_props.port}"
 cc_api_version = gateway.cc_api_version || "v1"
-plan_enabled = properties.service_plans && properties.service_plans.send(service.to_sym)
-plan_mgmt = plan_enabled && properties.service_plans.send(service.to_sym)
 %>
 mbus: <%= nats %>
 
@@ -18,8 +27,8 @@ cloud_controller_uri: <%= properties.cc.srv_api_uri %>
 
 service:
   name: elasticsearch
-  version: "1.4.1"
-  description: 'Elasticsearch object store'
+  version: "0.20"
+  description: 'Elasticsearch search service'
   plans:
   <% if plan_enabled %>
     <% for plan in plan_mgmt.fields.each %>
@@ -53,6 +62,13 @@ service:
         <%= "wildcards: ['#{acls.plans.send(plan.to_sym).wildcards.join("', '")}']" if acls.plans.send(plan.to_sym).wildcards %>
       <% end %>
     <% end %>
+  <% end %>
+<% end %>
+  supported_versions: <%= "['#{supported_versions.join("' , '")}']" %>
+<% if version_aliases && !version_aliases.fields.empty? %>
+  version_aliases:
+  <% for version_alias in version_aliases.fields.each %>
+    <%= "'#{version_alias}': '#{version_aliases.send(version_alias.to_sym)}'" %>
   <% end %>
 <% end %>
 
