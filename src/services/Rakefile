@@ -3,6 +3,7 @@ require 'rake'
 require 'tempfile'
 
 require 'rubygems'
+
 require 'bundler/setup'
 Bundler.require(:default, :test)
 
@@ -18,11 +19,10 @@ NG_SERVICES_DIR = %w(
   marketplace
   memcached
   neo4j
+  echo
   oauth2
   service_broker
   tools/backup/manager
-  ng/mysql
-  ng/postgresql
   ng/vblob
   ng/mongodb
   ng/redis
