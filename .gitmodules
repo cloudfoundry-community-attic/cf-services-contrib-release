@@ -4,3 +4,6 @@
 [submodule "src/services_warden"]
   path = src/services_warden
   url = git@github.com:cloudfoundry/warden.git
+[submodule "src/services/govendor"]
+  path = src/services/govendor
+  url = https://github.com/cloudfoundry/govendor.git

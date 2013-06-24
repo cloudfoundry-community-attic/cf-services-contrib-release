@@ -1,0 +1,7 @@
+---
+rvm:
+- 1.9.3
+script: ./ci_build.sh
+env:
+  matrix:
+    - FOLDER_NAME=memcached
