@@ -6,8 +6,8 @@ plan = properties.plan || "free"
 plan_conf = plan_enabled && properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 node = properties.postgresql_node
 %>
-JOB_DIR=/var/vcap/jobs/postgresql_node_ng
-PKG_DIR=/var/vcap/packages/postgresql_node_ng
+JOB_DIR=/var/vcap/jobs/postgresql_node
+PKG_DIR=/var/vcap/packages/postgresql_node
 PG_DIR=/var/vcap/packages/postgresql
 
 SERVICE_NAME="postgresql"

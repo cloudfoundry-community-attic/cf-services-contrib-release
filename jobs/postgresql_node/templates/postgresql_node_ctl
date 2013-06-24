@@ -8,7 +8,7 @@ PG_ADMIN_PASSWD_HASH=<%= properties.postgresql_node.admin_passwd_hash || "" %>
 COMMON_DIR=/var/vcap/store/postgresql_common
 RUN_DIR=/var/vcap/sys/run/postgresql_node
 LOG_DIR=/var/vcap/sys/log/postgresql_node
-JOB_DIR=/var/vcap/jobs/postgresql_node_ng
+JOB_DIR=/var/vcap/jobs/postgresql_node
 PIDFILE=$RUN_DIR/postgresql_node.pid
 
 <%
@@ -67,7 +67,7 @@ case $1 in
     rsync -arl /var/vcap/packages/common/utils.sh $COMMON_DIR/bin
     chmod -R 755 $COMMON_DIR/bin
 
-    exec /var/vcap/packages/postgresql_node_ng/services/ng/postgresql/bin/postgresql_node \
+    exec /var/vcap/packages/postgresql_node/services/ng/postgresql/bin/postgresql_node \
          -c $JOB_DIR/config/postgresql_node.yml \
          >>$LOG_DIR/postgresql_node.stdout.log \
          2>>$LOG_DIR/postgresql_node.stderr.log
