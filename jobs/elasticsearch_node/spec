@@ -1,0 +1,19 @@
+---
+name: elasticsearch_node
+
+templates:
+  elasticsearch_node_ctl: bin/elasticsearch_node_ctl
+  elasticsearch_node.yml.erb: config/elasticsearch_node.yml
+
+  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
+  logrotate.erb: config/logrotate.conf
+  elasticsearch_logrotate.cron.erb: config/elasticsearch_logrotate.cron
+
+packages:
+  - common
+  - elasticsearch_node
+  - elasticsearch
+  - ruby
+  - sqlite
+  - syslog_aggregator
+

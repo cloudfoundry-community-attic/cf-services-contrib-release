@@ -1,0 +1,49 @@
+#!/bin/bash
+
+export PATH=/var/vcap/packages/ruby/bin:$PATH
+
+RUN_DIR=/var/vcap/sys/run/elasticsearch_node
+LOG_DIR=/var/vcap/sys/log/elasticsearch_node
+SERV_LOG_DIR=/var/vcap/sys/service-log/elasticsearch
+PIDFILE=$RUN_DIR/elasticsearch_node.pid
+JOB_DIR=/var/vcap/jobs/elasticsearch_node
+
+source /var/vcap/packages/common/utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "elasticsearch node"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+    mkdir -p $SERV_LOG_DIR
+
+    echo $$ > $PIDFILE
+
+    <% if properties.syslog_aggregator %>
+    /var/vcap/packages/syslog_aggregator/setup_syslog_forwarder.sh $JOB_DIR/config
+    <% end %>
+
+    (crontab -l | sed /elasticsearch_logrotate/d; cat /var/vcap/jobs/elasticsearch_node/config/elasticsearch_logrotate.cron) | sed /^$/d | crontab
+
+    exec /var/vcap/packages/elasticsearch_node/services/elasticsearch/bin/elasticsearch_node \
+         -c $JOB_DIR/config/elasticsearch_node.yml \
+         >>$LOG_DIR/elasticsearch_node.stdout.log \
+         2>>$LOG_DIR/elasticsearch_node.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    crontab -l | sed /elasticsearch_logrotate/d | crontab
+
+    ;;
+
+  *)
+    echo "Usage: elasticsearch_node_ctl {start|stop}"
+
+    ;;
+
+esac
