@@ -5,7 +5,7 @@ dependencies:
 - sqlite
 - ruby
 files:
-- services/ng/postgresql/**/*
+- postgresql_service/**/*
 - services_warden/warden/**/*
 - pkg_utils/*
 - common/services/utils.sh
