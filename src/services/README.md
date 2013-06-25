@@ -4,7 +4,7 @@ This repository contains legacy services components which are not under active d
 
 ## BOSH Release 
 
-The structures used to deploy these services with BOSH can be found in http://github.com/cloudfoundry/cf-services-contrib-release/
+The structures used to deploy these services with BOSH can be found in the root folder of http://github.com/cloudfoundry/cf-services-contrib-release/
 
 ## OSS Contributions
 

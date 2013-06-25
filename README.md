@@ -20,7 +20,7 @@ In order to deploy Cloud Foundry with BOSH, you will need to create a manifest. 
 
 ## Source Code
 
-The source code for these services can be found at http://github.com/cloudfoundry/cf-services-contrib/
+The source code for these services can be found inside this repo in the src/services folder
 
 ## OSS Contributions
 
