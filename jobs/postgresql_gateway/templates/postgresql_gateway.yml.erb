@@ -3,13 +3,12 @@
 service = "postgresql"
 gateway = eval("properties.#{service}_gateway")
 acls = gateway.acls
-plan_enabled = properties.service_plans && properties.service_plans.send(service.to_sym)
-plan_mgmt = plan_enabled && properties.service_plans.send(service.to_sym)
+plan_mgmt = properties.service_plans.send(service.to_sym)
 supported_plans = properties.supported_plans
 if supported_plans
-  plan_mgmt.instance_eval("def fields; @table.keys.select { |v| #{supported_plans}.include? v.to_s }; end;") if plan_mgmt
+  plan_mgmt.instance_eval("def fields; @table.keys.select { |v| #{supported_plans}.include? v.to_s }; end;")
 else
-  plan_mgmt.instance_eval("def fields; @table.keys; end;") if plan_mgmt
+  plan_mgmt.instance_eval("def fields; @table.keys; end;")
 end
 supported_versions = gateway.supported_versions
 version_aliases = gateway.version_aliases
@@ -31,24 +30,18 @@ service:
   version: "9.0"
   description: 'PostgreSQL database (vFabric)'
   plans:
-  <% if plan_enabled %>
-    <% for plan in plan_mgmt.fields.each %>
+  <% for plan in plan_mgmt.fields.each %>
     <% plan_description = plan_mgmt.send(plan.to_sym).description || "#{plan} plan" %>
     <% plan_free_flag = plan_mgmt.send(plan.to_sym).free %>
     <%= "'#{plan}':" %>
       description: <%= "'#{plan_description}'" %>
       free: <%= !plan_free_flag.nil? && plan_free_flag.to_s || "true" %>
-    <% end %>
-  <% else %>
-    "free":
-      description: "free plan"
-      free: true
   <% end %>
   default_plan: '<%= gateway.default_plan || 'free' %>'
   cf_plan_id:
-<% plan_mgmt.fields.each do |pf| %>
+  <% plan_mgmt.fields.each do |pf| %>
     <%= "'#{pf}': #{plan_mgmt.send(pf).configuration.cf_plan_id}" %>
-<% end if plan_mgmt %>
+  <% end %>
   tags: ['relational']
   timeout: <%= gateway.service_timeout || 10 %>
 <% if acls %>
@@ -119,10 +112,9 @@ resque:
 download_url_template: "http://<%= lifecycle.download_url %>/serialized/%{service}/%{name}/snapshots/%{snapshot_id}?token=%{token}"
 <% end %>
 
-<% if plan_enabled %>
 plan_management:
   plans:
-<% plan_mgmt.fields.each do |pf| %>
+  <% plan_mgmt.fields.each do |pf| %>
     '<%= pf %>':
       high_water: <%= plan_mgmt.send(pf).job_management.high_water %>
       low_water: <%= plan_mgmt.send(pf).job_management.low_water %>
@@ -139,5 +131,4 @@ plan_management:
         job: enable
       <% end %>
     <% end %>
-<% end %>
-<% end %>
+  <% end %>

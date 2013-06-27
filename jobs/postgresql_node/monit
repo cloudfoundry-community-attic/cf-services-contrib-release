@@ -1,8 +1,7 @@
 <%
 service = "postgresql"
-plan_enabled = properties.service_plans && properties.service_plans.send(service.to_sym)
-plan = properties.plan || "free"
-plan_conf = plan_enabled && properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
+plan = properties.plan
+plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 use_warden= plan_conf.warden && plan_conf.warden.enable
 
 node = properties.postgresql_node
@@ -61,7 +60,7 @@ check process postgresql_node
   <% end %>
 <%end%>
 <%
-if properties.service_lifecycle and plan_enabled and plan_conf.lifecycle and plan_conf.lifecycle.enable
+if properties.service_lifecycle and plan_conf.lifecycle and plan_conf.lifecycle.enable
   worker_count = plan_conf.lifecycle.worker_count || 1
   worker_count.times do |ind|
 %>

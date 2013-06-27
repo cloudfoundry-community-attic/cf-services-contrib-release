@@ -1,11 +1,10 @@
 #!/bin/bash
 <%
 service = "postgresql"
-plan_enabled = properties.service_plans && properties.service_plans.send(service.to_sym)
-plan = properties.plan || "free"
-plan_conf = plan_enabled && properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
+plan = properties.plan
+plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 
-backup_enabled = plan_enabled && plan_conf.backup && plan_conf.backup.enable
+backup_enabled = plan_conf.backup && plan_conf.backup.enable
 service_backup = properties.service_backup
 nfs_server = service_backup && service_backup.nfs_server
 first_node_only = backup_enabled && plan_conf.backup.first_node_only

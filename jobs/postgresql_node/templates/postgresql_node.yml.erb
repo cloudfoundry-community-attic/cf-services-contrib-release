@@ -1,13 +1,12 @@
 ---
 <%
 service = "postgresql"
-plan_enabled = properties.service_plans && properties.service_plans.send(service.to_sym)
-plan = properties.plan || "free"
-plan_conf = plan_enabled && properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
+plan = properties.plan
+plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 node = properties.postgresql_node
 supported_versions = node.supported_versions
 default_version = node.default_version
-warden = plan_enabled && plan_conf.warden
+warden = plan_conf.warden
 use_warden = warden && warden.enable
 version_configs = {
   '9.0' => {
@@ -29,7 +28,7 @@ nats_props_name = properties.nats_props || "nats"
 nats_props = properties.send(nats_props_name)
 nats = "nats://#{nats_props.user}:#{nats_props.password}@#{nats_props.address}:#{nats_props.port}"
 %>
-capacity: <%= plan_enabled && plan_conf.capacity || 200 %>
+capacity: <%= plan_conf.capacity || 200 %>
 plan: '<%= plan %>'
 local_db: sqlite3:/var/vcap/store/postgresql_node.db
 <%
@@ -52,10 +51,10 @@ node_id: <%= "#{service}_node_#{plan}_#{spec.index}" %>
 supported_versions: <%= "['#{supported_versions.join("' , '")}']" %>
 default_version: <%= "'#{default_version}'"%>
 
-max_db_size: <%= plan_enabled && plan_conf.max_db_size || 128 %>
-max_long_query: <%= plan_enabled && plan_conf.max_long_query || 3 %>
-max_long_tx: <%= plan_enabled && plan_conf.max_long_tx || 0 %>
-max_db_conns: <%= plan_enabled && plan_conf.max_clients || 20 %>
+max_db_size: <%= plan_conf.max_db_size || 128 %>
+max_long_query: <%= plan_conf.max_long_query || 3 %>
+max_long_tx: <%= plan_conf.max_long_tx || 0 %>
+max_db_conns: <%= plan_conf.max_clients || 20 %>
 postgresql:
 <% for version in supported_versions
      config = version_configs[version]
@@ -79,7 +78,7 @@ max_nats_payload: <%= nats_props.max_payload || 1048576 %>
 fqdn_hosts: <%= properties.services && properties.services.fqdn_hosts || "false" %>
 op_time_limit: <%= node.op_time_limit || 6 %>
 <%if use_warden %>
-max_disk: <%= plan_enabled && plan_conf.max_disk || 128 %>
+max_disk: <%= plan_conf.max_disk || 128 %>
 use_warden: true
 warden:
   service_log_dir: /var/vcap/sys/service-log/postgresql
@@ -106,9 +105,9 @@ m_actions:
   - <%= act %>
 <% end %>
 <% end %>
-db_connect_timeout: <%= plan_enabled && plan_conf.db_connect_timeout || 3 %>
-db_query_timeout: <%= plan_enabled && plan_conf.db_query_timeout || 10 %>
-db_use_async_query: <%= plan_enabled && !plan_conf.db_use_async_query.nil? && plan_conf.db_use_async_query.to_s || "true" %>
+db_connect_timeout: <%= plan_conf.db_connect_timeout || 3 %>
+db_query_timeout: <%= plan_conf.db_query_timeout || 10 %>
+db_use_async_query: <%= !plan_conf.db_use_async_query.nil? && plan_conf.db_use_async_query.to_s || "true" %>
 warden_socket_path: <%= node.warden_socket_path || "/tmp/warden.sock" %>
-enable_xlog_enforcer: <%= plan_enabled && !plan_conf.enable_xlog_enforcer.nil? && plan_conf.enable_xlog_enforcer.to_s || "true" %>
-xlog_enforce_tolerance: <%= plan_enabled && plan_conf.xlog_enforce_tolerance || 5 %>
+enable_xlog_enforcer: <%= !plan_conf.enable_xlog_enforcer.nil? && plan_conf.enable_xlog_enforcer.to_s || "true" %>
+xlog_enforce_tolerance: <%= plan_conf.xlog_enforce_tolerance || 5 %>

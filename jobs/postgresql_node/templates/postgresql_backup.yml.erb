@@ -1,11 +1,10 @@
 ---
 <%
 service = "postgresql"
-plan_enabled = properties.service_plans && properties.service_plans.send(service.to_sym)
-plan = properties.plan || "free"
-plan_conf = plan_enabled && properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
-backup_enabled = plan_enabled && plan_conf.backup && plan_conf.backup.enable
-use_warden = plan_enabled && plan_conf.warden && plan_conf.warden.enable
+plan = properties.plan
+plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
+backup_enabled = plan_conf.backup && plan_conf.backup.enable
+use_warden = plan_conf.warden && plan_conf.warden.enable
 node = properties.postgresql_node
 supported_versions = node.supported_versions
 version_configs = {

@@ -1,8 +1,7 @@
 <%
 service = "postgresql"
-plan_enabled = properties.service_plans && properties.service_plans.send(service.to_sym)
-plan = properties.plan || "free"
-plan_conf = plan_enabled && properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
+plan = properties.plan
+plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 warden = plan_conf.warden
 use_warden = warden && warden.enable
 log_dir = use_warden ? '/var/vcap/sys/service-log/postgresql92' : '/var/vcap/sys/log/postgresql92'
@@ -72,8 +71,8 @@ listen_addresses = '*'   # what IP address(es) to listen on;
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
-port =  <%= plan_enabled && plan_conf.port || 5434 %>			# (change requires restart)
-max_connections = <%= plan_enabled && plan_conf.max_connections || 500 %>			# (change requires restart)
+port =  <%= plan_conf.port || 5434 %>			# (change requires restart)
+max_connections = <%= plan_conf.max_connections || 500 %>			# (change requires restart)
 # Note:  Increasing max_connections costs ~400 bytes of shared memory per
 # connection slot, plus lock space (see max_locks_per_transaction).
 #superuser_reserved_connections = 3	# (change requires restart)
@@ -184,7 +183,7 @@ maintenance_work_mem = <%= plan_conf.maintenance_work_mem || 30 %>MB		# min 1MB
 					#   fsync_writethrough
 					#   open_sync
 #full_page_writes = on			# recover from partial page writes
-wal_buffers = <%= plan_enabled && plan_conf.wal_buffers || 1  %>MB		# min 32kB, -1 sets based on shared_buffers
+wal_buffers = <%= plan_conf.wal_buffers || 1  %>MB		# min 32kB, -1 sets based on shared_buffers
 					# (change requires restart)
 #wal_writer_delay = 200ms		# 1-10000 milliseconds
 
@@ -193,7 +192,7 @@ wal_buffers = <%= plan_enabled && plan_conf.wal_buffers || 1  %>MB		# min 32kB, 
 
 # - Checkpoints -
 
-checkpoint_segments = <%= plan_enabled && plan_conf.checkpoint_segments || 16 %>		# in logfile segments, min 1, 16MB each
+checkpoint_segments = <%= plan_conf.checkpoint_segments || 16 %>		# in logfile segments, min 1, 16MB each
 #checkpoint_timeout = 5min		# range 30s-1h
 checkpoint_completion_target = 0.9	# checkpoint target duration, 0.0 - 1.0
 #checkpoint_warning = 30s		# 0 disables
@@ -276,7 +275,7 @@ checkpoint_completion_target = 0.9	# checkpoint target duration, 0.0 - 1.0
 #cpu_tuple_cost = 0.01			# same scale as above
 #cpu_index_tuple_cost = 0.005		# same scale as above
 #cpu_operator_cost = 0.0025		# same scale as above
-effective_cache_size = <%= plan_enabled && plan_conf.effective_cache_size || 128 %>MB
+effective_cache_size = <%= plan_conf.effective_cache_size || 128 %>MB
 
 # - Genetic Query Optimizer -
 
