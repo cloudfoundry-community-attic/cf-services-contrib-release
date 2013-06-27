@@ -7,3 +7,6 @@
 [submodule "src/services/govendor"]
   path = src/services/govendor
   url = https://github.com/cloudfoundry/govendor.git
+[submodule "src/tools"]
+  path = src/tools
+  url = https://github.com/cloudfoundry/vcap-tools.git

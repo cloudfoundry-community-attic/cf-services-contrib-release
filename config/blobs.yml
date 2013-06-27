@@ -43,3 +43,121 @@ postgres/postgres-9.0.3-1.i386.tar.gz:
   object_id: rest/objects/4e4e78bca21e121004e4e7d511f55304f306b0371f99
   sha: b2bde31e720eb219bfdc9f1b784f985ecca2cbfb
   size: 15111387
+mysql/client-5.1.62-rel13.3-435-Linux-x86_64.tar.gz:
+  object_id: rest/objects/4e4e78bca21e122204e4e9863926b104fb68b259c9fc
+  sha: 6e5a17195831688a5f14f20aa5d9cd5d5f4164db
+  size: 4105211
+mysql/client-5.5.29-rel29.4-401.Linux.x86_64.tar.gz:
+  object_id: rest/objects/4e4e78bca41e121004e4e7d517618f0510b21d28a2bb
+  sha: 8dad5b2d9fee7b0a98e419949c6f7d94c39443f2
+  size: 4564276
+postgresql/postgresql-9.0.13-x86_64.tar.gz:
+  object_id: rest/objects/4e4e78bca11e121004e4e7d511f8210515f15afe0e84
+  sha: 04c9c94161552408eaa65b0a3fba312aec08aa1a
+  size: 24861255
+postgresql/postgresql-initdb-9.0-x86_64.tar.gz:
+  object_id: rest/objects/4e4e78bca41e122204e4e9863d0763050b33e050c233
+  sha: 181900c6346f718ccd7cfbb8813e7c00f760bc55
+  size: 3467921
+mongodb/mongodb-linux-x86_64-1.8.5.tgz:
+  size: 28156593
+  object_id: rest/objects/4e4e78bca51e121204e4e86ee8e2c904fc7f267775eb
+  sha: 235605f306b66584d2aa00b61d45b4605f87867e
+mongodb/mongodb-linux-i686-1.8.5.tgz:
+  size: 27749757
+  object_id: rest/objects/4e4e78bca51e121004e4e7d51906cd04fc7f1f78d810
+  sha: f75d2fd7a4e0a7116ea612bb62b710a1ba0fa2b2
+mongodb/mongodb-linux-x86_64-2.0.9.tgz:
+  object_id: rest/objects/4e4e78bca41e121204e4e86ee539210515e06d6bf7b2
+  sha: 4176d3ba583235fddd403eb335f7b7353604fce8
+  size: 38649815
+mongodb/mongodb-linux-i686-2.0.9.tgz:
+  object_id: rest/objects/4e4e78bca61e121004e4e7d51d950e0515e06d724898
+  sha: 3d24e0f8a5554747d4a6ed1e193a489d2c123074
+  size: 38415939
+mongodb/mongodb-linux-x86_64-2.2.4.tgz:
+  object_id: rest/objects/4e4e78bca41e122204e4e9863d076305162f45e468fa
+  sha: c2ef30a7c7039b4d499e990454b00a2032e6f19f
+  size: 56410012
+golang/go1.1.1.src.tar.gz:
+  object_id: 668a3b49-03fd-4742-b5a8-f6a76b387106
+  sha: !binary |-
+    ZjM2NWFlZDgxODNlNDg3YTQ4YTY2YWNlN2JmMzZlNTk3NGRmZmJiMw==
+  size: 9045336
+mysql/server-5.1.62-rel13.3-435-Linux-x86_64.tar.gz:
+  object_id: rest/objects/4e4e78bca31e121004e4e7d514745f04fb68b2898dd0
+  sha: 2bfd575545fe78729c56bb832aa69d8d9fc8630d
+  size: 34179263
+mysql/mysql-initdb-5.1.62-rel13.3-435-Linux-x86_64.tar.gz:
+  object_id: rest/objects/4e4e78bca31e122204e4e9863b1b74050ac8c6ab8fee
+  sha: 8122bcd96c3fa251ce6a4317570d01b4bf2b8420
+  size: 53356
+erlang/otp_src_R14B01.tar.gz:
+  object_id: rest/objects/4e4e78bca61e122204e4e98643d9ae04f305b2a6219e
+  sha: f0e0529ed73587c2c4aaeb3f3a01555bd6cfe05c
+  size: 64846537
+rabbitmq/rabbitmq-server-with-plugins-generic-unix-2.4.1.tar.gz:
+  object_id: rest/objects/4e4e78bca11e121004e4e7d511f82104f44f1bdcbf45
+  sha: dfdfcf988a780af034c1568cae96e6a84e0c3668
+  size: 1780598
+rabbitmq/rabbitmq-server-with-plugins-generic-unix-2.8.7.tar.gz:
+  object_id: rest/objects/4e4e78bca21e122204e4e9863926b105090d6c534794
+  sha: 23db4c0fb8a43a0131f8e909c2821aaf85ea410b
+  size: 2894762
+rabbitmq/rabbitmq-server-with-plugins-generic-unix-3.0.4.tar.gz:
+  object_id: rest/objects/4e4e78bca11e121204e4e86ee1529405149156c9e5ff
+  sha: 70ea6912251056f49d7bf2a94f1ea5852d0518ca
+  size: 3570257
+redis/redis-2.2.15.tar.gz:
+  object_id: rest/objects/4e4e78bca31e121004e4e7d514745f04fff4af61b69e
+  sha: aa6758590363556e73f8d36bdfccb429011da331
+  size: 456185
+redis/redis-2.4.17.tar.gz:
+  object_id: rest/objects/4e4e78bca11e122204e4e98638b763050787641a0474
+  sha: 3d540531b3d7103a511d29661c2ae666dac60522
+  size: 656155
+redis/redis-2.6.2.tar.gz:
+  object_id: rest/objects/4e4e78bca61e122004e4e8ec6b44b60508af9c8eab61
+  sha: 93e632ce88de07a9845aa5bcab67bdc16a7b574a
+  size: 1000600
+nginx/lbase64.tar.gz:
+  object_id: rest/objects/4e4e78bca11e122004e4e8ec64843104f30681768835
+  sha: 5692619dae780dbdf9edc994f9dcd7dce7b24646
+  size: 2503
+nginx/nginx-0.8.54.tar.gz:
+  object_id: rest/objects/4e4e78bca21e121004e4e7d511f55304f30681c8628c
+  sha: 4d63c35b8974dba42cc62dd5046ae89df3528e34
+  size: 650001
+nginx/nginx_upload_module-2.2.0.tar.gz:
+  object_id: rest/objects/4e4e78bca61e122004e4e8ec6b44b604f3068226fc04
+  sha: 93d6e83e613a0ce2ed057a434b344fa1b6609b47
+  size: 25796
+nginx/lua-openssl-0.1.1.tar.gz:
+  object_id: rest/objects/4e4e78bca31e121004e4e7d514745f04f3068277861c
+  sha: 27f38b3f7d44f59690ed081f892891a35a5ebfaa
+  size: 69253
+nginx/devel-kit-v0.2.17rc2.tar.gz:
+  object_id: rest/objects/4e4e78bca31e122004e4e8ec646e2104f30682c8d7c1
+  sha: 7eadfe53d674972c0f7f27d7b26eff95829bc0b2
+  size: 64964
+nginx/lua-cjson-1.0.3.tar.gz:
+  object_id: rest/objects/4e4e78bca61e121004e4e7d51d950e04f3068319c0bb
+  sha: 7335961ff6619a7eae824e8cf9432100ca377476
+  size: 31780
+nginx/headers-more-v0.15rc1.tgz:
+  object_id: rest/objects/4e4e78bca41e122004e4e8ec65f67f04f306836ac70d
+  sha: ba7bf757be8004d9dbffbe583396620cfcbed788
+  size: 25490
+nginx/nginx-lua.v0.3.1rc24.tar.gz:
+  object_id: rest/objects/4e4e78bca31e121004e4e7d514745f04f30683bdcc21
+  sha: f06e390cc81f82b05a06451bf7b287b7d4fb1640
+  size: 207185
+nginx/pcre-8.12.tar.gz:
+  object_id: rest/objects/4e4e78bca51e122004e4e8ec68407704f30684124f4c
+  sha: b3ab606864606c9f980045653554bf4a12cadde2
+  size: 1316863
+nginx/lua-5.1.4.tar.gz:
+  object_id: rest/objects/4e4e78bca21e121004e4e7d511f55304f306846c9fe6
+  sha: 2b11c8e60306efb7f0734b747588f57995493db7
+  size: 216679
+
