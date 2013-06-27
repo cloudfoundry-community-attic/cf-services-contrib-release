@@ -28,9 +28,9 @@ version_configs = {
 <% if use_warden %>
 check process postgresql_warden
   with pidfile /var/vcap/sys/run/warden/postgresql_warden.pid
-  start program "/var/vcap/jobs/postgresql_node_ng/bin/warden_ctl start"
+  start program "/var/vcap/jobs/postgresql_node/bin/warden_ctl start"
     with timeout 120 seconds
-  stop program "/var/vcap/jobs/postgresql_node_ng/bin/warden_ctl stop"
+  stop program "/var/vcap/jobs/postgresql_node/bin/warden_ctl stop"
   if failed host 127.0.0.1 port <%= health_check_port %>  protocol http
     and request '/'
     with timeout 5 seconds for 2 cycles
@@ -41,16 +41,16 @@ check process postgresql_warden
 <% supported_versions.each do |version| %>
 check process <%= version_configs[version]['name'] %>
   with pidfile <%= version_configs[version]['pid'] %>
-  start program "/var/vcap/jobs/postgresql_node_ng/bin/postgresql_ctl '<%= version %>' start"
-  stop program "/var/vcap/jobs/postgresql_node_ng/bin/postgresql_ctl '<%= version %>' stop"
+  start program "/var/vcap/jobs/postgresql_node/bin/postgresql_ctl '<%= version %>' start"
+  stop program "/var/vcap/jobs/postgresql_node/bin/postgresql_ctl '<%= version %>' stop"
   group vcap
 <% end %>
 <% end %>
 
 check process postgresql_node
   with pidfile  /var/vcap/sys/run/postgresql_node/postgresql_node.pid
-  start program "/var/vcap/jobs/postgresql_node_ng/bin/postgresql_node_ctl start"
-  stop  program "/var/vcap/jobs/postgresql_node_ng/bin/postgresql_node_ctl stop" with timeout 60 seconds
+  start program "/var/vcap/jobs/postgresql_node/bin/postgresql_node_ctl start"
+  stop  program "/var/vcap/jobs/postgresql_node/bin/postgresql_node_ctl stop" with timeout 60 seconds
   group vcap
   group node
 <%if use_warden %>
@@ -67,8 +67,8 @@ if properties.service_lifecycle and plan_enabled and plan_conf.lifecycle and pla
 %>
 check process postgresql_worker_<%= ind %>
   with pidfile /var/vcap/sys/run/postgresql_node/postgresql_worker_<%= ind %>.pid
-  start program "/var/vcap/jobs/postgresql_node_ng/bin/postgresql_worker_ctl start <%= ind %>"
-  stop program "/var/vcap/jobs/postgresql_node_ng/bin/postgresql_worker_ctl stop <%= ind %>"
+  start program "/var/vcap/jobs/postgresql_node/bin/postgresql_worker_ctl start <%= ind %>"
+  stop program "/var/vcap/jobs/postgresql_node/bin/postgresql_worker_ctl stop <%= ind %>"
   group worker
   group vcap
   depends on postgresql_node

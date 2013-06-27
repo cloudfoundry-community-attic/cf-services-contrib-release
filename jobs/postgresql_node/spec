@@ -32,5 +32,3 @@ packages:
   - ruby_next
   - sqlite
   - syslog_aggregator
-
-properties: {}

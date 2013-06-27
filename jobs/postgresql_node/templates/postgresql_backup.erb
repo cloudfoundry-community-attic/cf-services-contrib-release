@@ -23,7 +23,7 @@ case $1 in
   start)
     mkdir -p $MOUNT_POINT
     check_mount "$MT_OPTS" "$MT_EXPORT" "$MOUNT_POINT"
-    (crontab -l | sed /postgresql_backup/d; cat /var/vcap/jobs/postgresql_node_ng/config/postgresql_backup.cron) | sed /^$/d | crontab
+    (crontab -l | sed /postgresql_backup/d; cat /var/vcap/jobs/postgresql_node/config/postgresql_backup.cron) | sed /^$/d | crontab
 
     ;;
 
