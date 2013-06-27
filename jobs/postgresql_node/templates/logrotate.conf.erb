@@ -1,6 +1,6 @@
 <%
   service = "postgresql"
-  plan = properties.plan
+  plan = properties.postgresql_node.plan
   plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
   use_warden= plan_conf.warden && plan_conf.warden.enable
   rotate = properties.postgresql_node.logrotate && properties.postgresql_node.logrotate.rotate

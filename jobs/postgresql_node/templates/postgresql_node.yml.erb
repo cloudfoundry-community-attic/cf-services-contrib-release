@@ -1,7 +1,7 @@
 ---
 <%
 service = "postgresql"
-plan = properties.plan
+plan = properties.postgresql_node.plan
 plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 node = properties.postgresql_node
 supported_versions = node.supported_versions

@@ -1,7 +1,7 @@
 #!/bin/bash
 <%
 service = "postgresql"
-plan = properties.plan
+plan = properties.postgresql_node.plan
 plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 
 backup_enabled = plan_conf.backup && plan_conf.backup.enable

@@ -1,6 +1,6 @@
 <%
 service = "postgresql"
-plan = properties.plan
+plan = properties.postgresql_node.plan
 plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 %>
 <% if plan_conf && plan_conf.shmmax %>
