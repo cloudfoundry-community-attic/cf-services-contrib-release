@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export PATH=/var/vcap/packages/ruby/bin:$PATH
+export JAVA_HOME="/var/vcap/packages/java7"
 
 RUN_DIR=/var/vcap/sys/run/elasticsearch_node
 LOG_DIR=/var/vcap/sys/log/elasticsearch_node
