@@ -13,6 +13,7 @@ packages:
   - common
   - elasticsearch_node
   - elasticsearch
+  - java7
   - ruby
   - sqlite
   - syslog_aggregator

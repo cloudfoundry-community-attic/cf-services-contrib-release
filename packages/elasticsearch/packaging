@@ -10,8 +10,7 @@ cd elasticsearch-${ES_VERSION}
 cp -a * $BOSH_INSTALL_TARGET
 
 cd $BOSH_COMPILE_TARGET
-tar xfv elasticsearch/elasticsearch-http-basic-${ES_HTTP_BASIC_VERSION}.tar.gz \
-  -d elasticsearch-cloud-aws-${ES_AWS_VERSION}
+tar xfv elasticsearch/elasticsearch-http-basic-${ES_HTTP_BASIC_VERSION}.tar.gz
 cd elasticsearch-http-basic-${ES_HTTP_BASIC_VERSION}
 mkdir -p $BOSH_INSTALL_TARGET/plugins/elasticsearch-http-basic
 cp -a *.jar $BOSH_INSTALL_TARGET/plugins/elasticsearch-http-basic
