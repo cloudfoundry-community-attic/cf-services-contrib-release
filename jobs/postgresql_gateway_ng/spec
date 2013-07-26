@@ -1,5 +1,5 @@
 ---
-name: postgresql_gateway
+name: postgresql_gateway_ng
 
 templates:
   postgresql_gateway_ctl: bin/postgresql_gateway_ctl
@@ -9,7 +9,7 @@ templates:
 packages:
   - common
   - postgresql
-  - postgresql_gateway
+  - postgresql_gateway_ng
   - ruby
   - sqlite
   - syslog_aggregator

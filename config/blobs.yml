@@ -59,6 +59,23 @@ postgresql/postgresql-initdb-9.0-x86_64.tar.gz:
   object_id: rest/objects/4e4e78bca41e122204e4e9863d0763050b33e050c233
   sha: 181900c6346f718ccd7cfbb8813e7c00f760bc55
   size: 3467921
+postgresql/postgresql-9.1-x86_64.tar.gz:
+  object_id: rest/objects/4e4e78bca61e121204e4e86eebe59105074950835d80
+  sha: d6c44760c1e5eb055b6ac4a8080b061d6d04fa3c
+  size: 26556736
+postgresql/postgresql-initdb-9.1-x86_64.tar.gz:
+  object_id: rest/objects/4e4e78bca11e121004e4e7d511f821050b33e0805ff8
+  sha: c51a45f5a6011a6bb22407c164ea9b77f77cddad
+  size: 3911161
+postgresql/postgresql-9.2.4-x86_64.tar.gz:
+  object_id: rest/objects/4e4e78bca31e122204e4e9863b1b740516451dfdeda2
+  sha: !binary |-
+    Y2YzNDBjYTUxZWNhYWZjMDRhYTlkM2M2NDkwZmI3ZDU3ZmQ1YTNiNw==
+  size: 10519400
+postgresql/postgresql-initdb-9.2-x86_64.tar.gz:
+  object_id: rest/objects/4e4e78bca11e122004e4e8ec6484310513946c1ccb48
+  sha: 6f46ff94648219840fa475eb95bfa23a5f4bf905
+  size: 4146878
 mongodb/mongodb-linux-x86_64-1.8.5.tgz:
   size: 28156593
   object_id: rest/objects/4e4e78bca51e121204e4e86ee8e2c904fc7f267775eb

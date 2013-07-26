@@ -1,5 +1,5 @@
 ---
-name: postgresql_node
+name: postgresql_node_ng
 templates:
   postgresql_migration_util.erb: bin/postgresql_migration_util
   postgresql_node_ctl: bin/postgresql_node_ctl
@@ -27,7 +27,7 @@ packages:
   - postgresql
   - postgresql91
   - postgresql92
-  - postgresql_node
+  - postgresql_node_ng
   - ruby
   - ruby_next
   - sqlite
