@@ -2,9 +2,9 @@
 
 export PATH=/var/vcap/packages/ruby/bin:$PATH
 
-RUN_DIR=/var/vcap/sys/run/postgresql_gateway
-LOG_DIR=/var/vcap/sys/log/postgresql_gateway
-JOB_DIR=/var/vcap/jobs/postgresql_gateway
+RUN_DIR=/var/vcap/sys/run/postgresql_gateway_ng
+LOG_DIR=/var/vcap/sys/log/postgresql_gateway_ng
+JOB_DIR=/var/vcap/jobs/postgresql_gateway_ng
 
 PIDFILE=$RUN_DIR/postgresql_gateway.pid
 
@@ -35,7 +35,7 @@ case $1 in
     /var/vcap/packages/syslog_aggregator/setup_syslog_forwarder.sh $JOB_DIR/config
     <% end %>
 
-    exec /var/vcap/packages/postgresql_gateway/postgresql_service/bin/postgresql_gateway \
+    exec /var/vcap/packages/postgresql_gateway_ng/postgresql_service_ng/bin/postgresql_gateway \
          -c $JOB_DIR/config/postgresql_gateway.yml \
          >>$LOG_DIR/postgresql_gateway.stdout.log \
          2>>$LOG_DIR/postgresql_gateway.stderr.log
