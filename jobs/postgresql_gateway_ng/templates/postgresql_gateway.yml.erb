@@ -89,7 +89,7 @@ service_auth_tokens:
 
 token: "<%= gateway.token %>"
 logging:
-  file: /var/vcap/sys/log/postgresql_gateway/postgresql_gateway.log
+  file: /var/vcap/sys/log/postgresql_gateway_ng/postgresql_gateway.log
   level: debug
   <% if properties.syslog_aggregator %>
   syslog: vcap.postgresql_gateway
@@ -97,7 +97,7 @@ logging:
 
 node_timeout: <%= gateway.node_timeout || 8 %>
 
-pid: /var/vcap/sys/run/postgresql_gateway/postgresql_gateway.pid
+pid: /var/vcap/sys/run/postgresql_gateway_ng/postgresql_gateway.pid
 z_interval: <%= gateway.z_interval || 30 %>
 check_orphan_interval: <%= gateway.check_orphan_interval || -1 %>
 double_check_orphan_interval: <%= gateway.double_check_orphan_interval || 300 %>
