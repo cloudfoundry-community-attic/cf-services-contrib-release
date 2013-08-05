@@ -219,3 +219,23 @@ java/jre-7u4-linux-x64.tar.gz:
   sha: !binary |-
     MTEwOGQxNzQ0YmFhNzNiZjZjYWEyYWRmOTY1ZDBmNDg5ZWExZWY2MA==
   size: 32771159
+postgresql/postgresql-9.1-x86_64.tar.gz:
+  object_id: df9b1da0-7da5-4db1-a077-0caab569ea01
+  sha: !binary |-
+    ZDZjNDQ3NjBjMWU1ZWIwNTViNmFjNGE4MDgwYjA2MWQ2ZDA0ZmEzYw==
+  size: 26556736
+postgresql/postgresql-9.2.4-x86_64.tar.gz:
+  object_id: 81621177-c813-4c73-8dca-e0b8063d284a
+  sha: !binary |-
+    Y2YzNDBjYTUxZWNhYWZjMDRhYTlkM2M2NDkwZmI3ZDU3ZmQ1YTNiNw==
+  size: 10519400
+postgresql/postgresql-initdb-9.1-x86_64.tar.gz:
+  object_id: 1ae65f66-df46-435c-8577-9ef69a47c47a
+  sha: !binary |-
+    YzUxYTQ1ZjVhNjAxMWE2YmIyMjQwN2MxNjRlYTliNzdmNzdjZGRhZA==
+  size: 3911161
+postgresql/postgresql-initdb-9.2-x86_64.tar.gz:
+  object_id: 4fcdf9cd-d6f8-4f3c-9bfc-0c526a1791a3
+  sha: !binary |-
+    NmY0NmZmOTQ2NDgyMTk4NDBmYTQ3NWViOTViZmEyM2E1ZjRiZjkwNQ==
+  size: 4146878
