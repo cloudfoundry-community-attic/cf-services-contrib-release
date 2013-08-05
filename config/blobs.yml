@@ -199,3 +199,8 @@ redis/redis-2.4.17.tar.gz:
   sha: !binary |-
     M2Q1NDA1MzFiM2Q3MTAzYTUxMWQyOTY2MWMyYWU2NjZkYWM2MDUyMg==
   size: 656155
+rootfs/lucid64.tar.gz:
+  object_id: 57618265-693a-4af6-831a-d2eba131df64
+  sha: !binary |-
+    YjI2MzNiMmFiNDk2NGY5MTQwMmJiMmQ4ODlmMmYxMjQ0OWE4YjgyOA==
+  size: 199489185
