@@ -1,0 +1,7 @@
+# abort script on any command that exit with a non zero value
+set -e
+
+cd ${BUILD_DIR}
+mv services/postgresql_service_ng postgresql_service_ng
+rm -r services
+pkg_utils/vendor.sh postgresql_service_ng
