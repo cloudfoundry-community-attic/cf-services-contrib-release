@@ -1,0 +1,2 @@
+<% freq_min=properties.elasticsearch_node && properties.elasticsearch_node.logrotate && properties.elasticsearch_node.logrotate.freq_min || 5 %>
+*/<%= freq_min %> * * * * test -x /usr/sbin/logrotate && /usr/sbin/logrotate /var/vcap/jobs/elasticsearch_node/config/logrotate.conf >>/var/vcap/sys/log/elasticsearch_node/elasticsearch_logrotate_cron.log 2>&1

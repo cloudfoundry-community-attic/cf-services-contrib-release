@@ -1,0 +1,9 @@
+---
+name: elasticsearch
+
+dependencies:
+- java7
+
+files:
+- elasticsearch/elasticsearch-0.20.6.tar.gz
+- elasticsearch/elasticsearch-http-basic-1.0.3.tar.gz

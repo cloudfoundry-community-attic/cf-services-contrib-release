@@ -1,0 +1,16 @@
+# abort script on any command that exit with a non zero value
+set -e
+
+ES_VERSION=0.20.6
+ES_HTTP_BASIC_VERSION=1.0.3
+
+cd $BOSH_COMPILE_TARGET
+tar xfv elasticsearch/elasticsearch-${ES_VERSION}.tar.gz
+cd elasticsearch-${ES_VERSION}
+cp -a * $BOSH_INSTALL_TARGET
+
+cd $BOSH_COMPILE_TARGET
+tar xfv elasticsearch/elasticsearch-http-basic-${ES_HTTP_BASIC_VERSION}.tar.gz
+cd elasticsearch-http-basic-${ES_HTTP_BASIC_VERSION}
+mkdir -p $BOSH_INSTALL_TARGET/plugins/elasticsearch-http-basic
+cp -a *.jar $BOSH_INSTALL_TARGET/plugins/elasticsearch-http-basic
