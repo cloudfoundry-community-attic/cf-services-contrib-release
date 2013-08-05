@@ -74,7 +74,7 @@ class VCAP::Services::ElasticSearch::Node
     @free_ports = Set.new
     options[:port_range].each {|port| @free_ports << port}
     @mutex = Mutex.new
-    @supported_versions = ["0.19"]
+    @supported_versions = ["0.19", "0.20"]
   end
 
   def pre_send_announcement
