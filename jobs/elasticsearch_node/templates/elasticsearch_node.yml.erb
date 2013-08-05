@@ -1,0 +1,46 @@
+---
+<%
+service = "elasticsearch"
+plan_enabled = properties.service_plans && properties.service_plans.send(service.to_sym)
+plan = properties.plan || "free"
+plan_conf = plan_enabled && properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
+node = properties.elasticsearch_node
+supported_versions = node.supported_versions
+default_version = node.default_version
+nats_props_name = properties.nats_props || "nats"
+nats_props = properties.send(nats_props_name)
+nats = "nats://#{nats_props.user}:#{nats_props.password}@#{nats_props.address}:#{nats_props.port}"
+%>
+
+capacity: <%= plan_enabled && plan_conf.capacity || 16 %>
+plan: <%= plan %>
+local_db: sqlite3:/var/vcap/store/elasticsearch/elasticsearch_node.db
+mbus: <%= nats %>
+index: <%= spec.index %>
+base_dir: /var/vcap/store/elasticsearch/instances
+
+logging:
+  level: debug
+  file: /var/vcap/sys/log/elasticsearch_node/elasticsearch_node.log
+  <% if properties.syslog_aggregator %>
+  syslog: vcap.elasticsearch_node
+  <% end %>
+
+pid: /var/vcap/sys/run/elasticsearch_node/elasticsearch_node.pid
+node_id: <%= "#{service}_node#{'_' + plan if plan != 'free'}_#{spec.index.to_i + 1}" %>
+supported_versions: <%= "['#{supported_versions.join("' , '")}']" %>
+default_version: <%= "'#{default_version}'"%>
+
+max_memory: <%= plan_enabled && plan_conf.max_memory || 512 %>
+elasticsearch_path: /var/vcap/packages/elasticsearch/bin/elasticsearch
+port_range:
+  first: 45001
+  last: 55000
+
+z_interval: <%= properties.elasticsearch_node.z_interval || 30 %>
+elasticsearch_log_dir: /var/vcap/sys/service-log/elasticsearch
+
+max_nats_payload: <%= nats_props.max_payload || 1048576 %>
+elasticsearch_start_timeout: <%= properties.elasticsearch_node.elasticsearch_start_timeout || 3 %>
+
+elasticsearch_plugin_dir: /var/vcap/packages/elasticsearch/plugins

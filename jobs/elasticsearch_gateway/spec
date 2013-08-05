@@ -1,0 +1,14 @@
+---
+name: elasticsearch_gateway
+
+templates:
+  elasticsearch_gateway_ctl: bin/elasticsearch_gateway_ctl
+  elasticsearch_gateway.yml.erb: config/elasticsearch_gateway.yml
+  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
+
+packages:
+  - common
+  - elasticsearch_gateway
+  - ruby
+  - sqlite
+  - syslog_aggregator
