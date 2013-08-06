@@ -1,0 +1,5 @@
+check process elasticsearch_node
+  with pidfile /var/vcap/sys/run/elasticsearch_node/elasticsearch_node.pid
+  start program "/var/vcap/jobs/elasticsearch_node/bin/elasticsearch_node_ctl start"
+  stop program "/var/vcap/jobs/elasticsearch_node/bin/elasticsearch_node_ctl stop"
+  group vcap

@@ -17,6 +17,7 @@ packages:
   - common
   - vblob_node_ng
   - vblob
+  - rootfs_lucid64
   - node
   - ruby
   - ruby_next
