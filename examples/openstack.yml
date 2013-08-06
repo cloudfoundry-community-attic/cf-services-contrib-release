@@ -1,0 +1,351 @@
+---
+name: cf
+director_uuid: <director-uuid>
+
+releases: 
+  - name: cf-release
+    version: latest
+  - name: cf-services-contrib
+    version: latest
+
+compilation: 
+  workers: 3
+  network: default 
+  reuse_compilation_vms: true
+  cloud_properties: 
+    instance_type: m1.small # CHANGE
+
+update:
+  canaries: 1
+  canary_watch_time: 30000-600000
+  update_watch_time: 30000-600000
+  max_in_flight: 4
+  max_errors: 1
+
+networks:
+  - name: floating
+    type: vip
+    cloud_properties: {}
+  - name: default
+    type: dynamic
+    cloud_properties:
+      security_groups:
+        - default
+        - microbosh
+
+resource_pools:
+  - name: common
+    network: default
+    size: 1
+    stemcell:
+      name: bosh-stemcell
+      version: latest
+    cloud_properties:
+      instance_type: m1.small # CHANGE
+
+jobs: 
+  # Also include your standard cf-release jobs here
+
+  - name: services_nfs
+    release: cf-release
+    template: debian_nfs_server
+    instances: 1
+    resource_pool: common
+    persistent_disk: 10240
+    properties:
+      debian_nfs_server:
+        no_root_squash: true
+    networks:
+      - name: default
+        default: [dns, gateway]
+
+  - name: mysql_gateway
+    release: cf-services
+    template: mysql_gateway
+    instances: 1
+    resource_pool: common
+    networks:
+      - name: default
+        default: [dns, gateway]
+  - name: mysql_node
+    release: cf-services
+    template: mysql_node
+    instances: 1
+    resource_pool: common
+    persistent_disk: 12058
+    properties:
+      mysql_node:
+        plan: "100"
+    networks:
+      - name: default
+        default: [dns, gateway]
+
+  - name: mongodb_gateway
+    release: cf-services-contrib
+    template: mongodb_gateway
+    instances: 1
+    resource_pool: common
+    networks:
+      - name: default
+        default: [dns, gateway]
+  - name: mongodb_node
+    release: cf-services-contrib
+    template: mongodb_node_ng
+    instances: 1
+    resource_pool: common
+    persistent_disk: 63729
+    properties:
+      plan: "100"
+    networks:
+      - name: default
+        default: [dns, gateway]
+
+  - name: memcached_gateway
+    release: cf-services-contrib
+    template: memcached_gateway
+    instances: 1
+    resource_pool: common
+    networks:
+      - name: default
+        default: [dns, gateway]
+  - name: memcached_node
+    release: cf-services-contrib
+    template: memcached_node_ng
+    instances: 1
+    resource_pool: common
+    persistent_disk: 63729
+    properties:
+      plan: "100"
+    networks:
+      - name: default
+        default: [dns, gateway]
+
+  - name: vblob_gateway
+    release: cf-services-contrib
+    template: vblob_gateway
+    instances: 1
+    resource_pool: common
+    networks:
+      - name: default
+        default: [dns, gateway]
+  - name: vblob_node
+    release: cf-services-contrib
+    template: vblob_node_ng
+    instances: 1
+    resource_pool: common
+    persistent_disk: 63729
+    properties:
+      plan: "100"
+    networks:
+      - name: default
+        default: [dns, gateway]
+
+  - name: elasticsearch_gateway
+    release: cf-services-contrib
+    template: elasticsearch_gateway
+    instances: 1
+    resource_pool: common
+    networks:
+      - name: default
+        default: [dns, gateway]
+  - name: elasticsearch_node
+    release: cf-services-contrib
+    template: elasticsearch_node
+    instances: 1
+    resource_pool: common
+    persistent_disk: 63729
+    properties:
+      plan: "free"
+    networks:
+      - name: default
+        default: [dns, gateway]
+
+  - name: backup_manager 
+    release: cf-services-contrib
+    template: backup_manager 
+    instances: 1 
+    resource_pool: common 
+    networks: 
+      - name: default 
+        default: [dns, gateway] 
+
+  - name: service_utilities 
+    release: cf-services-contrib
+    template: service_utilities 
+    instances: 1 
+    resource_pool: common 
+    networks: 
+      - name: default 
+        default: [dns, gateway] 
+
+properties: 
+  # include your standard cf-release properties here
+
+  service_plans:
+    mysql:
+      "100":
+        description: "Shared server, shared VM, 1MB memory, 10MB storage, 10 connections"
+        free: true
+        job_management:
+          high_water: 900
+          low_water: 100
+        configuration:
+          capacity: 500
+          max_db_size: 10
+          key_buffer: 512
+          innodb_buffer_pool_size: 512
+          max_allowed_packet: 16
+          thread_cache_size: 128
+          query_cache_size: 128
+          max_long_query: 3
+          max_long_tx: 30
+          max_clients: 10
+          max_connections: 1000
+          table_open_cache: 2000
+          innodb_tables_per_database: 50
+          connection_pool_size:
+            min: 5
+            max: 10
+          backup:
+            enable: true
+          lifecycle:
+            enable: true
+            serialization: enable
+            snapshot:
+              quota: 1
+          warden:
+            enable: false
+
+    mongodb:
+      "100":
+        description: "Dedicated server, shared VM, 250MB storage, 10 connections"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+          max_clients: 10
+          quota_files: 4
+          quota_data_size: 240
+          enable_journaling: true
+          backup:
+            enable: true
+          lifecycle:
+            enable: true
+            serialization: enable
+            snapshot:
+              quota: 1
+
+    memcached:
+      "100":
+        description: "Memcache free plan"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+
+    vblob:
+      "100":
+        description: "Vblob free plan"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+
+    elasticsearch:
+      "free":
+        description: "Elasticsearch free plan"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+
+  mysql_gateway:
+    token: <mysql-service-token> # CHANGE
+    default_plan: "100"
+    supported_versions: ["5.5"]
+    version_aliases:
+      current: "5.5"
+    cc_api_version: v2
+  mysql_node:
+    password: <mysql-service-root-password> # CHANGE
+    supported_versions: ["5.5"]
+    default_version: "5.5"
+    max_tmp: 1024
+
+  mongodb_gateway:
+    token: <mongodb-service-token> # CHANGE
+    default_plan: "100"
+    supported_versions: ["2.2"]
+    version_aliases:
+      current: "2.2"
+    cc_api_version: v2
+  mongodb_node:
+    supported_versions: ["2.2"]
+    default_version: "2.2"
+    max_tmp: 900
+
+  memcached_gateway:
+    token: <memcached-service-token> # CHANGE
+    supported_versions: ["1.4"]
+    version_aliases:
+      current: "1.4"
+    cc_api_version: v2
+  memcached_node:
+    supported_versions: ["1.4"]
+    default_version: "1.4"
+
+  vblob_gateway:
+    token: <vblob-service-token> # CHANGE
+    supported_versions: ["0.51"]
+    version_aliases:
+      current: "0.51"
+    cc_api_version: v2
+  vblob_node:
+    supported_versions: ["0.51"]
+    default_version: "0.51"
+
+  elasticsearch_gateway:
+    token: <elasticsearch-service-token> # CHANGE
+    supported_versions: ["0.20"]
+    version_aliases:
+      current: "0.20"
+    cc_api_version: v2
+  elasticsearch_node:
+    supported_versions: ["0.20"]
+    default_version: "0.20"
+
+  # Service credentials
+  # Used by gateways to make them selfs known to cc
+  uaa_client_id: "cf"
+  uaa_endpoint: http://uaa.innovory.net
+  uaa_client_auth_credentials:
+    username: <services-username> # CHANGE
+    password: <services-password> # CHANGE
+
+  # The backup manager expects these tokens
+  # Could be removed if where made optional
+  redis_gateway:
+    token: <redis-service-token> # CHANGE
+  postgresql_gateway:
+    token: <postgresql-service-token> # CHANGE
+
+  service_backup:
+    nfs_server:
+      address: 0.services-nfs.default.cf.microbosh
+      export_dir: /var/vcap/store/shared
+
+  service_backup_manager:
+    enable: true
+
+  uaa:
+    scim:
+      users:
+      - <services-password>|<services-password>|scim.write,scim.read,openid,cloud_controller.admin # CHANGE
