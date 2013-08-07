@@ -715,7 +715,7 @@ class VCAP::Services::Mysql::Node
 
   def gen_credential(name, user, passwd)
     host = get_host
-    response = {
+    {
       "name" => name,
       "hostname" => host,
       "host" => host,
@@ -723,6 +723,7 @@ class VCAP::Services::Mysql::Node
       "user" => user,
       "username" => user,
       "password" => passwd,
+      "uri" => "mysql://#{user}:#{passwd}@#{host}:#{@mysql_config['port']}/#{name}",
     }
   end
 
