@@ -5,5 +5,5 @@ dependencies:
 - sqlite
 - ruby
 files:
-- services/postgresql_service_ng/**/*
+- services/postgresql/**/*
 - pkg_utils/*
