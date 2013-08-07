@@ -32,3 +32,4 @@ packages:
   - ruby_next
   - sqlite
   - syslog_aggregator
+  - rootfs_lucid64
