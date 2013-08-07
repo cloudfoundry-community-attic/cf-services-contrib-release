@@ -2,6 +2,6 @@
 set -e
 
 cd ${BUILD_DIR}
-mv services/postgresql_service_ng postgresql_service_ng
+mv services/postgresql postgresql
 rm -r services
-pkg_utils/vendor.sh postgresql_service_ng
+pkg_utils/vendor.sh postgresql

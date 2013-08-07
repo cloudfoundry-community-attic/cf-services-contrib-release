@@ -10,9 +10,9 @@ module VCAP
   module Services
     module Postgresql
       class Node
-        attr_reader :connection, :logger, :available_storage, :provision_served, :binding_served
+        attr_reader :connection, :connections, :discarded_connections, :logger, :available_storage, :provision_served, :binding_served
         def get_service(db)
-          Provisionedservice.first(:name => db['name'])
+          pgProvisionedService.first(:name => db['name'])
         end
       end
     end
@@ -34,22 +34,23 @@ describe "Postgresql node normal cases" do
 
   before :all do
     @opts = getNodeTestConfig
+    @opts.freeze
+
+    @default_plan = "free"
+    @default_version = @opts[:default_version]
+    @default_opts = "default"
     @max_db_conns = @opts[:max_db_conns]
-    ENV['PGPASSWORD'] = @opts[:postgresql]['pass']
     # Setup code must be wrapped in EM.run
     EM.run do
-      @node = Node.new(@opts)
-      sleep 1
+      @node = VCAP::Services::Postgresql::Node.new(@opts)
       EM.add_timer(0.1) {EM.stop}
     end
   end
 
   before :each do
-    @default_plan = "free"
-    @default_opts = "default"
     @test_dbs = {}# for cleanup
     # Create one db be default
-    @db = @node.provision(@default_plan)
+    @db = @node.provision(@default_plan, nil, @default_version)
     @db.should_not == nil
     @db["name"].should be
     @db["host"].should be
@@ -58,18 +59,209 @@ describe "Postgresql node normal cases" do
     @db["user"].should == @db["username"]
     @db["password"].should be
     @test_dbs[@db] = []
+    @new_test_dbs ={}
+    @db_instance = @node.pgProvisionedService.get(@db['name'])
   end
 
   it "should connect to postgresql database" do
     EM.run do
-      expect {@node.connection.query("SELECT 1")}.should_not raise_error
+      expect {@node.global_connection(@db_instance).query("SELECT 1")}.should_not raise_error
+      @node.get_inst_port(@db_instance).should == @db['port']
       EM.stop
+    end
+  end
+
+  it "should add timeout to connect" do
+    pending "Not to use warden, won't run this case." unless @opts[:use_warden]
+    pending "Not to use async methods, won't run this case." unless @opts[:db_use_async_query]
+    EM.run do
+      default_connect_timeout = VCAP::Services::Postgresql::Util::PGDBconn.default_connect_timeout
+
+      tmp_db = @node.provision(@default_plan, nil, @default_version)
+      tmp_instance = @node.pgProvisionedService.get(tmp_db['name'])
+      @test_dbs[tmp_db] = []
+
+      expect { connect_to_postgresql(tmp_db).close }.should_not raise_error
+
+      begin
+        # simulate the select timeout issue
+        class IO
+          class << self
+            alias_method :select_ori, :select
+            def select(read_array, write_array, error_array, timeout)
+                # block thread for speficied time if timeout is set
+                # or block thread for ever (180 seconds is long enough for test)
+                sleep timeout || 180
+                raise PGError, "simulated select timeout"
+            end
+          end
+        end
+
+        # use default connect_timeout
+        start_time = Time.now.to_f
+        expect { conn = connect_to_postgresql(tmp_db) }.should raise_error(PGError, /simulated select timeout/)
+        connect_time = Time.now.to_f - start_time
+        connect_time.should >= default_connect_timeout
+        connect_time.should < (default_connect_timeout + 1)
+
+        # use specified connect_timeout
+        start_time = Time.now.to_f
+        expect { conn = connect_to_postgresql(tmp_db, :connect_timeout => (default_connect_timeout + 2))}.should raise_error(PGError, /simulated select timeout/)
+        connect_time = Time.now.to_f - start_time
+        connect_time >= default_connect_timeout + 2
+        connect_time.should < (default_connect_timeout + 3)
+
+      ensure
+        # restore the IO.select method
+        class IO
+          class << self
+            alias_method :select, :select_ori
+          end
+        end
+      end
+
+      EM.stop
+    end
+  end
+
+  it "should retrieve version from postgresql connection" do
+    EM.run do
+      begin
+        @conn = @node.global_connection(@db_instance)
+        @node.pg_version(@conn).should == @default_version
+        @node.pg_version(@conn, :full => true).should =~ Regexp.new("#{@default_version}\\.(\\w+)")
+        @node.pg_version(@conn, :major => true).should == @default_version.scan(/(\d+)/)[0][0]
+      ensure
+        EM.stop
+      end
+    end
+  end
+
+  it "should add timeout to query" do
+    EM.run do
+      ori_default_query_timeout = VCAP::Services::Postgresql::Util::PGDBconn.default_query_timeout
+      opts = @opts.dup
+      opts[:db_query_timeout] = 1
+      opts[:not_start_instances] = true if opts[:use_warden]
+      node = VCAP::Services::Postgresql::Node.new(opts)
+      EM.add_timer(2) do
+        begin
+          @conn = @node.global_connection(@db_instance)
+          conn = node.global_connection(@db_instance)
+          # make sure the connections are active
+          expect {@conn.query('select current_timestamp')}.should_not raise_error
+          expect {conn.query('select current_timestamp')}.should_not raise_error
+          @conn.query_timeout.should == ori_default_query_timeout
+          conn.query_timeout.should == 1
+          expect {@conn.query('select pg_sleep(2)')}.should_not raise_error
+          expect {conn.query('select pg_sleep(2)')}.should raise_error
+        ensure
+          VCAP::Services::Postgresql::Util::PGDBconn.default_query_timeout = ori_default_query_timeout
+          EM.stop
+        end
+      end
+    end
+  end
+
+  it "should support async query/transaction" do
+    NUM = 10
+    TEST_TIME = 5
+    EM.run do
+      ori_use_async_query = VCAP::Services::Postgresql::Util::PGDBconn.use_async_query
+      opts = @opts.dup
+      opts[:db_use_async_query] = true
+      opts[:not_start_instances] = true if opts[:use_warden]
+      node = VCAP::Services::Postgresql::Node.new(opts)
+      EM.add_timer(2) do
+        threads = []
+        begin
+          conn = node.global_connection(@db_instance)
+          (conn.async?).should be_true
+          db_num = conn.query("select count(*) as num from pg_database;").first['num'];
+          end_time = start_time = Time.now.to_f
+          # other threads in the process won't be blocked by database queries
+          threads << Thread.new do
+            cal = 0
+            TEST_TIME.times do
+              sleep 1
+              cal += 1
+            end
+            end_time = Time.now.to_f
+          end
+          NUM.times do
+            threads << Thread.new do
+              loop do
+                my_db_num = conn.query("select count(*) as num from pg_database;").first['num']
+                db_num.should == my_db_num
+                Thread.exit if  Time.now.to_f - start_time > TEST_TIME
+              end
+            end
+          end
+          NUM.times do
+            threads << Thread.new do
+              loop do
+                my_db_num = 0
+                conn.transaction do |c|
+                  my_db_num = c.query("select count(*) as num from pg_database;").first['num']
+                end
+                db_num.should == my_db_num
+                Thread.exit if  Time.now.to_f - start_time > TEST_TIME
+              end
+            end
+          end
+          threads.each{|t| t.join}
+          (end_time - start_time).should >= 5
+          (end_time - start_time).should < 6
+        ensure
+          VCAP::Services::Postgresql::Util::PGDBconn.use_async_query = ori_use_async_query
+          EM.stop
+        end
+      end
+    end
+  end
+
+  it "should handle discarded connections correctly" do
+    EM.run do
+      ori_use_async_query = VCAP::Services::Postgresql::Util::PGDBconn.use_async_query
+      opts = @opts.dup
+      opts[:db_use_async_query] = true
+      opts[:not_start_instances] = true if opts[:use_warden]
+      node = VCAP::Services::Postgresql::Node.new(opts)
+      EM.add_timer(2) do
+        begin
+          conn = node.global_connection(@db_instance)
+          # make sure the connections are active
+          expect {conn.query('select current_timestamp')}.should_not raise_error
+          conn.async?.should == true
+          t1 = Thread.new do
+            begin
+              conn.query("select pg_sleep(2)")
+            rescue
+              nil
+            end
+          end
+          node.add_discarded_connection(@db['name'], conn)
+          node.add_discarded_connection('fake_name', nil)
+          node.discarded_connections[@db['name']].size.should == 1
+          node.discarded_connections['fake_name'].size.should == 1
+          expect { node.discarded_connections[@db['name']].first.query("select current_timestamp") }.should_not raise_error
+          node.postgresql_keep_alive
+          node.discarded_connections[@db['name']].nil?.should == true
+          node.discarded_connections['fake_name'].nil?.should == true
+          node.postgresql_keep_alive
+        ensure
+          t1.join
+          VCAP::Services::Postgresql::Util::PGDBconn.use_async_query = ori_use_async_query
+          EM.stop
+        end
+      end
     end
   end
 
   it "should restore from backup file" do
     EM.run do
-      tmp_db = @node.provision(@default_plan)
+      tmp_db = @node.provision(@default_plan, nil, @default_version)
+      tmp_instance = @node.pgProvisionedService.get(tmp_db['name'])
       @test_dbs[tmp_db] = []
       conn = connect_to_postgresql(tmp_db)
       old_db_info = @node.get_db_info(conn, tmp_db["name"])
@@ -78,9 +270,11 @@ describe "Postgresql node normal cases" do
       conn.query("create schema test_schema")
       conn.query("create table test_schema.test1(id int)")
       conn.query("insert into test_schema.test1 values(1)")
-      host, port, user, password = %w(host port user pass).map{|key| @opts[:postgresql][key]}
+      postgresql_config = @node.postgresql_config(tmp_instance)
+      host, port, user, password = %w(host port user pass).map{|key| postgresql_config[key]}
       tmp_file = "/tmp/#{tmp_db['name']}.dump"
-      result = `pg_dump -Fc -h #{host} -p #{port} -U #{tmp_db['user']} -f #{tmp_file} #{tmp_db['name']}`
+      pg_dump = @opts[:postgresql][@default_version]['dump_bin']
+      @node.dump_database(tmp_db['name'], host, port, tmp_db['user'], tmp_db['password'], tmp_file, :dump_bin => pg_dump).should == true
       conn.query("drop table test1")
       conn.query("drop table test_schema.test1")
       res = conn.query("select tablename from pg_catalog.pg_tables where schemaname = 'public';")
@@ -114,10 +308,11 @@ describe "Postgresql node normal cases" do
 
   it "should be able to get public schema id and get all user created schemas" do
     EM.run do
-      node_public_schema_id =  @node.get_public_schema_id(@node.connection)
+      node_public_schema_id =  @node.get_public_schema_id(@node.global_connection(@db_instance))
       node_public_schema_id.should_not  == nil
 
-      tmp_db = @node.provision(@default_plan)
+      tmp_db = @node.provision(@default_plan, nil, @default_version)
+      tmp_instance = @node.pgProvisionedService.get(tmp_db['name'])
       @test_dbs[tmp_db] = []
       conn = connect_to_postgresql(tmp_db)
       default_user_public_schema_id = @node.get_public_schema_id(conn)
@@ -170,10 +365,11 @@ describe "Postgresql node normal cases" do
 
   it "should recreate database and user when import instance" do
     EM.run do
-      db = @node.provision(@default_plan)
+      db = @node.provision(@default_plan, nil, @default_version)
       @test_dbs[db] = []
       @node.dump_instance(db, [], '/tmp')
       @node.unprovision(db['name'], [])
+      sleep 1 if @opts[:use_warden]
       @node.import_instance(db, {}, '/tmp', @default_plan).should == true
       conn = connect_to_postgresql(db)
       expect { conn.query('select 1') }.should_not raise_error
@@ -183,7 +379,7 @@ describe "Postgresql node normal cases" do
 
   it "should recreate bindings when update instance handles" do
     EM.run do
-      db = @node.provision(@default_plan)
+      db = @node.provision(@default_plan, nil, @default_version)
       @test_dbs[db] = []
       binding = @node.bind(db['name'], @default_opts)
       @test_dbs[db] << binding
@@ -204,7 +400,7 @@ describe "Postgresql node normal cases" do
 
   it "should recreate bindings when enable instance" do
     EM.run do
-      db = @node.provision(@default_plan)
+      db = @node.provision(@default_plan, nil, @default_version)
       @test_dbs[db] = []
       binding = @node.bind(db['name'], @default_opts)
       @test_dbs[db] << binding
@@ -247,7 +443,7 @@ describe "Postgresql node normal cases" do
   it "should return correct instances & bindings list" do
     EM.run do
       before_ins_list = @node.all_instances_list
-      tmp_db = @node.provision(@default_plan)
+      tmp_db = @node.provision(@default_plan, nil, @default_version)
       @test_dbs[tmp_db] = []
       after_ins_list = @node.all_instances_list
       before_ins_list << tmp_db["name"]
@@ -269,7 +465,7 @@ describe "Postgresql node normal cases" do
 
   it "should be able to purge the instance & binding from the all_list" do
     EM.run do
-      tmp_db = @node.provision(@default_plan)
+      tmp_db = @node.provision(@default_plan, nil, @default_version)
       @test_dbs[tmp_db] = []
       ins_list = @node.all_instances_list
       tmp_bind = @node.bind(tmp_db["name"], @default_opts)
@@ -280,6 +476,8 @@ describe "Postgresql node normal cases" do
       ob.should_not be_nil
       expect { @node.unbind(ob) }.should_not raise_error
       expect { @node.unprovision(oi, []) }.should_not raise_error
+      # remove it from test_dbs for it is unprovisioned
+      @test_dbs.delete(tmp_db)
       EM.stop
     end
   end
@@ -287,15 +485,16 @@ describe "Postgresql node normal cases" do
   it "should calculate both table and index as database size" do
     EM.run do
       conn = connect_to_postgresql(@db)
+      ori_size = @node.db_size(@db_instance)
       # should calculate table size
       conn.query("CREATE TABLE test(id INT)")
       conn.query("INSERT INTO test VALUES(10)")
       conn.query("INSERT INTO test VALUES(20)")
-      table_size = @node.db_size(@db["name"])
-      table_size.should > 0
+      table_size = @node.db_size(@db_instance)
+      table_size.should > ori_size
       # should also calculate index size
       conn.query("CREATE INDEX id_index on test(id)")
-      all_size = @node.db_size(@db["name"])
+      all_size = @node.db_size(@db_instance)
       all_size.should > table_size
       conn.close if conn
       EM.stop
@@ -304,16 +503,18 @@ describe "Postgresql node normal cases" do
   end
 
   it "should not create db or send response if receive a malformed request" do
+    pending "Use warden, won't run this case." if @opts[:use_warden]
     EM.run do
-      db_num = @node.connection.query("select count(*) from pg_database;")[0]['count']
+      conn = @node.fetch_global_connection(@default_version)
+      db_num = conn.query("select count(*) from pg_database;")[0]['count']
       mal_plan = "not-a-plan"
       db= nil
       expect {
-        db=@node.provision(mal_plan)
+        db=@node.provision(mal_plan, nil, @default_version)
         @test_dbs[db] = []
-      }.should raise_error(PostgresqlError, /Invalid plan .*/)
+      }.should raise_error(VCAP::Services::Postgresql::PostgresqlError, /Invalid plan .*/)
       db.should == nil
-      db_num.should == @node.connection.query("select count(*) from pg_database;")[0]['count']
+      db_num.should == conn.query("select count(*) from pg_database;")[0]['count']
       EM.stop
     end
   end
@@ -326,6 +527,57 @@ describe "Postgresql node normal cases" do
       msg = Yajl::Encoder.encode(@db)
       @node.unprovision(@db["name"], [])
       expect { connect_to_postgresql(@db) }.should raise_error
+      # remove it from test_dbs for it is unprovisioned
+      @test_dbs.delete(@db)
+      EM.stop
+    end
+  end
+
+  it "should clean up if service is unprovisioned" do
+    class << @node
+      attr_reader :free_ports
+    end if @opts[:use_warden]
+
+    EM.run do
+      free_ports_size = @node.free_ports.size if @opts[:use_warden]
+      db = @node.provision(@default_plan, nil, @default_version)
+      @test_dbs[db] = []
+      binding = @node.bind(db['name'], @default_opts)
+      @test_dbs[db] << binding
+      db_instance = @node.pgProvisionedService.get(db['name'])
+      db_instance.should_not == nil
+      version = db_instance.version
+      @node.connections.include?(db['name']).should == true
+      if @opts[:use_warden]
+        @node.pgBindUser
+             .all(:wardenprovisionedservice_name => db['name'])
+             .count.should_not == 0
+        @node.free_ports.include?(db["port"]).should_not == true
+        @node.free_ports.size.should == (free_ports_size - 1)
+      else
+        @node.connections.include?(version).should == true
+        @node.pgBindUser
+             .all(:provisionedservice_name => db['name'])
+             .count.should_not == 0
+      end
+
+      @node.unprovision(db["name"], [])
+      @node.pgProvisionedService.get(db['name']).should ==  nil
+      @node.connections.include?(db['name']).should == false
+      if @opts[:use_warden]
+        @node.pgBindUser
+             .all(:wardenprovisionedservice_name => db['name'])
+             .count.should == 0
+        @node.free_ports.include?(db["port"]).should == true
+        @node.free_ports.size.should == free_ports_size
+      else
+        @node.connections.include?(version).should == true
+        @node.pgBindUser
+             .all(:provisionedservice_name => db['name'])
+             .count.should == 0
+      end
+      # remove it from test_dbs for it is unprovisioned
+      @test_dbs.delete(db)
       EM.stop
     end
   end
@@ -334,7 +586,7 @@ describe "Postgresql node normal cases" do
     EM.run do
       expect {
         @node.unprovision("not-existing", [])
-      }.should raise_error(PostgresqlError, /Postgresql configuration .* not found/)
+      }.should raise_error(VCAP::Services::Postgresql::PostgresqlError, /Postgresql configuration .* not found/)
       # nil input handle
       @node.unprovision(nil, []).should == nil
       EM.stop
@@ -346,7 +598,7 @@ describe "Postgresql node normal cases" do
       # no existing instance
       expect {
         @node.unbind({:name => "not-existing"})
-      }.should raise_error(PostgresqlError,/Postgresql configuration .*not found/)
+      }.should raise_error(VCAP::Services::Postgresql::PostgresqlError,/Postgresql configuration .*not found/)
 
       # no existing credential
       credential = @node.bind(@db["name"],  @default_opts)
@@ -362,7 +614,7 @@ describe "Postgresql node normal cases" do
   it "should prevent accessing database with wrong credentials" do
     EM.run do
       plan = "free"
-      db2= @node.provision(plan)
+      db2= @node.provision(plan, nil, @default_version)
       @test_dbs[db2] = []
       fake_creds = []
       # the case to login using wrong password is discarded for it will always fail (succeed to login without any exception): rules in pg_hba.conf will make this happen
@@ -372,7 +624,6 @@ describe "Postgresql node normal cases" do
       # try to login using the default account (parent role) of other's db default account
       fake_creds[1]["user"] = db2["user"]
       fake_creds.each do |creds|
-        puts creds
         expect{ connect_to_postgresql(creds) }.should raise_error
       end
       EM.stop
@@ -384,18 +635,14 @@ describe "Postgresql node normal cases" do
       # reduce max_long_tx to accelerate test
       opts = @opts.dup
       opts[:max_long_tx] = 2
+      opts[:not_start_instances] = true if opts[:use_warden]
       node = VCAP::Services::Postgresql::Node.new(opts)
-      sleep 1
-      EM.add_timer(0.1) do
-        db = node.provision('free')
-        binding = node.bind(db['name'], @default_opts)
-        @test_dbs[db] = [binding]
+      EM.add_timer(1.1) do
+        binding = node.bind(@db['name'], @default_opts)
+        @test_dbs[@db] << binding
 
         # use a superuser, won't be killed
-        user = db.dup
-        user['user'] = opts[:postgresql]['user']
-        user['password'] = opts[:postgresql]['pass']
-        super_conn = connect_to_postgresql(user)
+        super_conn = node.management_connection(@db_instance, true)
         # prepare a transaction and not commit
         super_conn.query("create table a(id int)")
         super_conn.query("insert into a values(10)")
@@ -410,7 +657,11 @@ describe "Postgresql node normal cases" do
         }
 
         # use a default user (parent role), won't be killed
-        default_user = VCAP::Services::Postgresql::Node::Provisionedservice.get(db['name']).bindusers.all(:default_user => true)[0]
+        default_user = VCAP::Services::Postgresql::Node.pgProvisionedServiceClass(opts[:use_warden])
+                        .get(@db['name'])
+                        .pgbindusers
+                        .all(:default_user => true)[0]
+        user = @db.dup
         user['user'] = default_user[:user]
         user['password'] = default_user[:password]
         default_user_conn = connect_to_postgresql(user)
@@ -427,9 +678,8 @@ describe "Postgresql node normal cases" do
           default_user_conn.close if default_user_conn
         }
 
-
         # use a non-default user (not parent role), will be killed
-        user = db.dup
+        user = @db.dup
         user['user'] = binding['user']
         user['password'] = binding['password']
         bind_conn = connect_to_postgresql(user)
@@ -439,7 +689,7 @@ describe "Postgresql node normal cases" do
         bind_conn.query("begin")
         bind_conn.query("select * from c for update")
         EM.add_timer(opts[:max_long_tx] * 3) {
-          expect { conn.query("select * from c for update") }.should raise_error
+          expect { bind_conn.query("select * from c for update") }.should raise_error
           bind_conn.close if bind_conn
           EM.stop
         }
@@ -499,6 +749,8 @@ describe "Postgresql node normal cases" do
       @test_dbs[@db] = bindings
       @node.unprovision(@db["name"], bindings)
       bindings.each { |binding| expect { connect_to_postgresql(binding) }.should raise_error }
+      # remove it from test_dbs for it is unprovisioned
+      @test_dbs.delete(@db)
       EM.stop
     end
   end
@@ -507,7 +759,6 @@ describe "Postgresql node normal cases" do
     EM.run do
       varz = @node.varz_details
       varz.should be_instance_of Hash
-      varz[:pg_version].should be
       varz[:db_stat].should be_instance_of Array
       varz[:max_capacity].should > 0
       varz[:available_capacity].should >= 0
@@ -522,7 +773,7 @@ describe "Postgresql node normal cases" do
   it "should provide provision/binding served info in varz" do
     EM.run do
       v1 = @node.varz_details
-      db = @node.provision(@default_plan)
+      db = @node.provision(@default_plan, nil, @default_version)
       binding = @node.bind(db["name"], [])
       @test_dbs[db] = [binding]
       v2 = @node.varz_details
@@ -538,6 +789,12 @@ describe "Postgresql node normal cases" do
       instance = v[:db_stat].find {|d| d[:name] == @db["name"]}
       instance.should_not be_nil
       instance[:size].should >= 0
+      conn = @node.global_connection(@db_instance)
+      if @opts[:use_warden]
+        instance[:xlog_num].should == @node.xlog_file_num(@db_instance.base_dir)
+      else
+        instance[:xlog_num].should == @node.xlog_file_num(conn.settings['data_directory'])
+      end
       EM.stop
     end
   end
@@ -551,7 +808,7 @@ describe "Postgresql node normal cases" do
           value.should == "ok"
         end
       end
-      conn = @node.connection
+      conn = @node.global_connection(@db_instance)
       conn.query("drop database #{instance}")
       varz = @node.varz_details()
       varz[:instances].each do |name, value|
@@ -566,18 +823,23 @@ describe "Postgresql node normal cases" do
   end
 
   it "should be thread safe" do
+    # this case will consume 20 container space in the ci environment, with the current
+    # ci bind mount scheme, this will be disk consuming, thus pending this case in ci env
+    pending "thread safe case is disabled in ci environment due to resource issue" if ENV["CI_ENV"]
     EM.run do
       available_storage = @node.available_storage
       provision_served = @node.provision_served
       binding_served = @node.binding_served
-      NUM = 20
+      # Async query could increase the concurrency, so use smaller number here
+      NUM = VCAP::Services::Postgresql::Util::PGDBconn.async? && @opts[:use_warden] ? 5 : 20
       threads = []
       NUM.times do
         threads << Thread.new do
-          db = @node.provision(@default_plan)
+          db = @node.provision(@default_plan, nil, @default_version)
           binding = @node.bind(db["name"], @default_opts)
           @test_dbs[db] = [binding]
           @node.unprovision(db["name"], [binding])
+          @test_dbs.delete(db)
         end
       end
       threads.each {|t| t.join}
@@ -588,19 +850,254 @@ describe "Postgresql node normal cases" do
     end
   end
 
+  it "should evict page cache of loopback image files" do
+    pending "You don't use warden or filesystem_quota, won't run this case." unless @opts[:use_warden] && @opts[:filesystem_quota]
+    node = nil
+    EM.run do
+      opts = @opts.dup
+      opts[:clean_image_cache] = true
+      opts[:image_dir] = "/tmp/vcap_pg_pagecache_clean_test_dir"
+      opts[:clean_image_cache_follow_interval] = 3
+      File.init_fadvise_files
+
+      # create fake image dir
+      FileUtils.rm_rf(opts[:image_dir])
+      FileUtils.rm_rf("#{opts[:image_dir]}_link")
+      FileUtils.mkdir_p(opts[:image_dir])
+      FileUtils.mkdir_p("#{opts[:image_dir]}_link")
+      FileUtils.mkdir_p(File.join(opts[:image_dir], "subdir"))
+
+      # linked files
+      linked_file = File.join("#{opts[:image_dir]}_link", "linked_file")
+      File.open(linked_file, 'w') do |f|
+        f.write('linkedfile')
+      end
+      File.symlink(linked_file, File.join(opts[:image_dir], "link_file"))
+
+      # regular files
+      5.times do |i|
+        reg_file = File.join(opts[:image_dir], i.to_s)
+        File.open(reg_file, 'w') do |f|
+          f.write('regular_file')
+        end
+      end
+
+      # regular files in the subdirectory
+      subdir_file = File.join(opts[:image_dir], "subdir", "subfile")
+      File.open(subdir_file, 'w') do |f|
+        File.open(subdir_file, 'w') do |f|
+          f.write('subfile')
+        end
+      end
+      opts[:not_start_instances] = true if @opts[:use_warden]
+      node = VCAP::Services::Postgresql::Node.new(opts)
+      EM.add_timer(3.5) do
+        node.should_not == nil
+        File.fadvise_files.count.should == 6
+        EM.stop
+      end
+    end
+  end
+
+  it "should enforce xlog file number (periodical timer)" do
+    pending "you should enable xlog_enforcer to test" unless @opts[:enable_xlog_enforcer]
+    EM.run do
+      opts = @opts.dup
+      opts[:enable_xlog_enforcer] = true
+      opts[:xlog_enforce_tolerance] = 1
+      opts[:not_start_instances] = true if opts[:use_warden]
+      node = VCAP::Services::Postgresql::Node.new(opts)
+
+      EM.add_timer(1) do
+
+        db_instance = node.pgProvisionedService.get(@db['name'])
+        conn = node.global_connection(db_instance)
+        expect { conn.query("select 1") }.should_not raise_error
+        binding = node.bind(@db['name'], @default_opts)
+        @test_dbs[@db] << binding
+        binding_conn = connect_to_postgresql(binding)
+        expect { binding_conn.query("select 1") }.should_not raise_error
+
+        # use a default user (parent role), won't be killed
+        default_user = VCAP::Services::Postgresql::Node.pgProvisionedServiceClass(opts[:use_warden])
+                        .get(@db['name'])
+                        .pgbindusers
+                        .all(:default_user => true)[0]
+        user = @db.dup
+        user['user'] = default_user[:user]
+        user['password'] = default_user[:password]
+        default_user_conn = connect_to_postgresql(user)
+        expect { default_user_conn.query("select 1") }.should_not raise_error
+
+        data_dir = Dir.mktmpdir("xlog_test", "/tmp")
+        ori_settings = conn.settings
+        alert_times = 0
+        begin
+          # we won't count the files in real pg_xlog
+          node.stub(:xlog_file_num) do |_|
+            Dir.glob(File.join(data_dir, 'pg_xlog', '*')).select { |f| File.file?(f) }.count
+          end
+          conn.stub(:settings) do
+            new_settings = ori_settings.dup
+            new_settings["data_directory"] = data_dir
+            new_settings["checkpoint_segments"] = 3
+            new_settings
+          end
+          node.stub(:xlog_enforce_internal) do |_, arg_opts|
+           alert_times += 1 if arg_opts[:alert_only]
+          end unless opts[:use_warden]
+
+          pg_xlog_dir = File.join(data_dir, "pg_xlog")
+          Dir.mkdir(pg_xlog_dir)
+
+          node.xlog_file_checkpoint_limit(conn).should == 11 # 3 * 3 + 2
+          node.xlog_file_kill_limit(conn).should == node.xlog_file_checkpoint_limit(conn) + 3 # 4 * 3 + 2
+
+          3.times { |i| FileUtils.touch(File.join(pg_xlog_dir, "00000-#{i}")) }
+
+          node.xlog_file_num(data_dir).should == 3
+          node.xlog_status(conn, data_dir).should == VCAP::Services::Postgresql::Node::XLOG_STATUS_OK
+
+          EM.add_timer(1.1) do
+            expect { binding_conn.query("select 1") }.should_not raise_error
+            expect { default_user_conn.query("select 1") }.should_not raise_error
+            expect { conn.query("select 1") }.should_not raise_error
+            conn.checkpoint_times.nil?.should == true
+            alert_times.should == 0
+            9.times { |i| FileUtils.touch(File.join(pg_xlog_dir, "00001-#{i}")) }
+
+            node.xlog_file_num(data_dir).should == 12
+            node.xlog_status(conn, data_dir).should == VCAP::Services::Postgresql::Node::XLOG_STATUS_CHK
+
+            EM.add_timer(1.1) do
+              if opts[:use_warden]
+                expect { binding_conn.query("select 1") }.should_not raise_error
+                expect { default_user_conn.query("select 1") }.should_not raise_error
+                expect { conn.query("select 1") }.should_not raise_error
+                conn.checkpoint_times.should >= 1
+              else
+                expect { binding_conn.query("select 1") }.should_not raise_error
+                expect { default_user_conn.query("select 1") }.should_not raise_error
+                expect { conn.query("select 1") }.should_not raise_error
+                conn.checkpoint_times.nil?.should == true
+                alert_times.should >= 1
+              end
+              3.times { |i| FileUtils.touch(File.join(pg_xlog_dir, "00002-#{i}")) }
+
+              node.xlog_status(conn, data_dir).should == VCAP::Services::Postgresql::Node::XLOG_STATUS_KILL
+
+              EM.add_timer(2.2) do
+                if opts[:use_warden]
+                  expect { binding_conn.query("select 1") }.should raise_error
+                  expect { default_user_conn.query("select 1") }.should_not raise_error
+                  expect { conn.query("select 1") }.should_not raise_error
+                  conn.checkpoint_times.should >= 3
+                else
+                  expect { binding_conn.query("select 1") }.should_not raise_error
+                  expect { default_user_conn.query("select 1") }.should_not raise_error
+                  expect { conn.query("select 1") }.should_not raise_error
+                  conn.checkpoint_times.nil?.should == true
+                  alert_times.should >= 3
+                end
+                EM.stop
+              end
+            end
+         end
+        ensure
+          FileUtils.rm_f(data_dir)
+        end
+      end
+    end
+  end
+
+  it "should enforce xlog file number (helper functions)" do
+    EM.run do
+      conn = @node.global_connection(@db_instance)
+      binding = @node.bind(@db['name'], @default_opts)
+      @test_dbs[@db] << binding
+      binding_conn = connect_to_postgresql(binding)
+      expect { binding_conn.query("select 1") }.should_not raise_error
+
+      # use a default user (parent role), won't be killed
+      default_user = VCAP::Services::Postgresql::Node.pgProvisionedServiceClass(@opts[:use_warden])
+                      .get(@db['name'])
+                      .pgbindusers
+                      .all(:default_user => true)[0]
+      user = @db.dup
+      user['user'] = default_user[:user]
+      user['password'] = default_user[:password]
+      default_user_conn = connect_to_postgresql(user)
+      expect { default_user_conn.query("select 1") }.should_not raise_error
+
+      chk_segs = conn.settings['checkpoint_segments'].to_i
+      @node.xlog_file_checkpoint_limit(conn).should == chk_segs * 3 + 2
+      @node.xlog_file_kill_limit(conn).should ==  @node.xlog_file_checkpoint_limit(conn) + chk_segs
+      Dir.mktmpdir("xlog_test", "/tmp") do |data_dir|
+        pg_xlog_dir = File.join(data_dir, "pg_xlog")
+        Dir.mkdir(pg_xlog_dir)
+        Dir.mkdir(File.join(pg_xlog_dir, "xyz"))
+        Tempfile.new("00000", File.join(pg_xlog_dir, "xyz"))
+        # won't count directory and files in it
+        @node.xlog_file_num(data_dir).should == 0
+        chk_segs.times do
+          Tempfile.new("00000", pg_xlog_dir)
+        end
+        @node.xlog_file_num(data_dir).should == chk_segs
+        @node.xlog_status(conn, data_dir).should == VCAP::Services::Postgresql::Node::XLOG_STATUS_OK
+
+        (chk_segs * 2 + 3).times do
+          Tempfile.new("00000", pg_xlog_dir)
+        end
+        @node.xlog_status(conn, data_dir).should == VCAP::Services::Postgresql::Node::XLOG_STATUS_CHK
+
+        chk_segs.times do
+          Tempfile.new("00000", pg_xlog_dir)
+        end
+        @node.xlog_status(conn, data_dir).should == VCAP::Services::Postgresql::Node::XLOG_STATUS_KILL
+
+        @node.xlog_enforce_internal(conn, :alert_only => true)
+        expect { binding_conn.query("select 1") }.should_not raise_error
+        expect { default_user_conn.query("select 1") }.should_not raise_error
+        expect { conn.query("select 1") }.should_not raise_error
+        conn.checkpoint_times.nil?.should == true
+
+        @node.xlog_enforce_internal(
+          conn,
+          :xlog_status => VCAP::Services::Postgresql::Node::XLOG_STATUS_CHK)
+        expect { binding_conn.query("select 1") }.should_not raise_error
+        expect { default_user_conn.query("select 1") }.should_not raise_error
+        expect { conn.query("select 1") }.should_not raise_error
+        conn.checkpoint_times.should == 1
+
+        @node.xlog_enforce_internal(
+          conn,
+          :excluded_users => [default_user[:user]],
+          :xlog_status => VCAP::Services::Postgresql::Node::XLOG_STATUS_KILL)
+        expect { binding_conn.query("select 1") }.should raise_error
+        expect { default_user_conn.query("select 1") }.should_not raise_error
+        expect { conn.query("select 1") }.should_not raise_error
+        conn.checkpoint_times.should == 2
+        EM.stop
+      end
+    end
+  end
+
   it "should enforce database size quota" do
     node = nil
     EM.run do
       opts = @opts.dup
-      # new pg db takes about 5M(~5554180)
-      # reduce storage quota to 6MB.
-      opts[:max_db_size] = 6 - @opts[:db_size_overhead]
+      # reduce storage quota
+      opts[:not_start_instances] = true if @opts[:use_warden]
+      # add extra 0.5MB(524288B) to the size of a new intialized instance to calculate max_db_size
+      # so inserting 1MB(1000000B) data must trigger the quota enforcement
+      # sleep enough time to get the steady size value
+      sleep 1
+      opts[:max_db_size] = (@node.db_size(@db_instance) + 524288)/1024.0/1024.0
       node = VCAP::Services::Postgresql::Node.new(opts)
       EM.add_timer(1.1) do
         node.should_not == nil
-        db = node.provision(@default_plan)
-        @test_dbs[db] = []
-        binding = node.bind(db['name'], @default_opts)
+        binding = node.bind(@db['name'], @default_opts)
+        @test_dbs[@db] << binding
         EM.add_timer(2) do
           conn = connect_to_postgresql(binding)
           conn.query("create table test(data text)")
@@ -618,7 +1115,7 @@ describe "Postgresql node normal cases" do
             conn.close if conn
             first_conn = connect_to_postgresql(binding)
             expect { first_conn.query("select version()") }.should_not raise_error
-            second_binding = node.bind(db['name'], @default_opts)
+            second_binding = node.bind(@db['name'], @default_opts)
             second_conn = connect_to_postgresql(second_binding)
             [first_conn, second_conn].each do |conn|
               # write permission denied for relation test
@@ -660,15 +1157,16 @@ describe "Postgresql node normal cases" do
     EM.run do
       # this test verifies that we've fixed a race condition between
       # the quota-checker and unprovision/unbind
-      db = @node.provision(@default_plan)
+      db = @node.provision(@default_plan, nil, @default_version)
       @test_dbs[db] = []
       service = @node.get_service(db)
       service.should be
       @node.unprovision(db['name'], [])
+      @test_dbs.delete(db)
       # we can now simulate the quota-enforcer checking an
       # unprovisioned instance
-      expect { @node.revoke_write_access(db['name'], service) }.should_not raise_error
-      expect { @node.grant_write_access(db['name'], service) }.should_not raise_error
+      expect { @node.revoke_write_access(service) }.should_not raise_error
+      expect { @node.grant_write_access(service) }.should_not raise_error
       # actually, the bug was not that these methods raised
       # exceptions, but rather that they called Kernel.exit.  so the
       # real proof that we've fixed the bug is that this test finishes
@@ -716,300 +1214,24 @@ describe "Postgresql node normal cases" do
     end
   end
 
-  it "should get expected children correctly" do
-    EM.run do
-      bind = @node.bind @db['name'], @default_opts
-      children = @node.get_expected_children @db['name']
-      children.index(bind['user']).should_not == nil
-      children.index(@db['user']).should == nil
-      EM.stop
-    end
-  end
-
-  it "should get actual children correctly" do
-    EM.run do
-      # sys_user is not return from provision/bind response
-      # so only set user for parent
-      parent = VCAP::Services::Postgresql::Node::Binduser.new
-      parent.user = @db['user']
-      parent.password = @db['password']
-      @db['user'] = @opts[:postgresql]['user']
-      @db['password'] = @opts[:postgresql]['pass']
-      sys_conn = connect_to_postgresql @db
-      user = @node.bind @db['name'], @default_opts
-
-      # this parent does not contain sys_user
-      children = @node.get_actual_children sys_conn, @db['name'], parent
-      sys_conn.close if sys_conn
-      children.index('').should == nil
-      children.index(parent.user).should == nil
-      children.index(@opts[:postgresql]['user']).should == nil
-      children.index(user['user']).should_not == nil
-      # should only have 2 sys_user in children
-      # one for parent and the other for new binding
-      num_sys_user = 0
-      children.each do |child|
-        num_sys_user+=1 if child.index 'su'
-      end
-      num_sys_user.should == 2
-
-      # reset @db or we will miss to unprovision it
-      @db['user'] = parent.user
-      @db['password'] = parent.password
-
-      EM.stop
-    end
-  end
-
-  it "should get unruly children correctly" do
-    EM.run do
-      parent = VCAP::Services::Postgresql::Node::Binduser.new
-      parent.user = @db['user']
-      parent.password = @db['password']
-      bind1 = @node.bind @db['name'], @default_opts
-      bind2 = VCAP::Services::Postgresql::Node::Binduser.new
-      bind2.user = "u-#{UUIDTools::UUID.random_create.to_s}".gsub(/-/, '')
-
-      @db['user'] = @opts[:postgresql]['user']
-      @db['password'] = @opts[:postgresql]['pass']
-      sys_conn = connect_to_postgresql @db
-      sys_conn.query "create role #{bind2.user}"
-
-      children = []
-      children << bind1['user']
-      children << bind2['user']
-      unruly_children = @node.get_unruly_children sys_conn, parent, children
-      sys_conn.close if sys_conn
-      unruly_children.index(bind1['user']).should == nil
-      unruly_children.index(bind2['user']).should_not == nil
-
-      #reset @db
-      @db['user'] = parent.user
-      @db['password'] = parent.password
-      EM.stop
-    end
-  end
-
-  it "should be able to migrate(max_conns_limit) legacy instances" do
-    EM.run do
-      ori_db_info = @node.get_db_info(@node.connection, @db['name'])
-      ori_limit = ori_db_info['datconnlimit']
-      ori_limit.should_not == '-1'
-      @node.connection.query("update pg_database set datconnlimit=-1 where datname = '#{@db['name']}'")
-      @node.get_db_info(@node.connection, @db['name'])['datconnlimit'].should == '-1'
-      node = VCAP::Services::Postgresql::Node.new(@opts)
-      sleep(1)
-      EM.add_timer(0.1) {
-        @node.get_db_info(@node.connection, @db['name'])['datconnlimit'].should == ori_limit
-        node.get_db_info(node.connection, @db['name'])['datconnlimit'].should == ori_limit
-        EM.stop
-      }
-    end
-  end
-
-  it "should be able to migrate(grant create privilege) legacy instances" do
-    EM.run do
-      parent = @db['user']
-      parent_password = @db['password']
-      user1 = @node.bind(@db['name'], @default_opts)
-
-      @db['user'] = @opts[:postgresql]['user']
-      @db['password'] = @opts[:postgresql]['pass']
-      sys_conn = connect_to_postgresql @db
-
-      sys_conn.query "revoke create on database #{@db['name']} from #{parent}"
-      sys_conn.close if sys_conn
-
-      # reset @db
-      @db['user'] = parent
-      @db['password'] = parent_password
-
-      # connect to the db and fail to create schema
-      parent_conn = connect_to_postgresql @db
-      expect { parent_conn.query('create schema parent_schema') }. should raise_error(PGError)
-      parent_conn.close if parent_conn
-
-      user1_conn = connect_to_postgresql user1
-      expect { user1_conn.query('create schema user1_schema') }.should raise_error(PGError)
-      user1_conn.close if user1_conn
-
-      # create a new node to migrate
-      node = VCAP::Services::Postgresql::Node.new(@opts)
-      sleep 1
-      EM.add_timer(0.1) {
-        user1_conn = connect_to_postgresql user1
-        expect { user1_conn.query('create schema user1_schema') }.should_not raise_error(PGError)
-        expect { user1_conn.query('create table user1_schema.user1_table (value text)') }.should_not raise_error(PGError)
-        user1_conn.close if user1_conn
-        user2 = @node.bind(@db['name'], @default_opts)
-        user2_conn = connect_to_postgresql user2
-        expect { user2_conn.query('select * from user1_schema.user1_table') }.should_not raise_error(PGError)
-        expect { user2_conn.query("insert into user1_schema.user1_table values('hello')") }.should_not raise_error(PGError)
-        user2_conn.close if user2_conn
-        EM.stop
-      }
-    end
-
-  end
-
-   it "should be able to migrate(grant temp privilege) legacy instances" do
-    EM.run do
-      parent = @db['user']
-      parent_password = @db['password']
-      user1 = @node.bind(@db['name'], @default_opts)
-      user2 = @node.bind(@db['name'], @default_opts)
-      orphan = @node.bind(@db['name'], @default_opts)
-
-      @db['user'] = @opts[:postgresql]['user']
-      @db['password'] = @opts[:postgresql]['pass']
-      sys_conn = connect_to_postgresql @db
-
-      sys_conn.query "revoke temp on database #{@db['name']} from #{parent}"
-      sys_conn.query "revoke temp on database #{@db['name']} from #{user1['user']}"
-      sys_conn.query "revoke temp on database #{@db['name']} from #{user2['user']}"
-
-      sys_conn.query "revoke all on database #{@db['name']} from #{orphan['user']} cascade"
-      sys_conn.query "drop role #{orphan['user']}"
-
-      sys_conn.close if sys_conn
-
-      # reset @db
-      @db['user'] = parent
-      @db['password'] = parent_password
-
-      # connect to the db and fail to create temporary table/sequence/view
-      parent_conn = connect_to_postgresql @db
-      parent_conn.query('create table parent_table(id int, data text)')
-      expect { parent_conn.query('create temporary table parent_temp_table as select * from parent_table') }.should raise_error(PGError)
-      expect { parent_conn.query('create temporary sequence test_seq start 101') }.should raise_error(PGError)
-      parent_conn.close if parent_conn
-      user1_conn = connect_to_postgresql user1
-      expect { user1_conn.query('select * into temporary user1_temp_table from parent_table') }.should raise_error(PGError)
-      user1_conn.close if user1_conn
-      user2_conn = connect_to_postgresql user2
-      expect { user2_conn.query('create temporary view user2_temp_view as select * from parent_table') }.should raise_error(PGError)
-      user2_conn.close if user2_conn
-
-      # create a new node to migrate
-      node = VCAP::Services::Postgresql::Node.new(@opts)
-      sleep 1
-      EM.add_timer(0.1) {
-        parent_conn = connect_to_postgresql @db
-        expect { parent_conn.query('create temporary table parent_temp_table as select * from parent_table') }.should_not raise_error(PGError)
-        expect { parent_conn.query('create temporary sequence test_seq start 101') }.should_not raise_error(PGError)
-        parent_conn.close if parent_conn
-        user1_conn = connect_to_postgresql user1
-        expect { user1_conn.query('select * into temporary user1_temp_table from parent_table') }.should_not raise_error(PGError)
-        user1_conn.close if user1_conn
-        user2_conn = connect_to_postgresql user2
-        expect { user2_conn.query('create temporary view user2_temp_view as select * from parent_table') }.should_not raise_error(PGError)
-        user2_conn.close if user2_conn
-        EM.stop
-      }
-    end
-  end
-
-  it "should be able to migrate(manage object owner) legacy instances" do
-    EM.run do
-      parent = @db['user']
-      parent_password = @db['password']
-      # create a regular user through node
-      user1 = @node.bind(@db['name'], @default_opts)
-      # connect to the db with sys credential to 'revoke' the user's role
-      # from parent to itself, to simulate a 'pre-r8' binding
-      @db["user"] = @opts[:postgresql]['user']
-      @db["password"] = @opts[:postgresql]['pass']
-      sys_conn = connect_to_postgresql @db
-      sys_conn.query "alter role #{user1['user']} noinherit"
-      sys_conn.query "revoke #{parent} from #{user1['user']} cascade"
-      sys_conn.close if sys_conn
-
-      # reset @db
-      @db['user'] = parent
-      @db['password'] = parent_password
-
-      # connect to the db with revoked user
-      conn1 = connect_to_postgresql user1
-      conn1.query 'create table t1(i int)'
-      conn1.close if conn1
-
-      user2 = @node.bind(@db['name'], @default_opts)
-      conn2 = connect_to_postgresql user2
-      expect { conn2.query 'drop table t1' }.should raise_error
-      conn2.query 'create table t2(i int)'
-
-      # new a node class to do migration work
-      node = VCAP::Services::Postgresql::Node.new(@opts)
-      sleep 1
-      EM.add_timer(0.1) {
-        expect { conn2.query 'drop table t1' }.should_not raise_error
-        conn1 = connect_to_postgresql user1
-        expect { conn1.query 'drop table t2' }.should_not raise_error
-        conn1.query 'create table tt1(i int)'
-        conn1.close if conn1
-        expect { conn2.query 'drop table tt1' }.should_not raise_error
-        conn2.close if conn2
-        EM.stop
-      }
-    end
-  end
-
-  it "should migrate(manage object owner) legacy instances, even there is *orphan* user" do
-    EM.run do
-      parent = @db['user']
-      parent_password = @db['password']
-      # create a regular user through node
-      user1 = @node.bind(@db['name'], @default_opts)
-      # connect to the db with sys credential to 'revoke' the user's role
-      # from parent to itself, to simulate a 'pre-r8' binding
-      @db["user"] = @opts[:postgresql]['user']
-      @db["password"] = @opts[:postgresql]['pass']
-      sys_conn = connect_to_postgresql @db
-      sys_conn.query "alter role #{user1['user']} noinherit"
-      sys_conn.query "revoke #{parent} from #{user1['user']} cascade"
-      # connect to the db with revoked user
-      conn1 = connect_to_postgresql user1
-      conn1.query 'create table t(i int)'
-      conn1.close if conn1
-
-      user2 = @node.bind(@db['name'], @default_opts)
-      conn2 = connect_to_postgresql user2
-      expect { conn2.query 'drop table t' }.should raise_error
-
-      # create an orphan binding
-      # i.e. it's in local sqlite but not in pg server
-      orphan = @node.bind(@db['name'], @default_opts)
-      sys_conn.query "revoke all on database #{@db['name']} from #{orphan['user']} cascade"
-      sys_conn.query "drop role #{orphan['user']}"
-      sys_conn.close if sys_conn
-
-      # reset @db
-      @db['user'] = parent
-      @db['password'] = parent_password
-
-      # new a node class to do migration work
-      node = VCAP::Services::Postgresql::Node.new(@opts)
-      sleep 1
-      EM.add_timer(0.1) {
-        expect { conn2.query 'drop table t' }.should_not raise_error
-        EM.stop
-      }
-    end
-  end
-
   it "should work that user2 can bring the db back to normal after user1 puts much data to cause quota enforced" do
     node = nil
     EM.run do
       opts = @opts.dup
-      # new pg db takes about 5M(~5554180)
-      # reduce storage quota to 6MB.
-      opts[:max_db_size] = 6 - opts[:db_size_overhead]
+      # reduce storage quota.
+      if opts[:use_warden]
+         opts[:not_start_instances] = true
+      end
+      # add extra 0.5MB(524288B) to the size of a new intialized instance to calculate max_db_size
+      # so inserting 1MB(1000000B) data must trigger the quota enforcement
+      sleep 1
+      opts[:max_db_size] = (@node.db_size(@db_instance) + 524288)/1024.0/1024.0
+
       node = VCAP::Services::Postgresql::Node.new(opts)
       EM.add_timer(1.1) do
         node.should_not == nil
-        db = node.provision(@default_plan)
-        @test_dbs[db] = []
-        binding = node.bind(db['name'], @default_opts)
+        binding = node.bind(@db['name'], @default_opts)
+        @test_dbs[@db] << binding
         EM.add_timer(2) do
           conn = connect_to_postgresql(binding)
           conn.query("create table test(data text)")
@@ -1032,7 +1254,7 @@ describe "Postgresql node normal cases" do
             expect { conn.query("insert into new_schema.test values('1')") }.should raise_error(PGError)
             expect { conn.query("create schema another_schema") }.should raise_error(PGError)
             # user2 deletes data
-            binding_2 = node.bind(db['name'], @default_opts)
+            binding_2 = node.bind(@db['name'], @default_opts)
             conn2 = connect_to_postgresql(binding_2)
             conn2.query("truncate test")
             EM.add_timer(2) do
@@ -1056,36 +1278,52 @@ describe "Postgresql node normal cases" do
   end
 
   after:each do
-    @test_dbs.keys.each do |db|
-      begin
-        name = db["name"]
-        @node.unprovision(name, @test_dbs[db])
-        @node.logger.info("Clean up temp database: #{name}")
-      rescue => e
-        @node.logger.info("Error during cleanup #{e}")
+    @node.class.setup_datamapper(:default, @opts[:local_db])
+    EM.run do
+      @test_dbs.keys.each do |db|
+        begin
+          name = db["name"]
+          @node.unprovision(name, @test_dbs[db])
+          @node.logger.info("Clean up database: #{name}")
+        rescue => e
+          @node.logger.error("Error during cleanup database: #{e} - #{e.backtrace.join('|')}")
+        end
       end
-    end if @test_dbs
+      EM.add_timer(0.1) {EM.stop}
+    end unless @test_dbs.empty?
+    if @opts[:use_warden]
+      FileUtils.rm_rf "/tmp/vcap_pg_pagecache_clean_test_dir"
+      FileUtils.rm_rf "/tmp/vcap_pg_pagecache_clean_test_dir_link"
+      # reset back class vars if you changed
+      VCAP::Services::Postgresql::Node.pgProvisionedServiceClass(true).init(@opts)
+    end
+    @node.class.setup_datamapper(:default, @opts[:local_db])
   end
 
   after:all do
-    ENV['PGPASSWORD'] = ''
     FileUtils.rm_f Dir.glob('/tmp/d*.dump')
   end
 end
 
+
 describe "Postgresql node special cases" do
   include VCAP::Services::Postgresql
+  before :all do
+    @opts = getNodeTestConfig
+    @default_plan = "free"
+    @default_version = @opts[:default_version]
+    @default_opts = "default"
+  end
 
   it "should limit max connection to the database" do
     node = nil
+    opts = getNodeTestConfig
     EM.run do
-      opts = getNodeTestConfig
       opts[:max_db_conns] = 1
       node = VCAP::Services::Postgresql::Node.new(opts)
-      sleep 1
-      EM.add_timer(0.1) {EM.stop}
+      EM.add_timer(2) {EM.stop}
     end
-    db = node.provision('free')
+    db = node.provision(@default_plan, nil, @default_version)
     conn = connect_to_postgresql(db)
     expect { conn.query("SELECT 1") }.should_not raise_error
     expect { connect_to_postgresql(db) }.should raise_error(PGError, /too many connections for database .*/)
@@ -1095,44 +1333,52 @@ describe "Postgresql node special cases" do
 
   it "should handle postgresql error in varz" do
     node = nil
+    opts = getNodeTestConfig
+    pending "Use warden, won't run this case." if opts[:use_warden]
     EM.run do
-      opts = getNodeTestConfig
       node = VCAP::Services::Postgresql::Node.new(opts)
-      sleep 1
-      EM.add_timer(0.1) {EM.stop}
+      EM.add_timer(2) {EM.stop}
     end
     # drop connection
-    node.connection.close
+    node.fetch_global_connection(@default_version).close
     varz = nil
     expect { varz = node.varz_details }.should_not raise_error
-    varz.should == {}
+    #varz.should == {}
   end
 
   it "should return node not ready if postgresql server is not connected" do
     node = nil
+    opts = getNodeTestConfig
+    pending "Use warden, won't run this case." if opts[:use_warden]
     EM.run do
-      opts = getNodeTestConfig
       node = VCAP::Services::Postgresql::Node.new(opts)
-      sleep 1
-      EM.add_timer(0.1) {EM.stop}
+      EM.add_timer(2) {EM.stop}
     end
-    node.connection.close
+    node.fetch_global_connection(@default_version).close
     # keep_alive interval is 15 seconds so it should be ok
-    node.connection_exception.should be_instance_of PGError
+    node.connection_exception(
+      node.fetch_global_connection(@default_version)
+    ).should be_instance_of PGError
     node.node_ready?.should == false
     node.send_node_announcement.should == nil
   end
 
   it "should keep alive" do
     node = nil
+    opts = getNodeTestConfig
     EM.run do
-      opts = getNodeTestConfig
       node = VCAP::Services::Postgresql::Node.new(opts)
-      sleep 1
       EM.add_timer(0.1) {EM.stop}
     end
-    node.connection.close
+    db = node.provision(@default_plan, nil, @default_version)
+    db_instance = node.pgProvisionedService.get(db['name'])
+    node.get_status(db_instance).should == 'ok'
+    expect { node.global_connection(db_instance).query("select current_timestamp") }.should_not raise_error
+    node.global_connection(db_instance).close
+    node.get_status(db_instance).should == 'ok'
+    expect { node.global_connection(db_instance).query("select current_timestamp") }.should raise_error
     node.postgresql_keep_alive
-    node.node_ready?.should == true
+    node.get_status(db_instance).should == 'ok'
+    expect {node.global_connection(db_instance).query("select current_timestamp") }.should_not raise_error
   end
 end

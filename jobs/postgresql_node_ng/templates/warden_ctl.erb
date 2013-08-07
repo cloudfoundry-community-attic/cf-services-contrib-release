@@ -5,7 +5,7 @@ plan = properties.postgresql_node.plan
 plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 node = properties.postgresql_node
 %>
-JOB_DIR=/var/vcap/jobs/postgresql_node
+JOB_DIR=/var/vcap/jobs/postgresql_node_ng
 PKG_DIR=/var/vcap/packages/postgresql_node
 PG_DIR=/var/vcap/packages/postgresql
 
