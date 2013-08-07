@@ -47,7 +47,7 @@ check process <%= version_configs[version]['name'] %>
 <% end %>
 
 check process postgresql_node
-  with pidfile  /var/vcap/sys/run/postgresql_node_ng/postgresql_node.pid
+  with pidfile  /var/vcap/sys/run/postgresql_node/postgresql_node.pid
   start program "/var/vcap/jobs/postgresql_node_ng/bin/postgresql_node_ctl start"
   stop  program "/var/vcap/jobs/postgresql_node_ng/bin/postgresql_node_ctl stop" with timeout 60 seconds
   group vcap
@@ -65,7 +65,7 @@ if properties.service_lifecycle and plan_conf.lifecycle and plan_conf.lifecycle.
   worker_count.times do |ind|
 %>
 check process postgresql_worker_<%= ind %>
-  with pidfile /var/vcap/sys/run/postgresql_node_ng/postgresql_worker_<%= ind %>.pid
+  with pidfile /var/vcap/sys/run/postgresql_node/postgresql_worker_<%= ind %>.pid
   start program "/var/vcap/jobs/postgresql_node_ng/bin/postgresql_worker_ctl start <%= ind %>"
   stop program "/var/vcap/jobs/postgresql_node_ng/bin/postgresql_worker_ctl stop <%= ind %>"
   group worker
