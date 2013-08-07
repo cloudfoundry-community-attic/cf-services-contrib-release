@@ -8,7 +8,7 @@ PG_ADMIN_PASSWD_HASH=<%= properties.postgresql_node.admin_passwd_hash || "" %>
 COMMON_DIR=/var/vcap/store/postgresql_common
 RUN_DIR=/var/vcap/sys/run/postgresql_node
 LOG_DIR=/var/vcap/sys/log/postgresql_node
-JOB_DIR=/var/vcap/jobs/postgresql_node
+JOB_DIR=/var/vcap/jobs/postgresql_node_ng
 PIDFILE=$RUN_DIR/postgresql_node.pid
 
 <%

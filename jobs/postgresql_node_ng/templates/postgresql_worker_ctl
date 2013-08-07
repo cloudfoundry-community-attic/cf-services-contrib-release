@@ -5,7 +5,7 @@ INDEX=$2
 RUN_DIR=/var/vcap/sys/run/postgresql_node
 LOG_DIR=/var/vcap/sys/log/postgresql_node
 PIDFILE=$RUN_DIR/postgresql_worker_$INDEX.pid
-JOB_DIR=/var/vcap/jobs/postgresql_node
+JOB_DIR=/var/vcap/jobs/postgresql_node_ng
 
 source /var/vcap/packages/common/utils.sh
 
