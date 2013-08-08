@@ -10,7 +10,7 @@ echo ${REQUIRE_PACKAGE:=}
 
 if [ $WARDENIZED_SERVICE ]
 then
-  ./start_warden.sh
+  ./src/services/start_warden.sh
 fi
 if [ $REQUIRE_PACKAGE ]
 then
