@@ -9,6 +9,7 @@ nats = "nats://#{nats_props.user}:#{nats_props.password}@#{nats_props.address}:#
 cc_api_version = gateway.cc_api_version || "v1"
 plan_enabled = properties.service_plans && properties.service_plans.send(service.to_sym)
 plan_mgmt = plan_enabled && properties.service_plans.send(service.to_sym)
+unique_id = "a8caddc3-6a3d-4640-ad3e-1ba563b74b2a"
 %>
 mbus: <%= nats %>
 
@@ -18,6 +19,7 @@ cloud_controller_uri: <%= properties.cc.srv_api_uri %>
 
 service:
   name: atmos
+  unique_id: <%= unique_id %>
   version: "1.4.1"
   description: 'Atmos object store'
   plans:
@@ -27,6 +29,7 @@ service:
     <% plan_free_flag = plan_mgmt.send(plan.to_sym).free %>
     <%= "'#{plan}':" %>
       description: <%= "'#{plan_description}'" %>
+      unique_id: "<%= plan %>-<%= unique_id %>"
       free: <%= !plan_free_flag.nil? && plan_free_flag.to_s || "true" %>
     <% end %>
   <% else %>
