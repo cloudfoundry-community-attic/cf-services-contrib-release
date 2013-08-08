@@ -8,5 +8,6 @@ env:
     - FOLDER_NAME=src/services/service_broker
     - FOLDER_NAME=src/services/tools/servicesmgmt
     - FOLDER_NAME=src/services/oauth2
+    - FOLDER_NAME=src/services/ng/memcached WARDENIZED_SERVICE=true
     - FOLDER_NAME=src/services/memcached
   global: []
