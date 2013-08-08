@@ -59,27 +59,6 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: mysql_gateway
-    release: cf-services
-    template: mysql_gateway
-    instances: 1
-    resource_pool: common
-    networks:
-      - name: default
-        default: [dns, gateway]
-  - name: mysql_node
-    release: cf-services
-    template: mysql_node
-    instances: 1
-    resource_pool: common
-    persistent_disk: 12058
-    properties:
-      mysql_node:
-        plan: "100"
-    networks:
-      - name: default
-        default: [dns, gateway]
-
   - name: mongodb_gateway
     release: cf-services-contrib
     template: mongodb_gateway
@@ -182,40 +161,6 @@ properties:
   # include your standard cf-release properties here
 
   service_plans:
-    mysql:
-      "100":
-        description: "Shared server, shared VM, 1MB memory, 10MB storage, 10 connections"
-        free: true
-        job_management:
-          high_water: 900
-          low_water: 100
-        configuration:
-          capacity: 500
-          max_db_size: 10
-          key_buffer: 512
-          innodb_buffer_pool_size: 512
-          max_allowed_packet: 16
-          thread_cache_size: 128
-          query_cache_size: 128
-          max_long_query: 3
-          max_long_tx: 30
-          max_clients: 10
-          max_connections: 1000
-          table_open_cache: 2000
-          innodb_tables_per_database: 50
-          connection_pool_size:
-            min: 5
-            max: 10
-          backup:
-            enable: true
-          lifecycle:
-            enable: true
-            serialization: enable
-            snapshot:
-              quota: 1
-          warden:
-            enable: false
-
     mongodb:
       "100":
         description: "Dedicated server, shared VM, 250MB storage, 10 connections"
