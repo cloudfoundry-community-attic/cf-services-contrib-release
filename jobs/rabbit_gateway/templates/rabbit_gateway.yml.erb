@@ -19,6 +19,7 @@ nats_props = properties.send(nats_props_name)
 nats = "nats://#{nats_props.user}:#{nats_props.password}@#{nats_props.address}:#{nats_props.port}"
 lifecycle = properties.service_lifecycle
 cc_api_version = gateway.cc_api_version || "v1"
+unique_id = "bfd55f2a-25c8-4444-9200-4e7d2d443467"
 %>
 mbus: <%= nats %>
 index: <%= spec.index %>
@@ -27,6 +28,7 @@ cloud_controller_uri: <%= properties.cc.srv_api_uri %>
 
 service:
   name: rabbitmq
+  unique_id: <%= unique_id %>
   version: "2.4"
   description: 'RabbitMQ message queue'
   plans:
@@ -36,6 +38,7 @@ service:
     <% plan_free_flag = plan_mgmt.send(plan.to_sym).free %>
     <%= "'#{plan}':" %>
       description: <%= "'#{plan_description}'" %>
+      unique_id: "<%= plan %>-<%= unique_id %>"
       free: <%= !plan_free_flag.nil? && plan_free_flag.to_s || "true" %>
     <% end %>
   <% else %>
