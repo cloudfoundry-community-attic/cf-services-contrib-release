@@ -212,19 +212,6 @@ properties:
         configuration:
           capacity: 125
 
-  mysql_gateway:
-    token: <mysql-service-token> # CHANGE
-    default_plan: "100"
-    supported_versions: ["5.5"]
-    version_aliases:
-      current: "5.5"
-    cc_api_version: v2
-  mysql_node:
-    password: <mysql-service-root-password> # CHANGE
-    supported_versions: ["5.5"]
-    default_version: "5.5"
-    max_tmp: 1024
-
   mongodb_gateway:
     token: <mongodb-service-token> # CHANGE
     default_plan: "100"
