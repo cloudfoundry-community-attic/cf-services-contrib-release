@@ -66,6 +66,8 @@ jobs:
     - memcached_gateway
     - vblob_gateway
     - elasticsearch_gateway
+    - postgresql_gateway_ng
+    - redis_gateway
     instances: 1
     resource_pool: common
     networks:
@@ -120,6 +122,31 @@ jobs:
       - name: default
         default: [dns, gateway]
 
+  - name: postgresql_node
+    release: cf-services-contrib
+    template: postgresql_node_ng
+    instances: 1
+    resource_pool: common
+    persistent_disk: 63729
+    properties:
+      postgresql_node:
+        plan: "100"
+    networks:
+      - name: default
+        default: [dns, gateway]
+
+  - name: redis_node
+    release: cf-services-contrib
+    template: redis_node_ng
+    instances: 1
+    resource_pool: common
+    persistent_disk: 63729
+    properties:
+      plan: "100"
+    networks:
+      - name: default
+        default: [dns, gateway]
+
   - name: backup_manager 
     release: cf-services-contrib
     template: backup_manager 
@@ -140,6 +167,12 @@ jobs:
 
 properties: 
   # include your standard cf-release properties here
+  networks:
+    apps: default
+    management: default
+
+  cc:
+    srv_api_uri: <cc-api-url> #CHANGE
 
   service_plans:
     mongodb:
@@ -193,6 +226,48 @@ properties:
         configuration:
           capacity: 125
 
+    postgresql:
+      "100":
+        description: "Dedicated server, shared VM, 250MB storage, 10 connections"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+          max_clients: 10
+          quota_files: 4
+          quota_data_size: 240
+          enable_journaling: true
+          backup:
+            enable: false
+          lifecycle:
+            enable: false
+            serialization: enable
+            snapshot:
+              quota: 1
+
+    redis:
+      "100":
+        description: "Dedicated server, shared VM, 250MB storage, 10 connections"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+          max_clients: 10
+          quota_files: 4
+          quota_data_size: 240
+          enable_journaling: true
+          backup:
+            enable: false
+          lifecycle:
+            enable: false
+            serialization: enable
+            snapshot:
+              quota: 1
+
   mongodb_gateway:
     token: <mongodb-service-token> # CHANGE
     default_plan: "100"
@@ -234,6 +309,31 @@ properties:
   elasticsearch_node:
     supported_versions: ["0.20"]
     default_version: "0.20"
+
+  postgresql_gateway:
+    token: <postgresql-service-token> # CHANGE
+    default_plan: "100"
+    supported_versions: ["9.2"]
+    version_aliases:
+      current: "9.2"
+    cc_api_version: v2
+  postgresql_node:
+    supported_versions: ["9.2"]
+    default_version: "9.2"
+    max_tmp: 900
+    password: <postgresql-root-password> # CHANGE
+
+  redis_gateway:
+    token: <redis-service-token> # CHANGE
+    default_plan: "100"
+    supported_versions: ["2.6"]
+    version_aliases:
+      current: "2.6"
+    cc_api_version: v2
+  redis_node:
+    supported_versions: ["2.6"]
+    default_version: "2.6"
+    max_tmp: 900
 
   # Service credentials
   # Used by gateways to make them selfs known to cc
