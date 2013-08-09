@@ -36,7 +36,7 @@ networks:
 resource_pools:
   - name: common
     network: default
-    size: 1
+    size: 8
     stemcell:
       name: bosh-stemcell
       version: latest
@@ -59,14 +59,19 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: mongodb_gateway
+  - name: gateways
     release: cf-services-contrib
-    template: mongodb_gateway
+    template: 
+    - mongodb_gateway
+    - memcached_gateway
+    - vblob_gateway
+    - elasticsearch_gateway
     instances: 1
     resource_pool: common
     networks:
       - name: default
         default: [dns, gateway]
+
   - name: mongodb_node
     release: cf-services-contrib
     template: mongodb_node_ng
@@ -79,14 +84,6 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: memcached_gateway
-    release: cf-services-contrib
-    template: memcached_gateway
-    instances: 1
-    resource_pool: common
-    networks:
-      - name: default
-        default: [dns, gateway]
   - name: memcached_node
     release: cf-services-contrib
     template: memcached_node_ng
@@ -99,14 +96,6 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: vblob_gateway
-    release: cf-services-contrib
-    template: vblob_gateway
-    instances: 1
-    resource_pool: common
-    networks:
-      - name: default
-        default: [dns, gateway]
   - name: vblob_node
     release: cf-services-contrib
     template: vblob_node_ng
@@ -119,14 +108,6 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: elasticsearch_gateway
-    release: cf-services-contrib
-    template: elasticsearch_gateway
-    instances: 1
-    resource_pool: common
-    networks:
-      - name: default
-        default: [dns, gateway]
   - name: elasticsearch_node
     release: cf-services-contrib
     template: elasticsearch_node
