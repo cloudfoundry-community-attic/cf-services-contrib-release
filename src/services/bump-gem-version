@@ -4,7 +4,6 @@ require 'fileutils'
 
 projects = %w(
   ng/mongodb
-  ng/mysql
   ng/postgresql
   ng/rabbit
   ng/redis

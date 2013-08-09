@@ -159,26 +159,6 @@ postgres/postgres-9.0.3-1.i386.tar.gz:
   sha: !binary |-
     YjJiZGUzMWU3MjBlYjIxOWJmZGM5ZjFiNzg0Zjk4NWVjY2EyY2JmYg==
   size: 15111387
-mysql/mysql-initdb-5.1.62-rel13.3-435-Linux-x86_64.tar.gz:
-  object_id: e8b54d01-bd4a-4399-84b0-a0203675adc2
-  sha: !binary |-
-    ODEyMmJjZDk2YzNmYTI1MWNlNmE0MzE3NTcwZDAxYjRiZjJiODQyMA==
-  size: 53356
-mysql/client-5.1.62-rel13.3-435-Linux-x86_64.tar.gz:
-  object_id: 66e7c4cf-231f-4535-ba64-b9d7789f59b0
-  sha: !binary |-
-    NmU1YTE3MTk1ODMxNjg4YTVmMTRmMjBhYTVkOWNkNWQ1ZjQxNjRkYg==
-  size: 4105211
-mysql/client-5.5.29-rel29.4-401.Linux.x86_64.tar.gz:
-  object_id: cc83ca76-abbc-4785-832e-41d85f66b4a4
-  sha: !binary |-
-    OGRhZDViMmQ5ZmVlN2IwYTk4ZTQxOTk0OWM2ZjdkOTRjMzk0NDNmMg==
-  size: 4564276
-mysql/server-5.1.62-rel13.3-435-Linux-x86_64.tar.gz:
-  object_id: bd806261-6c19-4f56-92c9-066a8536eced
-  sha: !binary |-
-    MmJmZDU3NTU0NWZlNzg3MjljNTZiYjgzMmFhNjlkOGQ5ZmM4NjMwZA==
-  size: 34179263
 sqlite/sqlite-autoconf-3070500.tar.gz:
   object_id: 36d0442d-afb4-405f-9f6d-9974d80722bf
   sha: !binary |-
