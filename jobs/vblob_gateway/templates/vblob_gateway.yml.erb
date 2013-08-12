@@ -30,6 +30,8 @@ service:
   unique_id: <%= unique_id %>
   version: "0.51"
   description: 'Blob store'
+  provider: contrib
+  provider_name: 'Community Contrib'
   plans:
   <% if plan_enabled %>
     <% for plan in plan_mgmt.fields.each %>
