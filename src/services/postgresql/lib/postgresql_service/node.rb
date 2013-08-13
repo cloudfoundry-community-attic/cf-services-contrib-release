@@ -485,6 +485,7 @@ class VCAP::Services::Postgresql::Node
       "user" => user,
       "username" => user,
       "password" => passwd,
+      "uri" => "postgres://#{user}:#{passwd}@#{host}:#{port}/#{name}"
     }
   end
 
