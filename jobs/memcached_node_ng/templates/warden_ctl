@@ -1,6 +1,6 @@
 #!/bin/bash
 <%
-node = properties.mongodb_node
+node = properties.memcached_node
 %>
 JOB_DIR=/var/vcap/jobs/memcached_node_ng
 PKG_DIR=/var/vcap/packages/memcached_node_ng

@@ -22,15 +22,21 @@ rotation:
     username: <%= properties.uaa_client_auth_credentials && properties.uaa_client_auth_credentials.username %>
     password: <%= properties.uaa_client_auth_credentials && properties.uaa_client_auth_credentials.password %>
   services:
+    <% if properties.mongodb_gateway %>
     mongodb:
       version: "1.8"
       token: "<%= properties.mongodb_gateway.token %>"
+    <% end %>
+    <% if properties.redis_gateway %>
     redis:
       version: "2.2"
       token: "<%= properties.redis_gateway.token %>"
+    <% end %>
+    <% if properties.postgresql_gateway %>
     postgresql:
       version: "9.0"
       token: "<%= properties.postgresql_gateway.token %>"
+    <% end %>
 root: <%= properties.service_backup && properties.service_backup.mount_point || "/var/vcap/services_backup" %>
 wakeup_interval: <%= backup_manager && backup_manager.rotation_interval_secs || 43200 %>
 enable: <%= backup_manager && properties.service_backup && properties.service_backup.nfs_server && backup_manager.enable || "false" %>
