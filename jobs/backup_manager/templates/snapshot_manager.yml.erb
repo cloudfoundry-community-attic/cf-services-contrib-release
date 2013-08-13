@@ -25,15 +25,21 @@ cleanup:
     username: <%= properties.uaa_client_auth_credentials && properties.uaa_client_auth_credentials.username %>
     password: <%= properties.uaa_client_auth_credentials && properties.uaa_client_auth_credentials.password %>
   services:
+    <% if properties.mongodb_gateway %>
     mongodb:
       version: "1.8"
       token: "<%= properties.mongodb_gateway.token %>"
+    <% end %>
+    <% if properties.redis_gateway %>
     redis:
       version: "2.2"
       token: "<%= properties.redis_gateway.token %>"
+    <% end %>
+    <% if properties.postgresql_gateway %>
     postgresql:
       version: "9.0"
       token: "<%= properties.postgresql_gateway.token %>"
+    <% end %>
 root: <%= properties.service_lifecycle && properties.service_lifecycle.mount_point || "/var/vcap/services_snapshot" %>
 wakeup_interval: <%= snapshot_manager && snapshot_manager.cleanup_interval_secs || 43200 %>
 enable: <%= snapshot_manager && properties.service_lifecycle && properties.service_lifecycle.nfs_server && snapshot_manager.enable || "false" %>
