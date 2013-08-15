@@ -31,8 +31,6 @@ service:
   unique_id: <%= unique_id %>
   version: "2.2"
   description: 'Redis key-value store'
-  provider: contrib
-  provider_name: 'Community Contrib'
   plans:
   <% if plan_enabled %>
     <% for plan in plan_mgmt.fields.each %>
