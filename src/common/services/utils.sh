@@ -10,7 +10,7 @@ then
   PIDFILE=$RUN_DIR/warden.pid
   ROOT_DIR=/var/vcap/data/warden/rootfs
 else
-  LOG_DIR=/var/vcap/sys/log/${SERVICE_NAME}_warden
+  LOG_DIR=/var/vcap/sys/log/${SERVICE_NAME}/warden
   PIDFILE=$RUN_DIR/${SERVICE_NAME}_warden.pid
   ROOT_DIR=/var/vcap/data/${SERVICE_NAME}/warden/rootfs
 fi
