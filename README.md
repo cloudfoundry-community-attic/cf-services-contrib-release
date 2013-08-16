@@ -16,6 +16,57 @@ Each of these services are offered in a similar way - a single database or runni
 
 When choosing data services for your applications you should always consult a data professional. Data is important. Please care about your data.
 
+**Perhaps it is best to consider these services as "developer-only" services that can be provisioned and used quickly by developers.**
+
+You can deploy one or more of these services. If you don't run them, then your developers won't use them, and you won't have to support them. ZING!
+
+## Requirements
+
+It is assumed that you already have bosh running with a Cloud Foundry deployment.
+
+You will need Ruby 1.9.3+ locally and the `bosh_cli` installed:
+
+```
+$ gem install bosh_cli -v "~> 1.5.0.pre" --source http://s3.amazonaws.com/bosh-jenkins-gems/
+```
+
+## Usage
+
+First, upload the latest final release (coming soon) to your bosh:
+
+```
+$ bosh upload release releases/cf-services-contrib-1.yml # coming soon
+```
+
+Then create a deployment file to describe the services you want to activate and support. Say, call it `cf-services-contrib.yml`.
+
+See the [examples/dns.yml](https://github.com/cloudfoundry/cf-services-contrib-release/blob/master/examples/dns.yml) for an example deployment file that runs all the services listed above.
+
+Then target the deployment file and deploy it:
+
+```
+$ bosh deployment cf-services-contrib.yml
+$ bosh deploy
+```
+
+This will then compile all the source packages, provision the virtual machines, and run all your services.
+
+Finally, you need to authorize each service gateway with your Cloud Foundry. For example, to authorize postgresql using the example deployment file:
+
+```
+$ cf create-service-auth-token
+Label> postgresql
+
+Token> <postgresql-service-token>
+```
+
+You and all your users can now provision and bind the services:
+
+```
+$ cf create-service --provider core --offering postgresql --version 9.2 --name test --plan default
+Creating service test... OK
+```
+
 ## Repository Contents
 
 This repository is structures for use with BOSH, an open source tool for release engineering, deployment and lifecycle management of large scale distributed services. The directories are for two purposes:
