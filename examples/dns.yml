@@ -2,15 +2,15 @@
 name: cf
 director_uuid: <director-uuid>
 
-releases: 
+releases:
   - name: cf-services-contrib
     version: latest
 
-compilation: 
+compilation:
   workers: 3
-  network: default 
+  network: default
   reuse_compilation_vms: true
-  cloud_properties: 
+  cloud_properties:
     instance_type: m1.small # CHANGE
 
 update:
@@ -41,10 +41,10 @@ resource_pools:
     cloud_properties:
       instance_type: m1.small # CHANGE
 
-jobs: 
+jobs:
   - name: gateways
     release: cf-services-contrib
-    template: 
+    template:
     - elasticsearch_gateway
     - mongodb_gateway
     - memcached_gateway
@@ -150,7 +150,7 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-properties: 
+properties:
   networks:
     apps: default
     management: default
@@ -275,7 +275,7 @@ properties:
               quota: 1
 
   mongodb_gateway:
-    token: <mongodb-service-token> # CHANGE
+    token: <mongodb-service-token> # CHANGE - the token you use later with `cf create-service-auth-token`
     default_plan: default
     supported_versions: ["2.2"]
     version_aliases:
@@ -287,7 +287,7 @@ properties:
     max_tmp: 900
 
   memcached_gateway:
-    token: <memcached-service-token> # CHANGE
+    token: <memcached-service-token> # CHANGE - the token you use later with `cf create-service-auth-token`
     supported_versions: ["1.4"]
     version_aliases:
       current: "1.4"
@@ -297,7 +297,7 @@ properties:
     default_version: "1.4"
 
   vblob_gateway:
-    token: <vblob-service-token> # CHANGE
+    token: <vblob-service-token> # CHANGE - the token you use later with `cf create-service-auth-token`
     supported_versions: ["0.51"]
     version_aliases:
       current: "0.51"
@@ -307,7 +307,7 @@ properties:
     default_version: "0.51"
 
   elasticsearch_gateway:
-    token: <elasticsearch-service-token> # CHANGE
+    token: <elasticsearch-service-token> # CHANGE - the token you use later with `cf create-service-auth-token`
     supported_versions: ["0.20"]
     version_aliases:
       current: "0.20"
@@ -317,7 +317,7 @@ properties:
     default_version: "0.20"
 
   postgresql_gateway:
-    token: <postgresql-service-token> # CHANGE
+    token: <postgresql-service-token> # CHANGE - the token you use later with `cf create-service-auth-token`
     default_plan: default
     supported_versions: ["9.2"]
     version_aliases:
@@ -330,7 +330,7 @@ properties:
     password: <postgresql-root-password> # CHANGE
 
   redis_gateway:
-    token: <redis-service-token> # CHANGE
+    token: <redis-service-token> # CHANGE - the token you use later with `cf create-service-auth-token`
     default_plan: default
     supported_versions: ["2.6"]
     version_aliases:
@@ -342,7 +342,7 @@ properties:
     max_tmp: 900
 
   rabbit_gateway:
-    token: <rabbit-service-token> # CHANGE
+    token: <rabbit-service-token> # CHANGE - the token you use later with `cf create-service-auth-token`
     default_plan: "default"
     supported_versions: ["3.0"]
     version_aliases:

@@ -60,6 +60,9 @@ Label> postgresql
 Token> <postgresql-service-token>
 ```
 
+- **label**: the name of the package
+- **token**: the token you provided in your deployment file
+
 You and all your users can now provision and bind the services:
 
 ```
