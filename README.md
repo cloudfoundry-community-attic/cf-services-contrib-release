@@ -16,7 +16,7 @@ Each of these services are offered in a similar way - a single database or runni
 
 When choosing data services for your applications you should always consult a data professional. Data is important. Please care about your data.
 
-**Perhaps it is best to consider these services as "developer-only" services that can be provisioned and used quickly by developers.**
+**Perhaps it is best to consider these services as "developer-only" services that can be provisioned and used quickly by developers.** That is, until you are read to understand how to do backup/restore of any given service instance and/or all of the service instances provisioned by all users.
 
 You can deploy one or more of these services. If you don't run them, then your developers won't use them, and you won't have to support them. ZING!
 
