@@ -430,8 +430,7 @@ EOF
   end
 
   def erlang_dir
-    erlang_bin_dir = self.class.bin_dir["erlang"]
-    File.symlink?(erlang_bin_dir) ? File.readlink(erlang_bin_dir) : erlang_bin_dir
+    self.class.bin_dir["erlang"]
   end
 
   def finish_start?
