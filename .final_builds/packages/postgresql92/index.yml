@@ -1,0 +1,7 @@
+---
+builds:
+  !binary "YWNhMmI1MjA2NWYxMjE5OTI0ZTM1ZjljMWRkZDIwNjkxN2E4NDRlMA==":
+    blobstore_id: aadb5072-936f-4589-9f3b-895e87e440da
+    version: 1
+    sha1: !binary |-
+      ZGYwNDA1YTU2OTFiYWEwMjcyNmYyMWQ1MGZhMGExYjgxZDc5NDI0ZQ==
