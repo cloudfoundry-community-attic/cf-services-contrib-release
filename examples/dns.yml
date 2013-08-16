@@ -3,8 +3,6 @@ name: cf
 director_uuid: <director-uuid>
 
 releases: 
-  - name: cf-release
-    version: latest
   - name: cf-services-contrib
     version: latest
 
@@ -17,8 +15,8 @@ compilation:
 
 update:
   canaries: 1
-  canary_watch_time: 30000-600000
-  update_watch_time: 30000-600000
+  canary_watch_time: 30000-60000
+  update_watch_time: 30000-60000
   max_in_flight: 4
   max_errors: 1
 
@@ -44,44 +42,37 @@ resource_pools:
       instance_type: m1.small # CHANGE
 
 jobs: 
-  # Also include your standard cf-release jobs here
-
-  - name: services_nfs
-    release: cf-release
-    template: debian_nfs_server
-    instances: 1
-    resource_pool: common
-    persistent_disk: 10240
-    properties:
-      debian_nfs_server:
-        no_root_squash: true
-    networks:
-      - name: default
-        default: [dns, gateway]
-
   - name: gateways
     release: cf-services-contrib
     template: 
+    - elasticsearch_gateway
     - mongodb_gateway
     - memcached_gateway
-    - vblob_gateway
-    - elasticsearch_gateway
     - postgresql_gateway_ng
     - redis_gateway
+    - rabbit_gateway
+    - vblob_gateway
     instances: 1
     resource_pool: common
     networks:
       - name: default
         default: [dns, gateway]
+    properties:
+      # Service credentials
+      uaa_client_id: "cf"
+      uaa_endpoint: http://uaa.mycloud.com # CHANGE
+      uaa_client_auth_credentials:
+        username: <services-username> # CHANGE
+        password: <services-password> # CHANGE
 
   - name: mongodb_node
     release: cf-services-contrib
     template: mongodb_node_ng
     instances: 1
     resource_pool: common
-    persistent_disk: 63729
+    persistent_disk: 10000
     properties:
-      plan: "100"
+      plan: default
     networks:
       - name: default
         default: [dns, gateway]
@@ -91,9 +82,9 @@ jobs:
     template: memcached_node_ng
     instances: 1
     resource_pool: common
-    persistent_disk: 63729
+    persistent_disk: 10000
     properties:
-      plan: "100"
+      plan: default
     networks:
       - name: default
         default: [dns, gateway]
@@ -103,9 +94,9 @@ jobs:
     template: vblob_node_ng
     instances: 1
     resource_pool: common
-    persistent_disk: 63729
+    persistent_disk: 10000
     properties:
-      plan: "100"
+      plan: default
     networks:
       - name: default
         default: [dns, gateway]
@@ -115,7 +106,7 @@ jobs:
     template: elasticsearch_node
     instances: 1
     resource_pool: common
-    persistent_disk: 63729
+    persistent_disk: 10000
     properties:
       plan: "free"
     networks:
@@ -127,10 +118,10 @@ jobs:
     template: postgresql_node_ng
     instances: 1
     resource_pool: common
-    persistent_disk: 63729
+    persistent_disk: 10000
     properties:
       postgresql_node:
-        plan: "100"
+        plan: default
     networks:
       - name: default
         default: [dns, gateway]
@@ -140,44 +131,37 @@ jobs:
     template: redis_node_ng
     instances: 1
     resource_pool: common
-    persistent_disk: 63729
+    persistent_disk: 10000
     properties:
-      plan: "100"
+      plan: default
     networks:
       - name: default
         default: [dns, gateway]
 
-  - name: backup_manager 
+  - name: rabbit_node
     release: cf-services-contrib
-    template: backup_manager 
-    instances: 1 
-    resource_pool: common 
-    networks: 
-      - name: default 
-        default: [dns, gateway] 
-
-  - name: service_utilities 
-    release: cf-services-contrib
-    template: service_utilities 
-    instances: 1 
-    resource_pool: common 
-    networks: 
-      - name: default 
-        default: [dns, gateway] 
+    template: rabbit_node_ng
+    instances: 1
+    resource_pool: common
+    persistent_disk: 10000
+    properties:
+      plan: default
+    networks:
+      - name: default
+        default: [dns, gateway]
 
 properties: 
-  # include your standard cf-release properties here
   networks:
     apps: default
     management: default
 
   cc:
-    srv_api_uri: <cc-api-url> #CHANGE
+    srv_api_uri: http://api.mycloud.com #CHANGE
 
   service_plans:
     mongodb:
-      "100":
-        description: "Dedicated server, shared VM, 250MB storage, 10 connections"
+      default:
+        description: "Developer, shared VM, 250MB storage, 10 connections"
         free: true
         job_management:
           high_water: 230
@@ -197,8 +181,8 @@ properties:
               quota: 1
 
     memcached:
-      "100":
-        description: "Memcache free plan"
+      default:
+        description: "Developer"
         free: true
         job_management:
           high_water: 230
@@ -207,8 +191,8 @@ properties:
           capacity: 125
 
     vblob:
-      "100":
-        description: "Vblob free plan"
+      default:
+        description: "Developer"
         free: true
         job_management:
           high_water: 230
@@ -218,7 +202,7 @@ properties:
 
     elasticsearch:
       "free":
-        description: "Elasticsearch free plan"
+        description: "Developer"
         free: true
         job_management:
           high_water: 230
@@ -227,8 +211,8 @@ properties:
           capacity: 125
 
     postgresql:
-      "100":
-        description: "Dedicated server, shared VM, 250MB storage, 10 connections"
+      default:
+        description: "Developer, 250MB storage, 10 connections"
         free: true
         job_management:
           high_water: 230
@@ -248,8 +232,30 @@ properties:
               quota: 1
 
     redis:
-      "100":
-        description: "Dedicated server, shared VM, 250MB storage, 10 connections"
+      default:
+        description: "Developer, 250MB storage, 10 connections"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+          max_clients: 10
+          quota_files: 4
+          quota_data_size: 240
+          enable_journaling: true
+          backup:
+            enable: false
+          lifecycle:
+            enable: false
+            serialization: enable
+            snapshot:
+              quota: 1
+
+
+    rabbit:
+      default:
+        description: "Developer, 250MB storage, 10 connections"
         free: true
         job_management:
           high_water: 230
@@ -270,7 +276,7 @@ properties:
 
   mongodb_gateway:
     token: <mongodb-service-token> # CHANGE
-    default_plan: "100"
+    default_plan: default
     supported_versions: ["2.2"]
     version_aliases:
       current: "2.2"
@@ -312,7 +318,7 @@ properties:
 
   postgresql_gateway:
     token: <postgresql-service-token> # CHANGE
-    default_plan: "100"
+    default_plan: default
     supported_versions: ["9.2"]
     version_aliases:
       current: "9.2"
@@ -325,7 +331,7 @@ properties:
 
   redis_gateway:
     token: <redis-service-token> # CHANGE
-    default_plan: "100"
+    default_plan: default
     supported_versions: ["2.6"]
     version_aliases:
       current: "2.6"
@@ -335,28 +341,17 @@ properties:
     default_version: "2.6"
     max_tmp: 900
 
-  # Service credentials
-  # Used by gateways to make them selfs known to cc
-  uaa_client_id: "cf"
-  uaa_endpoint: http://uaa.innovory.net
-  uaa_client_auth_credentials:
-    username: <services-username> # CHANGE
-    password: <services-password> # CHANGE
-
-  # The backup manager expects these tokens
-  # Could be removed if where made optional
-  redis_gateway:
-    token: <redis-service-token> # CHANGE
-  postgresql_gateway:
-    token: <postgresql-service-token> # CHANGE
-
-  service_backup:
-    nfs_server:
-      address: 0.services-nfs.default.cf.microbosh
-      export_dir: /var/vcap/store/shared
-
-  service_backup_manager:
-    enable: true
+  rabbit_gateway:
+    token: <rabbit-service-token> # CHANGE
+    default_plan: "default"
+    supported_versions: ["3.0"]
+    version_aliases:
+      current: "3.0"
+    cc_api_version: v2
+  rabbit_node:
+    supported_versions: ["3.0"]
+    default_version: "3.0"
+    max_tmp: 900
 
   uaa:
     scim:
