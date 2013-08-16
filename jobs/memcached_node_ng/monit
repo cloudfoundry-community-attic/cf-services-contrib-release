@@ -1,4 +1,4 @@
-check process warden
+check process memcached_warden
   with pidfile /var/vcap/sys/run/warden/warden.pid
   start program "/var/vcap/jobs/memcached_node_ng/bin/warden_ctl start"
   stop program "/var/vcap/jobs/memcached_node_ng/bin/warden_ctl stop"
