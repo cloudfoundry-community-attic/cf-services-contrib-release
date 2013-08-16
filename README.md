@@ -6,7 +6,7 @@ You can find the following services in this repository (in alphabetical order):
 
 * elastic search
 * memcached
-* mongodb
+* mongodbc
 * postgresql
 * rabbitmq
 * redis
@@ -32,10 +32,10 @@ $ gem install bosh_cli -v "~> 1.5.0.pre" --source http://s3.amazonaws.com/bosh-j
 
 ## Usage
 
-First, upload the latest final release (coming soon) to your bosh:
+First, upload the latest final release to your bosh:
 
 ```
-$ bosh upload release releases/cf-services-contrib-1.yml # coming soon
+$ bosh upload release releases/cf-services-contrib-1.yml
 ```
 
 Then create a deployment file to describe the services you want to activate and support. Say, call it `cf-services-contrib.yml`.
