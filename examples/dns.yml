@@ -352,8 +352,3 @@ properties:
     supported_versions: ["3.0"]
     default_version: "3.0"
     max_tmp: 900
-
-  uaa:
-    scim:
-      users:
-      - <services-password>|<services-password>|scim.write,scim.read,openid,cloud_controller.admin # CHANGE
