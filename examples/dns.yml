@@ -4,7 +4,7 @@ director_uuid: <director-uuid>
 
 releases:
   - name: cf-services-contrib
-    version: latest
+    version: 1
 
 compilation:
   workers: 3
