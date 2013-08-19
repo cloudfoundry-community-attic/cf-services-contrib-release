@@ -13,4 +13,4 @@ check process memcached_node
   start program "/var/vcap/jobs/memcached_node_ng/bin/memcached_node_ctl start"
   stop program "/var/vcap/jobs/memcached_node_ng/bin/memcached_node_ctl stop" with timeout 60 seconds
   group vcap
-  depends on warden
+  depends on memcached_warden

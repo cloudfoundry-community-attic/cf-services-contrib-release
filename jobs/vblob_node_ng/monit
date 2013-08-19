@@ -13,4 +13,4 @@ check process vblob_node
   start program "/var/vcap/jobs/vblob_node_ng/bin/vblob_node_ctl start"
   stop program "/var/vcap/jobs/vblob_node_ng/bin/vblob_node_ctl stop" with timeout 60 seconds
   group vcap
-  depends on warden
+  depends on vblob_warden
