@@ -1,6 +1,6 @@
 ---
 name: cf
-director_uuid: <director-uuid>
+director_uuid: DIRECTOR_UUID   # CHANGE
 
 releases:
   - name: cf-services-contrib
@@ -327,7 +327,7 @@ properties:
     supported_versions: ["9.2"]
     default_version: "9.2"
     max_tmp: 900
-    password: <postgresql-root-password> # CHANGE
+    password: POSTGRESQL_ROOT_PASSWORD # CHANGE
 
   redis_gateway:
     token: REDIS_SERVICE_TOKEN # CHANGE - the token you use later with `cf create-service-auth-token`

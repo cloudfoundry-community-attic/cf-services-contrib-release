@@ -1,0 +1,117 @@
+---
+name: cf
+director_uuid: DIRECTOR_UUID   # CHANGE
+
+releases:
+  - name: cf-services-contrib
+    version: 1
+
+compilation:
+  workers: 3
+  network: default
+  reuse_compilation_vms: true
+  cloud_properties:
+    instance_type: m1.small # CHANGE
+
+update:
+  canaries: 1
+  canary_watch_time: 30000-60000
+  update_watch_time: 30000-60000
+  max_in_flight: 4
+  max_errors: 1
+
+networks:
+  - name: floating
+    type: vip
+    cloud_properties: {}
+  - name: default
+    type: dynamic
+    cloud_properties:
+      security_groups:
+        - default
+        - microbosh
+
+resource_pools:
+  - name: common
+    network: default
+    size: 2
+    stemcell:
+      name: bosh-stemcell
+      version: latest
+    cloud_properties:
+      instance_type: m1.small # CHANGE
+
+jobs:
+  - name: gateways
+    release: cf-services-contrib
+    template:
+    - postgresql_gateway_ng
+    instances: 1
+    resource_pool: common
+    networks:
+      - name: default
+        default: [dns, gateway]
+    properties:
+      # Service credentials
+      uaa_client_id: "cf"
+      uaa_endpoint: http://uaa.mycloud.com # CHANGE
+      uaa_client_auth_credentials:
+        username: services
+        password: SERVICES_PASSWORD # CHANGE
+
+  - name: postgresql_node
+    release: cf-services-contrib
+    template: postgresql_node_ng
+    instances: 1
+    resource_pool: common
+    persistent_disk: 10000
+    properties:
+      postgresql_node:
+        plan: default
+    networks:
+      - name: default
+        default: [dns, gateway]
+
+properties:
+  networks:
+    apps: default
+    management: default
+
+  cc:
+    srv_api_uri: http://api.mycloud.com #CHANGE
+
+  service_plans:
+    postgresql:
+      default:
+        description: "Developer, 250MB storage, 10 connections"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+          max_clients: 10
+          quota_files: 4
+          quota_data_size: 240
+          enable_journaling: true
+          backup:
+            enable: false
+          lifecycle:
+            enable: false
+            serialization: enable
+            snapshot:
+              quota: 1
+
+
+  postgresql_gateway:
+    token: POSTGRESQL_SERVICE_TOKEN # CHANGE - the token you use later with `cf create-service-auth-token`
+    default_plan: default
+    supported_versions: ["9.2"]
+    version_aliases:
+      current: "9.2"
+    cc_api_version: v2
+  postgresql_node:
+    supported_versions: ["9.2"]
+    default_version: "9.2"
+    max_tmp: 900
+    password: POSTGRESQL_ROOT_PASSWORD # CHANGE
