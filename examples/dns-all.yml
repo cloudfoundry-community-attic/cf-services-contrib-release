@@ -1,5 +1,5 @@
 ---
-name: cf
+name: cf-services-contrib
 director_uuid: DIRECTOR_UUID   # CHANGE
 
 releases:
