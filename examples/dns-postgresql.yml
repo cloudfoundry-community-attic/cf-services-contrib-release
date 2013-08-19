@@ -59,7 +59,7 @@ jobs:
         username: services
         password: SERVICES_PASSWORD # CHANGE
 
-  - name: postgresql_node
+  - name: postgresql_service_node
     release: cf-services-contrib
     template: postgresql_node_ng
     instances: 1

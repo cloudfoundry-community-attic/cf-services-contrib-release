@@ -65,7 +65,7 @@ jobs:
         username: services
         password: SERVICES_PASSWORD # CHANGE
 
-  - name: mongodb_node
+  - name: mongodb_service_node
     release: cf-services-contrib
     template: mongodb_node_ng
     instances: 1
@@ -77,7 +77,7 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: memcached_node
+  - name: memcached_service_node
     release: cf-services-contrib
     template: memcached_node_ng
     instances: 1
@@ -89,7 +89,7 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: vblob_node
+  - name: vblob_service_node
     release: cf-services-contrib
     template: vblob_node_ng
     instances: 1
@@ -101,7 +101,7 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: elasticsearch_node
+  - name: elasticsearch_service_node
     release: cf-services-contrib
     template: elasticsearch_node
     instances: 1
@@ -113,7 +113,7 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: postgresql_node
+  - name: postgresql_service_node
     release: cf-services-contrib
     template: postgresql_node_ng
     instances: 1
@@ -126,7 +126,7 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: redis_node
+  - name: redis_service_node
     release: cf-services-contrib
     template: redis_node_ng
     instances: 1
@@ -138,7 +138,7 @@ jobs:
       - name: default
         default: [dns, gateway]
 
-  - name: rabbit_node
+  - name: rabbit_service_node
     release: cf-services-contrib
     template: rabbit_node_ng
     instances: 1
