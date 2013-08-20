@@ -30,7 +30,7 @@ service:
   name: postgresql
   unique_id: <%= unique_id %>
   version: "9.0"
-  description: 'PostgreSQL database (vFabric)'
+  description: 'PostgreSQL database'
   plans:
   <% for plan in plan_mgmt.fields.each %>
     <% plan_description = plan_mgmt.send(plan.to_sym).description || "#{plan} plan" %>
