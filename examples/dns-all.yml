@@ -158,6 +158,13 @@ properties:
   cc:
     srv_api_uri: http://api.mycloud.com #CHANGE
 
+  nats:
+    address: 0.core.default.cf.bosh #CHANGE
+    port: 4222 #CHANGE
+    user: nats #CHANGE
+    password: NATS_PASSWORD #CHANGE
+    authorization_timeout: 5
+
   service_plans:
     mongodb:
       default:
