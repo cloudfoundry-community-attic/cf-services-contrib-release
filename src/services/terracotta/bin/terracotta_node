@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# -*- mode: ruby -*-
+# Copyright (c) 2009-2011 VMware, Inc.
+ENV["BUNDLE_GEMFILE"] ||= File.expand_path("../../Gemfile", __FILE__)
+require 'bundler/setup'
+require 'vcap_services_base'
+
+$LOAD_PATH.unshift(File.expand_path("../../lib", __FILE__))
+require "terracotta_service/terracotta_node"
+
+class VCAP::Services::Terracotta::NodeBin < VCAP::Services::Base::NodeBin
+
+  def node_class
+    VCAP::Services::Terracotta::Node
+  end
+
+  def default_config_file
+    config_base_dir = ENV["CLOUD_FOUNDRY_CONFIG_PATH"] || File.join(File.dirname(__FILE__), '..', 'config')
+    File.join(config_base_dir, 'terracotta_node.yml')
+  end
+
+  def additional_config(options, config)
+    options[:config_template] = File.expand_path("../../resources/terracotta.yml.erb", __FILE__)
+    options[:logging_config_file] = File.expand_path("../../resources/logging.yml", __FILE__)
+    options[:terracotta_log_dir] = parse_property(config, "terracotta_log_dir", String)
+    options[:terracotta_path] = parse_property(config, "terracotta_path", String)
+    options[:terracotta_plugin_dir] = parse_property(config, "terracotta_plugin_dir", String)
+    options[:port_range] = parse_property(config, "port_range", Range)
+    options[:max_memory] = parse_property(config, "max_memory", Integer)
+    options
+  end
+
+end
+
+VCAP::Services::Terracotta::NodeBin.new.start
