@@ -1,0 +1,24 @@
+---
+<%
+service = "swift"
+plan = properties.plan || "free"
+%>
+service: "swift"
+plan: free
+capacity: 10000
+local_db: sqlite3:/var/vcap/store/swift_node.db
+nats_props_name: properties.nats_props || "nats"
+nats_props: properties.send(nats_props_name)
+mbus: nats://<%= p("nats.user") %>:<%= p("nats.password") %>@<%= p("nats.address") %>:<%= p("nats.port") %>
+base_dir: /var/vcap/store/swift/
+index: 0
+logging:
+  level: debug
+pid: /var/vcap/sys/run/swift_node/swift_node.pid
+node_id: <%= "#{service}_node_#{plan}_#{spec.index}" %>
+port: 5002
+supported_versions: ["1.0"]
+default_version: "1.0"
+database_lock_file: /var/vcap/store/swift_node.lock
+op_time_limit: 45
+fog_config_file: /var/vcap/jobs/swift_node/config/fog.yml

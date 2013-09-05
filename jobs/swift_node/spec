@@ -1,0 +1,11 @@
+---
+name: swift_node
+packages:
+  - swift_service
+  - ruby_next
+  - common
+  - syslog_aggregator
+templates:
+  swift_node_ctl: bin/swift_node_ctl
+  swift_node.yml.erb: config/swift_node.yml
+  fog.yml.erb: config/fog.yml

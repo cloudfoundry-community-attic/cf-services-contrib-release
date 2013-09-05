@@ -1,0 +1,5 @@
+check process swift_gateway
+  with pidfile /var/vcap/sys/run/swift_gateway/swift_gateway.pid
+  start program "/var/vcap/jobs/swift_gateway/bin/swift_gateway_ctl start"
+  stop program "/var/vcap/jobs/swift_gateway/bin/swift_gateway_ctl stop"
+  group vcap

@@ -1,0 +1,44 @@
+#!/bin/bash
+
+export PATH=/var/vcap/packages/ruby_next/bin:$PATH
+
+RUN_DIR=/var/vcap/sys/run/swift_node
+LOG_DIR=/var/vcap/sys/log/swift_node
+JOB_DIR=/var/vcap/jobs/swift_node
+
+PIDFILE=$RUN_DIR/swift_node.pid
+
+source /var/vcap/packages/common/utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "Swift node"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+
+    echo $$ > $PIDFILE
+
+    <% if properties.syslog_aggregator %>
+    /var/vcap/packages/syslog_aggregator/setup_syslog_forwarder.sh $JOB_DIR/config
+    <% end %>
+
+    exec /var/vcap/packages/swift_service/swift_service/bin/swift_node \
+         -c $JOB_DIR/config/swift_node.yml \
+         >>$LOG_DIR/swift_node.stdout.log \
+         2>>$LOG_DIR/swift_node.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: swift_node_ctl {start|stop}"
+
+    ;;
+
+esac

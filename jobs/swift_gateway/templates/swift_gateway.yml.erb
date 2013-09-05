@@ -1,0 +1,35 @@
+---
+cloud_controller_uri: <%= properties.ccng.srv_api_uri %>
+service:
+  name: swift
+  version: "1.0"
+  description: 'Swift service'
+  plans: ['free']
+  default_plan: free
+  tags: ['swift', 'swift-1.0', 'storage', 'openstack']
+  supported_versions: ['1.0']
+  version_aliases:
+    'current': '1.0'
+
+<% if properties.swift_gateway.ip_route %>
+ip_route: <%= properties.swift_gateway.ip_route %>
+<% end %>
+
+gateway_name: "Swift Gateway"
+uaa_client_id: <%= properties.uaa_client_id || "cf" %>
+uaa_endpoint: <%= properties.uaa_endpoint %>
+uaa_client_auth_credentials:
+  username: <%= properties.uaa_client_auth_credentials.username %>
+  password: "<%= properties.uaa_client_auth_credentials.password %>"
+service_auth_tokens:
+  swift_core: "<%= properties.swift_gateway.token %>"
+
+index: 0
+
+logging:
+  level: debug
+
+mbus: nats://<%= p("nats.user") %>:<%= p("nats.password") %>@<%= p("nats.address") %>:<%= p("nats.port") %>
+pid: /var/vcap/sys/run/swift_gateway/swift_gateway.pid
+node_timeout: 45
+cc_api_version: v2

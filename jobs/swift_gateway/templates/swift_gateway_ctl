@@ -1,0 +1,44 @@
+#!/bin/bash
+
+export PATH=/var/vcap/packages/ruby_next/bin:$PATH
+
+RUN_DIR=/var/vcap/sys/run/swift_gateway
+LOG_DIR=/var/vcap/sys/log/swift_gateway
+JOB_DIR=/var/vcap/jobs/swift_gateway
+
+PIDFILE=$RUN_DIR/swift_gateway.pid
+
+source /var/vcap/packages/common/utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "Swift gateway"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+
+    echo $$ > $PIDFILE
+
+    <% if properties.syslog_aggregator %>
+    /var/vcap/packages/syslog_aggregator/setup_syslog_forwarder.sh $JOB_DIR/config
+    <% end %>
+
+    exec /var/vcap/packages/swift_service/swift_service/bin/swift_gateway \
+         -c $JOB_DIR/config/swift_gateway.yml \
+         >>$LOG_DIR/swift_gateway.stdout.log \
+         2>>$LOG_DIR/swift_gateway.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: swift_gateway_ctl {start|stop}"
+
+    ;;
+
+esac

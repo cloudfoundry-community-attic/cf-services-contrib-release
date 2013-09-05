@@ -1,0 +1,5 @@
+check process swift_node
+  with pidfile /var/vcap/sys/run/swift_node/swift_node.pid
+  start program "/var/vcap/jobs/swift_node/bin/swift_node_ctl start"
+  stop program "/var/vcap/jobs/swift_node/bin/swift_node_ctl stop"
+  group vcap
