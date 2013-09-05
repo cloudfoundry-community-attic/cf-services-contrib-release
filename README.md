@@ -40,7 +40,7 @@ $ bosh upload release releases/cf-services-contrib-1.yml
 
 Then create a deployment file to describe the services you want to activate and support. Say, call it `cf-services-contrib.yml`.
 
-See the [examples/dns.yml](https://github.com/cloudfoundry/cf-services-contrib-release/blob/master/examples/dns.yml) for an example deployment file that runs all the services listed above.
+See the [examples/dns-all.yml](https://github.com/cloudfoundry/cf-services-contrib-release/blob/master/examples/dns-all.yml) for an example deployment file that runs all the services listed above.
 
 Then target the deployment file and deploy it:
 
