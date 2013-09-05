@@ -6,8 +6,6 @@ describe "terracotta_node bind" do
   before :all do
     EM.run do
       @opts = get_node_config
-      @logger = @opts[:logger]
-      p @otps.inspect
       @node = Node.new(@opts)
       EM.add_timer(1) { @resp = @node.provision("free") }
       EM.add_timer(9) do

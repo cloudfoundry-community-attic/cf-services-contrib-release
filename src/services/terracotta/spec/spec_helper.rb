@@ -65,6 +65,8 @@ def get_node_config
     :terracotta_log_dir => '/tmp/terracotta/logs',
     :terracotta_path => parse_property(config, "terracotta_path", String),
     :terracotta_plugin_dir => parse_property(config, "terracotta_plugin_dir", String),
+    :supported_versions => parse_property(config, "supported_versions", Array),
+    :default_version => parse_property(config, "default_version", String),
     :node_id => parse_property(config, "node_id", String),
     :mbus => parse_property(config, "mbus", String),
     :config_template => config_template,

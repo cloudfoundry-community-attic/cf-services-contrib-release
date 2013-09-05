@@ -258,7 +258,8 @@ class VCAP::Services::Terracotta::Node
     config_file = config_path(dir)
     pid_file = File.join(dir, "terracotta.pid")
 
-    `export ES_HEAP_SIZE="#{@max_memory}m" && #{@terracotta_path} -p #{pid_file} -Des.config=#{config_file}`
+    # -p #{pid_file} 
+    p `export JAVA_HOME=$(/usr/libexec/java_home) && #{@terracotta_path} -f #{config_file}`
     status = $?
     @logger.send(status.success? ? :debug : :error, "Start up finished, status = #{status}")
 

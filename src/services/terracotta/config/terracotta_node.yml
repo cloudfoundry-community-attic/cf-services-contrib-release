@@ -11,8 +11,10 @@ pid: /var/vcap/sys/run/terracotta_node.pid
 max_memory: 512
 node_id: terracotta_node_1
 terracotta_log_dir: /var/vcap/sys/log/terracotta
-terracotta_path: /var/vcap/packages/terracotta/bin/terracotta
-terracotta_plugin_dir: /var/vcap/packages/terracotta/plugins
+terracotta_path: /var/vcap/packages/terracotta/bin/start-tc-server.sh
+terracotta_plugin_dir: /var/vcap/packages/terracotta
+supported_versions: [ "3.7.5" ]
+default_version: "3.7.5"
 port_range:
   first: 45001
   last: 55000
