@@ -10,7 +10,7 @@ You can find the following services in this repository (in alphabetical order):
 * postgresql
 * rabbitmq
 * redis
-* vlob
+* vblob
 
 Each of these services are offered in a similar way - a single database or running instance running on a single machine.
 
