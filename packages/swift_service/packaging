@@ -1,0 +1,19 @@
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Available variables
+# $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
+# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
+export HOME=/var/vcap
+
+cp -a * ${BOSH_INSTALL_TARGET}
+
+(
+  cd ${BOSH_INSTALL_TARGET}/swift_service
+
+  bundle_cmd=/var/vcap/packages/ruby_next/bin/bundle
+
+  $bundle_cmd config build.do_sqlite3 --with-sqlite3-dir=/var/vcap/packages/sqlite
+
+  $bundle_cmd install --local --deployment --without development test
+)

@@ -1,0 +1,20 @@
+# Will be added to user and tenant names
+:name_suffix: <%= properties.swift_node.name_suffix %>
+
+# This is the OpenStack ID of your swift operator role
+:swift_operator_role_id: <%= properties.swift_node.swift_operator_role_id %>
+
+:identity:
+   :provider: <%= properties.swift_node.fog.identity.provider || 'OpenStack' %>
+   :openstack_username: <%= properties.swift_node.fog.identity.openstack_username %>
+   :openstack_api_key: <%= properties.swift_node.fog.identity.openstack_api_key %>
+   :openstack_auth_url: <%= properties.swift_node.fog.identity.openstack_auth_url %>
+:storage:
+   :provider: <%= properties.swift_node.fog.storage.provider || 'HP' %>
+   :hp_access_key: <%= properties.swift_node.fog.storage.hp_access_key %>
+   :hp_secret_key: <%= properties.swift_node.fog.storage.hp_secret_key %>
+   :hp_tenant_id: <%= properties.swift_node.fog.storage.hp_tenant_id %>
+   :hp_auth_uri:  <%= properties.swift_node.fog.storage.hp_auth_uri %>
+   :hp_use_upass_auth_style: <%= properties.swift_node.fog.storage.hp_use_upass_auth_style || true %>
+   :hp_avl_zone: <%= properties.swift_node.fog.storage.hp_avl_zone || 'nova' %>
+   :hp_auth_version: <%= properties.swift_node.fog.storage.hp_auth_version || "v2" %>
