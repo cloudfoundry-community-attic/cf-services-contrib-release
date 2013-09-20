@@ -1,15 +1,35 @@
 ---
 cloud_controller_uri: <%= properties.ccng.srv_api_uri %>
 service:
+  unique_id: "b98ab4cc-53e3-44a0-a53b-g0dd7529f950" #!!!!!
   name: swift
+  label: swift
+  active: true
+  bindable: true
+  provider: core
+  provider_name: 'Core'  
   version: "1.0"
   description: 'Swift service'
-  plans: ['free']
+  plans: 
+    'free':
+      unique_id: "core_swift_free"
+      name: free
+      description: "anynines cf swift service"
+      free: true
+      extra: ''
+      public: true
+  cf_plan_id:
+      'free':
   default_plan: free
   tags: ['swift', 'swift-1.0', 'storage', 'openstack']
   supported_versions: ['1.0']
   version_aliases:
     'current': '1.0'
+  info_url: 'http://www.anynines.com'
+  documentation_url: 'http://support.anynines.com'
+  blurb: 'Anynines OpenStack Swift Service'
+  logo_url: ''
+
 
 <% if properties.swift_gateway.ip_route %>
 ip_route: <%= properties.swift_gateway.ip_route %>
