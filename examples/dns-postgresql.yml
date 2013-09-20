@@ -27,8 +27,7 @@ networks:
     type: dynamic
     cloud_properties:
       security_groups:
-        - default
-        - microbosh
+        - cf # CHANGE
 
 resource_pools:
   - name: common
