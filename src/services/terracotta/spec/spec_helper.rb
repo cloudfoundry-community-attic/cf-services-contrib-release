@@ -58,7 +58,7 @@ end
 def get_node_config
   config_file = File.join(config_base_dir, "terracotta_node.yml")
   config = YAML.load_file(config_file)
-  config_template = File.join(File.dirname(__FILE__), "../resources/terracotta.yml.erb")
+  config_template = File.join(File.dirname(__FILE__), "../resources/config.xml.erb")
   logging_config_file = File.join(File.dirname(__FILE__), "../resources/logging.yml")
   options = {
     :logger => get_logger,

@@ -258,8 +258,7 @@ class VCAP::Services::Terracotta::Node
     config_file = config_path(dir)
     pid_file = File.join(dir, "terracotta.pid")
 
-    # -p #{pid_file} 
-    p `export JAVA_HOME=$(/usr/libexec/java_home) && #{@terracotta_path} -f #{config_file}`
+    system "export JAVA_HOME=$(/usr/libexec/java_home) && #{@terracotta_path} -f #{config_file} &"
     status = $?
     @logger.send(status.success? ? :debug : :error, "Start up finished, status = #{status}")
 
