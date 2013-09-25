@@ -1,4 +1,5 @@
 require 'rake'
+Dir.glob(File.expand_path("../lib/tasks/*", __FILE__)).each { |f| require f }
 
 task "default" => "spec"
 
