@@ -2,4 +2,8 @@ Vagrant.configure("2") do |config|
   # Build this box by running `rake test_vm`
   config.vm.box = "ci_with_warden_prereqs"
   config.vm.box_url = "~/boxes/ci_with_warden_prereqs.box"
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ['ci-cookbooks']
+    chef.add_recipe 'terracotta'
+  end
 end

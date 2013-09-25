@@ -44,7 +44,7 @@ cd /warden/warden
 rvmsudo bundle exec rake warden:start[config/test_vm.yml] 2>&1 > /tmp/warden.log &
 
 # insall gems
-cd /home/vagrant
+cd /vagrant
 bundle
 
 # run specs
