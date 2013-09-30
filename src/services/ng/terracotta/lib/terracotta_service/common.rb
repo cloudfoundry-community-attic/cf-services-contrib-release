@@ -4,7 +4,7 @@ module VCAP
     module Terracotta
       module Common
         def service_name
-          "RaaS"
+          "TCaaS"
         end
       end
     end

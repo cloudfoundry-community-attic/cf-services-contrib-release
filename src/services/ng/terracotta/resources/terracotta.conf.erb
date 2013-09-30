@@ -1,33 +1,40 @@
-requirepass <%= password %>
-port <%= port %>
-maxmemory <%= memory %>mb
-dir <%= data_dir %>
-logfile <%= log_file %>
-daemonize no
-timeout 300
-loglevel notice
-databases 16
-<% if persistent %>
-save 900 1
-save 300 10
-save 60 10000
-<% end %>
-maxclients <%= maxclients %>
-appendonly no
-
-<% if version == "2.2" || version == "2.4" %>
-hash-max-zipmap-entries 64
-hash-max-zipmap-value 512
-<% end %>
-
-activerehashing yes
-
-rename-command CONFIG <%= config_command %>
-rename-command MONITOR ""
-rename-command SAVE <%= save_command %>
-rename-command BGSAVE ""
-rename-command SHUTDOWN <%= shutdown_command %>
-rename-command BGREWRITEAOF ""
-rename-command SLAVEOF ""
-rename-command DEBUG ""
-rename-command SYNC ""
+<?xml version="1.0" encoding="UTF-8" ?>
+<tc:tc-config xmlns:tc="http://www.terracotta.org/config"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-6.xsd">
+  <servers>
+    <server>
+      <data><%= data_dir %></data>
+      <logs><%= log_dir %></logs>
+      <dso-port><%= port %></dso-port>
+      <!-- 
+      <authentication>
+         defaults to the standard Java JMX authentication
+         mechanism referring to password and access files in:
+         $JAVA_HOME/jre/lib/management.
+         - $JAVA_HOME/jre/lib/management/jmxremote.password
+         - $JAVA_HOME/jre/lib/management/jmxremote.access
+        
+         You must modify these files as such (if none exist create them):
+        
+         - jmxremote.password: add a line to the end of the file declaring
+           your username and password followed by a caridge return:
+           secretusername secretpassword
+        
+         - jmxremote.access: add the following line (with a caridge return)
+           to the end of your file:
+           secretusername readwrite
+        
+         You must also do:
+         $ chmod 500 jmxremote.password
+         $ chown <user who will execute the tc-server> jmxremote.password
+      <authentication/>
+      -->
+      <dso>
+        <persistence>
+          <mode>permanent-store</mode>
+        </persistence>
+      </dso>
+    </server>
+  </servers>
+</tc:tc-config>

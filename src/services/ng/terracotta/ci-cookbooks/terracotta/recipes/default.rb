@@ -26,6 +26,6 @@ bash "install terracotta" do
   cwd "/tmp"
   code <<-BASH
     tar xfz terracotta-#{VERSION}.tar.gz 
-    mv terracotta-#{VERSION} /var/vcap/packages/terracotta
+    mv terracotta-#{VERSION} /var/vcap/packages/terracotta#{VERSION.gsub('.', '')}
   BASH
 end

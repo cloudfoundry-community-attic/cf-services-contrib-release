@@ -6,21 +6,21 @@ require "bundler/setup"
 require "vcap_services_base"
 
 $LOAD_PATH.unshift(File.expand_path("../../lib", __FILE__))
-require "redis_service/redis_node"
+require "terracotta_service/terracotta_node"
 
-class VCAP::Services::Redis::NodeBin < VCAP::Services::Base::NodeBin
+class VCAP::Services::Terracotta::NodeBin < VCAP::Services::Base::NodeBin
 
   def node_class
-    VCAP::Services::Redis::Node
+    VCAP::Services::Terracotta::Node
   end
 
   def default_config_file
     config_base_dir = ENV["CLOUD_FOUNDRY_CONFIG_PATH"] || File.join(File.dirname(__FILE__), "..", "config")
-    File.join(config_base_dir, "redis_node.yml")
+    File.join(config_base_dir, "terracotta_node.yml")
   end
 
   def additional_config(options, config)
-    options[:config_template] = File.expand_path("../../resources/redis.conf.erb", __FILE__)
+    options[:config_template] = File.expand_path("../../resources/terracotta.conf.erb", __FILE__)
     options[:command_rename_prefix] = parse_property(config, "command_rename_prefix", String)
     options[:persistent] = parse_property(config, "persistent", Boolean, :optional => true)
     options[:supported_versions] = parse_property(config, "supported_versions", Array)
@@ -30,4 +30,4 @@ class VCAP::Services::Redis::NodeBin < VCAP::Services::Base::NodeBin
 
 end
 
-VCAP::Services::Redis::NodeBin.new.start
+VCAP::Services::Terracotta::NodeBin.new.start

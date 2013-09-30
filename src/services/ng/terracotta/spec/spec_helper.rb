@@ -10,9 +10,8 @@ require "bundler/setup"
 require "vcap_services_base"
 require "nats/client"
 require "vcap/common"
-require "datamapper"
+require "data_mapper"
 require "uri"
-require "terracotta"
 require "thread"
 require "terracotta_service/terracotta_node"
 require "terracotta_service/terracotta_error"
@@ -58,7 +57,7 @@ def getNodeTestConfig
     :port_range => parse_property(config, "port_range", Range),
 
     # parse terracotta wardenized-service control related config
-    :service_bin_dir => {"2.2" => "/var/vcap/packages/terracotta22", "2.4" => "/var/vcap/packages/terracotta24", "2.6" => "/var/vcap/packages/terracotta26"},
+    :service_bin_dir => {"3.7.5" => "/var/vcap/packages/terracotta375"},
     :service_common_dir => "/var/vcap/store/terracotta_common",
 
     # terracotta related configs

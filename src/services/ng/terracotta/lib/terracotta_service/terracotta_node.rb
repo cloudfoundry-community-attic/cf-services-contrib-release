@@ -5,7 +5,6 @@ require "logger"
 require "pp"
 
 require "uuidtools"
-require "terracotta"
 require "thread"
 require "open3"
 require "vcap/common"

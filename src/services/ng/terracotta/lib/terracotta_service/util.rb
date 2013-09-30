@@ -1,5 +1,4 @@
 # Copyright (c) 2009-2011 VMware, Inc.
-require "terracotta"
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), ".")
 require "terracotta_error"
 

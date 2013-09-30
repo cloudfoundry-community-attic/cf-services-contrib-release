@@ -4,6 +4,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_url = "~/boxes/ci_with_warden_prereqs.box"
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = ['ci-cookbooks']
-    chef.add_recipe 'terracotta'
+    # chef.add_recipe 'terracotta'
+    chef.add_recipe 'terracotta_common'
   end
 end
