@@ -1,0 +1,10 @@
+---
+name: swift_service
+dependencies:
+- ruby_next
+- sqlite
+files:
+- services/ng/swift_service/{Rakefile,Gemfile,Gemfile.lock}
+- services/ng/swift_service/bin/{swift_gateway,swift_node}
+- services/ng/swift_service/lib/**/*
+- pkg_utils/*

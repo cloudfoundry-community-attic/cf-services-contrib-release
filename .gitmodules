@@ -10,3 +10,6 @@
 [submodule "src/tools"]
   path = src/tools
   url = https://github.com/cloudfoundry/vcap-tools.git
+[submodule "src/services/ng/swift_service"]
+	path = src/services/ng/swift_service
+	url = https://github.com/anynines/cf_swift_service.git
