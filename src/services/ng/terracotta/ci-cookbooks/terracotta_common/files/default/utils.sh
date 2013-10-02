@@ -1,84 +1,137 @@
-source /var/vcap/packages/common/utils.sh
 
-RUN_DIR=/var/vcap/sys/run/warden
-ROOT_TGZ=/var/vcap/stemcell_base.tar.gz
-LOOP_DEVICE_COUNT=1024
+SCRIPT=$(basename $0)
+mkdir -p /var/vcap/sys/log/monit
 
-if [ -z $SERVICE_NAME ]
-then
-  LOG_DIR=/var/vcap/sys/log/warden
-  PIDFILE=$RUN_DIR/warden.pid
-  ROOT_DIR=/var/vcap/data/warden/rootfs
-else
-  LOG_DIR=/var/vcap/sys/log/${SERVICE_NAME}/warden
-  PIDFILE=$RUN_DIR/${SERVICE_NAME}_warden.pid
-  ROOT_DIR=/var/vcap/data/${SERVICE_NAME}/warden/rootfs
-fi
+exec 1>> /var/vcap/sys/log/monit/$SCRIPT.log
+exec 2>> /var/vcap/sys/log/monit/$SCRIPT.err.log
 
-setup_warden() {
-  use_loop_device=$1
+pid_guard() {
+  pidfile=$1
+  name=$2
 
-  mkdir -p $RUN_DIR
-  mkdir -p $LOG_DIR
+  if [ -f "$pidfile" ]; then
+    pid=$(head -1 "$pidfile")
 
-  # Extract rootfs if needed
-  if [ ! -d $ROOT_DIR ]
-  then
-    # Extract to temporary path, then rename to target path.
-    # This makes sure that it is not possible that we end up with directory
-    # that contains a partially extracted archive.
-    mkdir -p $(dirname $ROOT_DIR)
-    TMP=$(mktemp --tmpdir=$(dirname $ROOT_DIR) -d)
-    chmod 755 $TMP
-    tar -C $TMP -zxf $ROOT_TGZ
-    mv $TMP $ROOT_DIR
-  fi
+    if [ -n "$pid" ] && [ -e /proc/$pid ]; then
+      echo "$name is already running, please stop it first"
+      exit 1
+    fi
 
-  # Create loop devices for disk quota
-  if [ ! -z ${use_loop_device} ] && [ ${use_loop_device} = 'true' ]
-  then
-    for i in $(seq 0 $(expr $LOOP_DEVICE_COUNT - 1)); do
-      file=/dev/loop${i}
-      if [ ! -b ${file} ]; then
-        mknod -m0660 ${file} b 7 ${i}
-        chown root.disk ${file}
-      fi
-    done
+    echo "Removing stale pidfile..."
+    rm $pidfile
   fi
 }
 
-start_warden() {
-  cd $PKG_DIR/warden
+wait_pidfile() {
+  pidfile=$1
+  try_kill=$2
+  timeout=${3:-0}
+  force=${4:-0}
+  countdown=$(( $timeout * 10 ))
 
-  export PATH=/var/vcap/packages/ruby_next/bin:$PATH
+  if [ -f "$pidfile" ]; then
+    pid=$(head -1 "$pidfile")
 
-  nohup /var/vcap/packages/ruby/bin/bundle exec \
-        rake warden:start[$JOB_DIR/config/warden.yml] \
-        >>$LOG_DIR/warden.stdout.log \
-        2>>$LOG_DIR/warden.stderr.log &
-
-  warden_start_flag=false
-  warden_start_timeout=20
-  countdown=$(( $warden_start_timeout * 2))
-
-  for i in `seq 1 $countdown`; do
-    warden_pid=`sudo netstat -pan | grep LISTENING | grep $SOCKET_FILE | awk '{print $9}' | cut -d / -f 1`
-    if [ ! -z $warden_pid ] && [ -e /proc/$warden_pid ]
-    then
-      warden_start_flag=true
-      echo "warden is ready"
-      break
-    else
-      sleep 0.5
-      echo -n .
+    if [ -z "$pid" ]; then
+      echo "Unable to get pid from $pidfile"
+      exit 1
     fi
-  done
 
-  if [ $warden_start_flag = true ]; then
-    pid_guard $PIDFILE "Warden"
-    echo $warden_pid > $PIDFILE
+    if [ -e /proc/$pid ]; then
+      if [ "$try_kill" = "1" ]; then
+        echo "Killing $pidfile: $pid "
+        kill $pid
+      fi
+      while [ -e /proc/$pid ]; do
+        sleep 0.1
+        [ "$countdown" != '0' -a $(( $countdown % 10 )) = '0' ] && echo -n .
+        if [ $timeout -gt 0 ]; then
+          if [ $countdown -eq 0 ]; then
+            if [ "$force" = "1" ]; then
+              echo -ne "\nKill timed out, using kill -9 on $pid... "
+              kill -9 $pid
+              sleep 0.5
+            fi
+            break
+          else
+            countdown=$(( $countdown - 1 ))
+          fi
+        fi
+      done
+      if [ -e /proc/$pid ]; then
+        echo "Timed Out"
+      else
+        echo "Stopped"
+      fi
+    else
+      echo "Process $pid is not running"
+    fi
+
+    rm -f $pidfile
   else
-    echo "warden start timeout"
+    echo "Pidfile $pidfile doesn't exist"
+  fi
+}
+
+kill_and_wait() {
+  pidfile=$1
+  # Monit default timeout for start/stop is 30s
+  # Append 'with timeout {n} seconds' to monit start/stop program configs
+  timeout=${2:-25}
+  force=${3:-1}
+
+  wait_pidfile $pidfile 1 $timeout $force
+}
+
+check_mount() {
+  opts=$1
+  exports=$2
+  mount_point=$3
+
+  if grep -qs $mount_point /proc/mounts; then
+    echo "Found NFS mount $mount_point"
+  else
+    echo "Mounting NFS..."
+    mount $opts $exports $mount_point
+    if [ $? != 0 ]; then
+      echo "Cannot mount NFS from $exports to $mount_point, exiting..."
+      exit 1
+    fi
+  fi
+}
+
+# Check the syntax of a sudoers file.
+check_sudoers() {
+  /usr/sbin/visudo -c -f "$1"
+}
+
+# Check the syntax of a sudoers file and if it's ok install it.
+install_sudoers() {
+  src="$1"
+  dest="$2"
+
+  check_sudoers "$src"
+
+  if [ $? -eq 0 ]; then
+    chown root:root "$src"
+    chmod 0440 "$src"
+    cp -p "$src" "$dest"
+  else
+    echo "Syntax error in sudoers file $src"
+    exit 1
+  fi
+}
+
+# Add a line to a file if it is not already there.
+file_must_include() {
+  file="$1"
+  line="$2"
+
+  # Protect against empty $file so it doesn't wait for input on stdin.
+  if [ -n "$file" ]; then
+    grep --quiet "$line" "$file" || echo "$line" >> "$file"
+  else
+    echo 'File name is required'
     exit 1
   fi
 }

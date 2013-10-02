@@ -20,7 +20,7 @@ class VCAP::Services::Terracotta::NodeBin < VCAP::Services::Base::NodeBin
   end
 
   def additional_config(options, config)
-    options[:config_template] = File.expand_path("../../resources/terracotta.conf.erb", __FILE__)
+    options[:config_template] = File.expand_path("../../resources/terracotta.xml.erb", __FILE__)
     options[:command_rename_prefix] = parse_property(config, "command_rename_prefix", String)
     options[:persistent] = parse_property(config, "persistent", Boolean, :optional => true)
     options[:supported_versions] = parse_property(config, "supported_versions", Array)

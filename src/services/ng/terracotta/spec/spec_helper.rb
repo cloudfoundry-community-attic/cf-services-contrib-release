@@ -53,7 +53,7 @@ def getNodeTestConfig
     :node_id => parse_property(config, "node_id", String),
     :mbus => parse_property(config, "mbus", String),
     :ip_route => parse_property(config, "ip_route", String, :optional => true),
-    :config_template => File.join(File.dirname(__FILE__), "..", "resources/terracotta.conf.erb"),
+    :config_template => File.join(File.dirname(__FILE__), "..", "resources/terracotta.xml.erb"),
     :port_range => parse_property(config, "port_range", Range),
 
     # parse terracotta wardenized-service control related config

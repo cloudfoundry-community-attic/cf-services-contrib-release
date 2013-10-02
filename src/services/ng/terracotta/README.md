@@ -50,3 +50,12 @@ bundle
 # run specs
 rvmsudo rake test:spec
 ```
+
+## Debugging:
+```shell
+# Start node manually
+rvmsudo /vagrant/bin/terracotta_node
+
+# Publish provision message
+nats-pub 'TCaaS.provision.terracotta_node_free_1' '{"plan": "free", "version": "3.7.5"}'
+```

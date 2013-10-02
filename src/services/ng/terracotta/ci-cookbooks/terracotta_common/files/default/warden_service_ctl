@@ -1,5 +1,5 @@
 #!/bin/bash
-STOP_TIMEOUT=<%= properties.redis_node.instance_stop_timeout || 3 %>
+STOP_TIMEOUT=3
 OP=$1
 BASE_DIR=$2
 LOG_DIR=$3
@@ -12,7 +12,7 @@ case $OP in
   start)
     BIN_DIR=$5
     echo $$ > $PIDFILE
-    exec /sbin/start-stop-daemon --start --quiet --chuid vcap --exec $BIN_DIR/bin/redis-server -- $BASE_DIR/redis.conf
+    exec /sbin/start-stop-daemon --start --quiet --chuid vcap --exec $BIN_DIR/bin/start-tc-server.sh -f $BASE_DIR/terracotta.xml
     ;;
 
   stop)
