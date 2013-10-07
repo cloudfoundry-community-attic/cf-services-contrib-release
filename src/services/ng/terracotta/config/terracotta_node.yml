@@ -9,7 +9,7 @@ ip_route: 127.0.0.1
 logging:
   level: debug
 pid: /var/vcap/sys/run/terracotta_node.pid
-max_memory: 16
+max_memory: 256
 node_id: terracotta_node_free_1
 supported_versions: ["3.7.5"]
 default_version: "3.7.5"
@@ -21,6 +21,7 @@ migration_nfs: /mnt/appcloud
 service_log_dir: /var/vcap/sys/log/terracotta
 service_bin_dir:
   "3.7.5":  /var/vcap/packages/terracotta375
+  java: /var/vcap/packages/java7
 service_common_dir: /var/vcap/store/terracotta_common
 command_rename_prefix: protect-command-prefix
 max_clients: 500

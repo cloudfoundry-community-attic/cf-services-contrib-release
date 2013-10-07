@@ -380,7 +380,7 @@ class VCAP::Services::Terracotta::Node::ProvisionedService
       config_template = ERB.new(File.read(@@options[:config_template]))
       version = instance.version
       config = config_template.result(Kernel.binding)
-      config_path = File.join(instance.base_dir, "terracotta.conf")
+      config_path = File.join(instance.base_dir, "terracotta.xml")
 
       unless is_upgraded
         instance.prepare_filesystem(0)
@@ -394,8 +394,13 @@ class VCAP::Services::Terracotta::Node::ProvisionedService
 
   def start_options
     options = super
-    options[:start_script] = {:script => "#{service_script} start #{base_dir} #{log_dir} #{common_dir} #{bin_dir}", :use_spawn => true}
+    options[:start_script] = {:script => "#{service_script} start #{base_dir} #{log_dir} #{common_dir} #{bin_dir} #{java_dir}", :use_spawn => true}
+    options[:bind_dirs] << {:src => java_dir}
     options
+  end
+
+  def java_dir
+    self.class.bin_dir["java"]
   end
 
   def finish_start?

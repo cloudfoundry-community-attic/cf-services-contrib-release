@@ -58,4 +58,9 @@ rvmsudo /vagrant/bin/terracotta_node
 
 # Publish provision message
 nats-pub 'TCaaS.provision.terracotta_node_free_1' '{"plan": "free", "version": "3.7.5"}'
+
+# Warden service logs:
+tail -f /var/vcap/sys/log/terracotta/*/warden_service_ctl.*.log
 ```
+
+

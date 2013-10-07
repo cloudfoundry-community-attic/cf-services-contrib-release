@@ -6,13 +6,19 @@ LOG_DIR=$3
 COMMON_DIR=$4
 PIDFILE=$BASE_DIR/service.pid
 
+if [[ ! -d $COMMON_DIR ]]; then
+  echo "Usage: $0 {start|stop|status} BASE_DIR LOG_DIR COMMON_DIR [BIN_DIR] [JAVA_HOME]"
+  exit 1
+fi
+
 source $COMMON_DIR/bin/utils.sh
 
 case $OP in
   start)
     BIN_DIR=$5
+    export JAVA_HOME=$6
     echo $$ > $PIDFILE
-    exec /sbin/start-stop-daemon --start --quiet --chuid vcap --exec $BIN_DIR/bin/start-tc-server.sh -f $BASE_DIR/terracotta.xml
+    exec /sbin/start-stop-daemon --start --quiet --chuid vcap --exec $BIN_DIR/bin/start-tc-server.sh -- -f $BASE_DIR/terracotta.xml
     ;;
 
   stop)
@@ -24,7 +30,7 @@ case $OP in
     ;;
 
   *)
-    echo "Usage: $0 {start|stop|status}"
+    echo "Usage: $0 {start|stop|status} BASE_DIR LOG_DIR COMMON_DIR [BIN_DIR]"
 
     ;;
 esac
