@@ -120,7 +120,8 @@ case "$1" in
         for sqlf in citext.sql fuzzystrmatch.sql isn.sql ltree.sql pageinspect.sql pg_buffercache.sql pgcrypto.sql pg_freespacemap.sql sslinfo.sql tablefunc.sql uuid-ossp.sql
         do
           echo "Installing contrib package ${sqlf}"
-          ${PACKAGE_DIR}/bin/psql -U vcap -p $PORT -f ${PACKAGE_DIR}/share/${sqlf} -d postgres
+          ${PACKAGE_DIR}/bin/psql -U vcap -p $PORT -f ${PACKAGE_DIR}/share/contrib/${sqlf} -d postgres
+          ${PACKAGE_DIR}/bin/psql -U vcap -p $PORT -f ${PACKAGE_DIR}/share/extension/${sqlf}--1.0.sql -d postgres
         done
       fi
       # absolve postmaster from OOM killer
