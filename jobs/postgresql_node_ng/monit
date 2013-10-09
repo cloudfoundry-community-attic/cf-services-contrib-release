@@ -1,6 +1,7 @@
 <%
 service = "postgresql"
 plan = properties.postgresql_node.plan
+# properties.service_plans.postgresql.default
 plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 use_warden= plan_conf.warden && plan_conf.warden.enable
 
