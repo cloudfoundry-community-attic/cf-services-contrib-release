@@ -2,6 +2,8 @@
 set -e
 
 cd ${BUILD_DIR}
+mv services/ng/swift_service swift_service
+rm -r services
 
 pkg_utils/vendor.sh swift_service
 
