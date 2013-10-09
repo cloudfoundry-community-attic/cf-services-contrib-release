@@ -2,6 +2,7 @@
 name: swift_gateway
 packages:
   - swift_service
+  - ruby
   - ruby_next
   - common
   - syslog_aggregator
