@@ -47,6 +47,11 @@ case $1 in
           SRC_CONF_FILE=$JOB_DIR/config/postgresql92.conf
 
           ;;
+        "9.3")
+          PG_DIR=/var/vcap/packages/postgresql93
+          SRC_CONF_FILE=$JOB_DIR/config/postgresql93.conf
+
+          ;;
       esac
 
       INITDB_DIR=$PG_DIR/initdb

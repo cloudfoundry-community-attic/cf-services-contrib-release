@@ -6,3 +6,4 @@ blobstore:
     bucket_name: cf-contrib
     access_key_id: AKIAIKXFR4244ZYGZ52A
     secret_access_key: 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
+min_cli_version: 1.5.0.pre.1028

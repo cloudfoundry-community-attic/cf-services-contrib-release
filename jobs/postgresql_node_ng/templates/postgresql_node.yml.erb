@@ -22,6 +22,11 @@ version_configs = {
   '9.2' => {
     'port'        => 5434,
     'binary_dir'  => '/var/vcap/packages/postgresql92',
+  },
+
+  '9.3' => {
+    'port'        => 5435,
+    'binary_dir'  => '/var/vcap/packages/postgresql93',
   }
 }
 nats_props_name = properties.nats_props || "nats"

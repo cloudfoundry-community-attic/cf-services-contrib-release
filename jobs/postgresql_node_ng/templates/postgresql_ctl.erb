@@ -41,6 +41,16 @@ case "$version" in
     PORT=5434
 
     ;;
+  "9.3")
+    PACKAGE_DIR=/var/vcap/packages/postgresql93
+    DATA_DIR=/var/vcap/store/postgresql93
+    RUN_DIR=/var/vcap/sys/run/postgresql
+    PIDFILE=$RUN_DIR/postgresql93.pid
+    LOG_DIR=/var/vcap/sys/log/postgresql93
+    SRC_CONF_FILE=$JOB_DIR/config/postgresql93.conf
+    PORT=5435
+
+    ;;
 esac
 
 FIRST_TIME=0
