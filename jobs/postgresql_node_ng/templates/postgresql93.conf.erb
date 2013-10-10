@@ -71,7 +71,7 @@ listen_addresses = '*'   # what IP address(es) to listen on;
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
-port =  <%= plan_conf.port || 5434 %>			# (change requires restart)
+port =  <%= plan_conf.port || 5435 %>			# (change requires restart)
 max_connections = <%= plan_conf.max_connections || 500 %>			# (change requires restart)
 # Note:  Increasing max_connections costs ~400 bytes of shared memory per
 # connection slot, plus lock space (see max_locks_per_transaction).
