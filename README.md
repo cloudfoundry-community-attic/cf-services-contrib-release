@@ -11,6 +11,7 @@ You can find the following services in this repository (in alphabetical order):
 * rabbitmq
 * redis
 * vblob
+* swift
 
 Each of these services are offered in a similar way - a single database or running instance running on a single machine.
 
