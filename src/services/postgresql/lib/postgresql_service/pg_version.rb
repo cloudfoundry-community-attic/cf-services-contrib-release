@@ -36,7 +36,7 @@ module VCAP::Services::Postgresql::Version
 
   def pg_stat_activity_pid_field(version)
     case version
-    when '9.2'
+    when '9.2', '9.3'
       'pid'
     else
       'procpid'
@@ -45,7 +45,7 @@ module VCAP::Services::Postgresql::Version
 
   def pg_stat_activity_query_field(version)
     case version
-    when '9.2'
+    when '9.2', '9.3'
       'query'
     else
       'current_query'

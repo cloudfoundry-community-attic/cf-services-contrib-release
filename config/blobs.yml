@@ -219,3 +219,8 @@ postgresql/postgresql-initdb-9.2-x86_64.tar.gz:
   sha: !binary |-
     NmY0NmZmOTQ2NDgyMTk4NDBmYTQ3NWViOTViZmEyM2E1ZjRiZjkwNQ==
   size: 4146878
+postgresql/postgresql-9.3.0.tar.gz:
+  object_id: ef1f3c83-7be4-4100-b99e-150f9c0e96c6
+  sha: !binary |-
+    OWI5YmY1ODQ4MzVmMjg1OGI1OGIyZmJjNDliZmMzMGY0ZmI1MjYwOQ==
+  size: 22140691

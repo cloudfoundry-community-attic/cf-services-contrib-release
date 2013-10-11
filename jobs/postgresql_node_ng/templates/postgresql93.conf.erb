@@ -4,7 +4,7 @@ plan = properties.postgresql_node.plan
 plan_conf = properties.service_plans.send(service.to_sym).send(plan.to_sym).configuration
 warden = plan_conf.warden
 use_warden = warden && warden.enable
-log_dir = use_warden ? '/var/vcap/sys/service-log/postgresql92' : '/var/vcap/sys/log/postgresql92'
+log_dir = use_warden ? '/var/vcap/sys/service-log/postgresql93' : '/var/vcap/sys/log/postgresql93'
 %>
 # -----------------------------
 # PostgreSQL configuration file
@@ -71,7 +71,7 @@ listen_addresses = '*'   # what IP address(es) to listen on;
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
-port =  <%= plan_conf.port || 5434 %>			# (change requires restart)
+port =  <%= plan_conf.port || 5435 %>			# (change requires restart)
 max_connections = <%= plan_conf.max_connections || 500 %>			# (change requires restart)
 # Note:  Increasing max_connections costs ~400 bytes of shared memory per
 # connection slot, plus lock space (see max_locks_per_transaction).
@@ -531,7 +531,7 @@ default_text_search_config = 'pg_catalog.english'
 
 # - Other Defaults -
 
-dynamic_library_path = '/var/vcap/packages/postgresql92/lib'
+dynamic_library_path = '/var/vcap/packages/postgresql93/lib'
 
 local_preload_libraries = 'pgextwlist.so'
 extwlist.extensions = 'hstore'

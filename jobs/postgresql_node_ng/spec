@@ -16,6 +16,7 @@ templates:
   postgresql.conf.erb: config/postgresql.conf
   postgresql91.conf.erb: config/postgresql91.conf
   postgresql92.conf.erb: config/postgresql92.conf
+  postgresql93.conf.erb: config/postgresql93.conf
 
   warden_ctl.erb: bin/warden_ctl
   warden.yml.erb: config/warden.yml
@@ -27,6 +28,7 @@ packages:
   - postgresql
   - postgresql91
   - postgresql92
+  - postgresql93
   - postgresql_node_ng
   - ruby
   - ruby_next
