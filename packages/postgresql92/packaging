@@ -12,3 +12,13 @@ tar xzf postgresql/postgresql-initdb-9.2-x86_64.tar.gz
 cp -a initdb ${BOSH_INSTALL_TARGET}
 
 rm ${BOSH_INSTALL_TARGET}/packaging
+
+
+export PATH=$PATH:${BOSH_INSTALL_TARGET}/bin # for pg_config
+cd postgresql/pgextwlist
+export PREFIX=${BOSH_INSTALL_TARGET}
+make --debug=v
+make install --debug=v
+
+mkdir -p ${BOSH_INSTALL_TARGET}/lib/plugins
+mv pgextwlist.so ${BOSH_INSTALL_TARGET}/lib/plugins
