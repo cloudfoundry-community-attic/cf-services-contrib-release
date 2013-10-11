@@ -5,9 +5,10 @@ echo "Extracting PostgreSQL 9.3.0 archive ..."
 
 tar xzf postgresql/postgresql-9.3.0.tar.gz
 cd postgresql-9.3.0
+
 ./configure --prefix=${BOSH_INSTALL_TARGET}
-make
-make install
+make world
+make install-world
 
 cd ..
 
