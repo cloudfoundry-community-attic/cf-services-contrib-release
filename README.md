@@ -35,7 +35,7 @@ $ gem install bosh_cli -v "~> 1.5.0.pre" --source http://s3.amazonaws.com/bosh-j
 First, upload the latest final release to your bosh:
 
 ```
-$ bosh upload release releases/cf-services-contrib-1.yml
+$ bosh upload release releases/cf-services-contrib-2.yml
 ```
 
 Then create a deployment file to describe the services you want to activate and support. Say, call it `cf-services-contrib.yml`.
@@ -66,7 +66,7 @@ Token> <postgresql-service-token>
 You and all your users can now provision and bind the services:
 
 ```
-$ cf create-service --provider core --offering postgresql --version 9.2 --name test --plan default
+$ cf create-service --provider core --offering postgresql --version 9.3 --name test --plan default
 Creating service test... OK
 ```
 

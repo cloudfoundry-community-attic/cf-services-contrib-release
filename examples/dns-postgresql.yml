@@ -111,12 +111,12 @@ properties:
   postgresql_gateway:
     token: POSTGRESQL_SERVICE_TOKEN # CHANGE - the token you use later with `cf create-service-auth-token`
     default_plan: default
-    supported_versions: ["9.2"]
+    supported_versions: ["9.3"]
     version_aliases:
-      current: "9.2"
+      current: "9.3"
     cc_api_version: v2
   postgresql_node:
-    supported_versions: ["9.2"]
-    default_version: "9.2"
+    supported_versions: ["9.3"]
+    default_version: "9.3"
     max_tmp: 900
     password: POSTGRESQL_ROOT_PASSWORD # CHANGE
