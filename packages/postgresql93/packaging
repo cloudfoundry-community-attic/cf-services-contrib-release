@@ -1,18 +1,16 @@
 # abort script on any command that exit with a non zero value
 set -e
 
-echo "Extracting PostgreSQL 9.2.4 archive ..."
+echo "Extracting PostgreSQL 9.3.0 archive ..."
 
-tar xzf postgresql/postgresql-9.2.4-x86_64.tar.gz
+tar xzf postgresql/postgresql-9.3.0.tar.gz
+cd postgresql-9.3.0
 
-cp -a * ${BOSH_INSTALL_TARGET}
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make world
+make install-world
 
-tar xzf postgresql/postgresql-initdb-9.2-x86_64.tar.gz
-
-cp -a initdb ${BOSH_INSTALL_TARGET}
-
-rm ${BOSH_INSTALL_TARGET}/packaging
-
+cd ..
 
 export PATH=$PATH:${BOSH_INSTALL_TARGET}/bin # for pg_config
 cd postgresql/pgextwlist

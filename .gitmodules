@@ -13,3 +13,6 @@
 [submodule "src/services/ng/swift_service"]
 	path = src/services/ng/swift_service
 	url = https://github.com/anynines/cf_swift_service.git
+[submodule "src/postgresql/pgextwlist"]
+	path = src/postgresql/pgextwlist
+	url = https://github.com/dimitri/pgextwlist.git
