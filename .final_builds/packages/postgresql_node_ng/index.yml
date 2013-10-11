@@ -5,3 +5,8 @@ builds:
     version: 1
     sha1: !binary |-
       ZThkMTgxYWYwN2YyMmE3MDQ5OTRmNjBjODUyZjUzNjRkZGZiYzMxYQ==
+  !binary "YWEyNTY0ZDAyZWI1ZGMwN2E3OTZkMGVhMWM0MmZlYjg2ZDQzZDdmMQ==":
+    blobstore_id: 0868755d-e98d-4c56-b0b0-8593aae6134f
+    version: 2
+    sha1: !binary |-
+      MzAzMTA0YjljNTY3ZThiOTljZTIyYWRjMmEzMjhiYzBhNWM1OTQ3OA==

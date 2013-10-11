@@ -1,0 +1,579 @@
+---
+packages:
+- name: atmos_gateway
+  version: 1
+  sha1: !binary |-
+    NmE3MjQxNGMwMzI3NTcwMjc5YjgwMDVmNDhkNzc3NDE2MWNiNzhkOA==
+  fingerprint: !binary |-
+    ZGI1Yzk2MTA3MTAwNTFmZWQ5MjIyYTMxYWU3OWJkODk0Y2U4YWU1Yg==
+  dependencies:
+  - ruby
+  - sqlite
+- name: backup_manager
+  version: 1
+  sha1: !binary |-
+    OGU3YjA2ZjcxODkyOGQ1Y2FkOTkxZmUxMDcxZmQ1YWY0MTAxM2Y4ZQ==
+  fingerprint: !binary |-
+    MWM1YzIwODhjNmY4OTBlYmRhMzQ4ZjIzOTM3MmY4ZGMyMTE2YzNjMQ==
+  dependencies:
+  - sqlite
+  - ruby
+- name: bandwidth_proxy
+  version: 1
+  sha1: !binary |-
+    ZDc2OWEwZGJkYjdkNDY5M2EyZWI4MDFmZDhlMWNjNmRhMmQ2ZTdhNQ==
+  fingerprint: !binary |-
+    MzYzMzI4Njc3MmJhNmU3OTBlOTY0MTM0ODBiODUzZjE3MWRkMGRkMg==
+  dependencies:
+  - golang
+- name: common
+  version: 1
+  sha1: !binary |-
+    N2JhZjA4MjAzMmIzYjRhMDU1OThlNjNmMmZhNzcyZjFiNmU5ODlkYg==
+  fingerprint: !binary |-
+    NDdlYWMzYzQxNmY4N2ViMGE2NDhiM2RmZTQ1NjMyYzY1NGQ2ZTY3Zg==
+  dependencies: []
+- name: daylimit
+  version: 2
+  sha1: !binary |-
+    MzIzZWMxNDM1MWIwZGIyYWZmZmE1OTI5MjliZDQxNTZmMWI5Y2UzNA==
+  fingerprint: !binary |-
+    MDViZmJkZTFiMmY5MjUwNWQ5ZWUzMDcwM2M2NjMzNjQ4ZjcwYmMyYQ==
+  dependencies:
+  - golang
+- name: elasticsearch
+  version: 1
+  sha1: !binary |-
+    ODJhYTIzZDUxMDcxZjFiMzk0OTdiYzVhZGZmYTVjYTMwZDQxYzZhZA==
+  fingerprint: !binary |-
+    ZTI1MDQ0MTA1MDgyMmQ3MTk2ZmE3MzFmZWVmMjg2YzViOWJhNzQzMw==
+  dependencies:
+  - java7
+- name: elasticsearch_gateway
+  version: 2
+  sha1: !binary |-
+    NjYxY2U0MGZhNzFiZWVkY2U5YmQ1YTRjNjk4ZmUwYzk5Mjk5NjBmZg==
+  fingerprint: !binary |-
+    MjU2MWU4ZjZkNDg0YTJlMjZjYmUzZTUyMmYzZGIxMjA4NDg5NzAwNg==
+  dependencies:
+  - ruby
+  - sqlite
+- name: elasticsearch_node
+  version: 2
+  sha1: !binary |-
+    NGE0MWVlNjlmYThhM2RjZWFmMDRkOTNkYjgwYTg0ODNhYjhjMTkwOQ==
+  fingerprint: !binary |-
+    ZjEzMmVmN2M4ODQ0ZGM5ZjFhYjkxZTQ2ODU4NzY2ZDk3MjgwOWE3Zg==
+  dependencies:
+  - sqlite
+  - ruby
+- name: erlang
+  version: 1
+  sha1: !binary |-
+    NWJjMTllODM4ZTU1ODUzYjJkZTU5NWVmZDg4MDIzYzNhMTJjZmI1OA==
+  fingerprint: !binary |-
+    MTU4NzM4ZmM1YjI1NWUzNjFhOWJiNjIwNGE4M2NiMWYyNzBmYzUxNw==
+  dependencies: []
+- name: filesystem_gateway
+  version: 1
+  sha1: !binary |-
+    NDdiYzk2ZjQzMDJmOTZhNmNhOGRmYzIxY2U4ODRkNjYwMTcyMWFhOA==
+  fingerprint: !binary |-
+    ZDZiYzU0YzczMTRlZGE5NGRiNGI5MWFjMGU2OTA2MWE2OGJkNWYxYw==
+  dependencies:
+  - ruby
+  - sqlite
+- name: golang
+  version: 1
+  sha1: !binary |-
+    Yzg1MmI3YjAwMTk2M2MyNjliNzBkNGJhZTgxZWE5MDE4N2JmZDYzMg==
+  fingerprint: !binary |-
+    N2Q2NmE5MWU0MGI3ODA2MGUyOTEyYWRjZmFmN2Q1MDVkZmNlYzRlYQ==
+  dependencies: []
+- name: java7
+  version: 1
+  sha1: !binary |-
+    ZGVmZjczMzg2ZDNhMTM5Y2Q3MDAyNzkyZTJjZjU3OWEwM2NmOTZkYg==
+  fingerprint: !binary |-
+    YzhhZWYwNjU3ODllZDVlZjY5MmZhOWEwNTMzNmE4ZWQxMmFmOWM1Yg==
+  dependencies: []
+- name: libyaml
+  version: 1
+  sha1: !binary |-
+    YmQyMWM5ZDgxMjM1N2FhN2U3NGE5NmUzZGExYzFmYjQwMzhiZDk4OQ==
+  fingerprint: !binary |-
+    ODcwNmY2MTM1NTZmMWFlYmVlNzI5NDk1NjYyNmQ3MDYxZmIyZmE1ZA==
+  dependencies: []
+- name: memcached
+  version: 1
+  sha1: !binary |-
+    Y2NmMTI3YzhhNGNlYzc2NzBlY2ExOGYxMWRhNGIxZjRkODNhYzk5Nw==
+  fingerprint: !binary |-
+    OTJjNDU0YTgxZjVjNmQ5YzViYjU0Y2ZhODI4OGRkNTg0Y2I3NGRkMQ==
+  dependencies: []
+- name: memcached_gateway
+  version: 2
+  sha1: !binary |-
+    NWViN2NjOWYxODNhMTAzMGQzYWU5MDlmN2Y3ZTZiMzY5MWU1NGJiZg==
+  fingerprint: !binary |-
+    ZDUzMmNkMjk0ZTg4MDcyNmY3NWRhYzE2ZjAxMTAzMTcyMDFhODJiYg==
+  dependencies:
+  - ruby
+  - sqlite
+- name: memcached_node_ng
+  version: 2
+  sha1: !binary |-
+    OTNhZDBkOWU3Mjg0MmViOWVlYmI1MTIyMzkyZGJiNjNmYWY4ZTU5MQ==
+  fingerprint: !binary |-
+    ZWQ2N2FhYmM0NmI3NWRiYmMyMjZkMzliNDAyZGY5NGM3ODBjNTEwYw==
+  dependencies:
+  - sqlite
+  - ruby
+- name: mongodb18
+  version: 1
+  sha1: !binary |-
+    NTA3YTVmMDAyNDJhYjNmYjE4NmIxOTliMDhlYTFhM2RiZTE3YzVhMg==
+  fingerprint: !binary |-
+    NzJhNjBjZjcxNWI0OGRlYmRhOWYyZTc2ZmFhZjEyODNiYzA1NzAzMw==
+  dependencies: []
+- name: mongodb20
+  version: 1
+  sha1: !binary |-
+    NWYwOGI1ZjhkYTMxMWJhMmUzM2U5OTk3Y2I3NzNlZDUwNWU4MmY2Zg==
+  fingerprint: !binary |-
+    OGZkOTc0ZjY3MDJjODVhZDNkZThmMjcyZjA4NzZjNjY1MmE2ZjY5NQ==
+  dependencies: []
+- name: mongodb22
+  version: 1
+  sha1: !binary |-
+    ZWMxODRkNTQ5NjU2ODM4ZjgwZWVlNzFmMmE0ZGI1NWNlZGZiZWNiMw==
+  fingerprint: !binary |-
+    ZTI1M2RjYmNiZTkwMzdkZmQ4NzQyNWFkZTZiMThiNGQ1MDIwZDYzNQ==
+  dependencies: []
+- name: mongodb_gateway
+  version: 1
+  sha1: !binary |-
+    NGJiNjA1NWIzNTA2YmUyYmU3ODBjYzA2YjU2NTA3MWQ2NTY2MjNkNA==
+  fingerprint: !binary |-
+    NjZiNzJmN2RhYjIzNzQyNDY1M2VmMzVjYWI0MzUxNDNjYjMzNGEyNA==
+  dependencies:
+  - ruby
+  - sqlite
+- name: mongodb_node_ng
+  version: 1
+  sha1: !binary |-
+    NDg2NzNiZGJkM2E3NTZmNjAyY2JjZjRmODIxZTg1ZDY2OWVhMmM5Zg==
+  fingerprint: !binary |-
+    MmQ2NmM2ZmM5M2YzODVlOTY1MjNjZmIwYjQyNmRkNWNkM2NiYjQxNw==
+  dependencies:
+  - sqlite
+  - ruby
+- name: mongodb_proxy
+  version: 2
+  sha1: !binary |-
+    YjY3NjFlNGMyNjgyMWViNGY1NzBjMzk3YWVhY2I5ZTFlODEwNmQ0Ng==
+  fingerprint: !binary |-
+    ZTFlMjdjNjZiZTkyNjk4ZDlhNmUxMzdkYjhiMTI5NjliODViZjU3OA==
+  dependencies:
+  - golang
+- name: nginx
+  version: 1
+  sha1: !binary |-
+    ODFmMWI2NTgwNDY2MTNlNmI3ODU2NGJjMTQyOGViNjQ3MDhhNmJjOA==
+  fingerprint: !binary |-
+    NzQwYTA1NGYyOWJlYTNhYzM4MmEzMmFiNjcxNTg1MWMxMzk4ZmM0ZA==
+  dependencies: []
+- name: node
+  version: 1
+  sha1: !binary |-
+    NTYxNzllYWFjZjFjZGFkMDY3OGQ1ZWE1ZmRjNGQ1MzQ0Zjc5OTk5NQ==
+  fingerprint: !binary |-
+    NzdjNjY5MmFjMTViY2ZmN2UzZmNhN2Y3YzQ4MjJkMTQ3YjU4YTc2OA==
+  dependencies: []
+- name: oauth2_gateway
+  version: 1
+  sha1: !binary |-
+    ZTY2ZGU0NWRmY2MwZGFkZjU5YjM3YjMwZjkwNTU3NTEyNWU5M2U3Mg==
+  fingerprint: !binary |-
+    ZDA4MWY0YmEzZjU2YmUzMzdhNGYxNzBmMTc0YjYzNWQ5NDUzZjgzNA==
+  dependencies:
+  - ruby
+  - sqlite
+- name: postgres
+  version: 1
+  sha1: !binary |-
+    OTNkZGNmNjliMzU3NWJiODhmNzY3YTNlZjJmODNhMTA1OGU4ODRhMA==
+  fingerprint: !binary |-
+    YTJiNzcxM2I0ZGY2YzVhYjFhYThhNTMyMWQ4MGYxMTAwZWFlYTc4NA==
+  dependencies: []
+- name: postgresql
+  version: 1
+  sha1: !binary |-
+    ZTg0YTJlNzM2N2Q4YTEwNmRiOTM0MTg2ZmNlZGU5NWU2NmMzMDZhYw==
+  fingerprint: !binary |-
+    ODY1NmRhOWRkMzNiNjA4ZGMyZWYxZjFjNGM3MTk0NDBlYjNjM2FhNw==
+  dependencies: []
+- name: postgresql91
+  version: 1
+  sha1: !binary |-
+    ZjJkMmZlYjA2NTVkYjk4N2VkMTQ5ZDljYWU2ZTNhMzYxZGUzMTk3Nw==
+  fingerprint: !binary |-
+    MTFlMzg3ZDdmOTM2NjYzN2Q5NjI0NDgwMzA3MzAwOGY0MDJkZThlOQ==
+  dependencies: []
+- name: postgresql92
+  version: 2
+  sha1: !binary |-
+    MDdiMWY5MzIwODJjYzllNTZkNTk5NmRjOTFlYzZjZTIzNTY4OTZmNw==
+  fingerprint: !binary |-
+    NDQ3NGVlODg1YmU1MTQ2ODBlNjhkY2EzYjg2YzU1M2Y1MWNhZTZiMg==
+  dependencies: []
+- name: postgresql93
+  version: 1
+  sha1: !binary |-
+    YzhjZWY3MWU3NGQ2MTY0NzlkOWZjOTc3MDkxMmRkMjQ5NzZkZDcyMg==
+  fingerprint: !binary |-
+    NzI3ZWM2NzUzZWExNWRhZTg2ZTU4MjBkZDFhMWI4M2U2ZDA2ZmIzYQ==
+  dependencies: []
+- name: postgresql_gateway_ng
+  version: 2
+  sha1: !binary |-
+    ZjgyYWY4MDkzMzEwNzM3NmYyMzY4YzkxZWNkMWJiZmJkNmU1ODQwZg==
+  fingerprint: !binary |-
+    OGQxYjhkNTMxMTkwYzgzNWEwNzVmMWI1Y2RmYzE2MTZhMWYyNDNjNw==
+  dependencies:
+  - postgresql
+  - sqlite
+  - ruby
+- name: postgresql_node_ng
+  version: 2
+  sha1: !binary |-
+    MzAzMTA0YjljNTY3ZThiOTljZTIyYWRjMmEzMjhiYzBhNWM1OTQ3OA==
+  fingerprint: !binary |-
+    YWEyNTY0ZDAyZWI1ZGMwN2E3OTZkMGVhMWM0MmZlYjg2ZDQzZDdmMQ==
+  dependencies:
+  - postgresql
+  - sqlite
+  - ruby
+- name: rabbit_gateway
+  version: 1
+  sha1: !binary |-
+    NzA0ZWQwZTg4YmUxZDcwOTExMTkyZmU4MWVkMzFiZDBmMjc4YjYwOA==
+  fingerprint: !binary |-
+    MWYzOTViODgwN2E1YjViMWJiZDAxZDJhZWRkMzVkNjdmMTkzN2YxMw==
+  dependencies:
+  - sqlite
+  - ruby
+- name: rabbit_node_ng
+  version: 1
+  sha1: !binary |-
+    YzJhNzZiYmMyNzE3YjEyNDRlZGM4MmQzOTUyMTU5NzQ4YzczMGEyNQ==
+  fingerprint: !binary |-
+    NjE4YjhiN2RiZDdiNWFlZmNmZWFhNTIyODhhODllYzYzN2Y5N2UyOQ==
+  dependencies:
+  - sqlite
+  - ruby
+- name: rabbitmq
+  version: 1
+  sha1: !binary |-
+    ZTU4ZmFiZGZmOTUyYTJiNTBiOWU4OWNhNTMzNDJkYTVkNjFiODZmNA==
+  fingerprint: !binary |-
+    ZmQ4MGZkOTJjOWE3NGRhNzQzMjJiY2VjMDQxZTQzNmI5YWM2MzRlMg==
+  dependencies: []
+- name: rabbitmq-2.4
+  version: 1
+  sha1: !binary |-
+    ZDQ0MDRlYzFhNTBlOWJjZDA0NjFhYTNlOWQyODRmZWVhY2M3YjM5NQ==
+  fingerprint: !binary |-
+    ZmQ4MGZkOTJjOWE3NGRhNzQzMjJiY2VjMDQxZTQzNmI5YWM2MzRlMg==
+  dependencies: []
+- name: rabbitmq-2.8
+  version: 1
+  sha1: !binary |-
+    MjJlNjU5ZDhjYzg5Yjg3NmIyMTY0ODY5ZDBlMDE2MGZjYmUwYWIzMw==
+  fingerprint: !binary |-
+    NWYxMWFkMjE2NzJmNGNkNTdiZWMyMjYyZjg0NzA5NDA5ODJjMzY4Yg==
+  dependencies: []
+- name: rabbitmq-3.0
+  version: 1
+  sha1: !binary |-
+    Y2Q2YmJlYTQzNjJiNDZiZGIyYjAzYmYyN2ViOTAzMzIzZGIwNTJjOQ==
+  fingerprint: !binary |-
+    MGMxZGE3OTUwM2Q5YWM5ZGE4MWY1ZGExMjVkMTlmZGFiNzNiZWZiZQ==
+  dependencies: []
+- name: redis22
+  version: 1
+  sha1: !binary |-
+    ODk1ZDE0NGIwOTFlYjg4NzRhN2NiNWRmMmU4YmNkMWQ3Zjc4ODUxNA==
+  fingerprint: !binary |-
+    YmQxYzZmYWQ3YjUwMmNkNGFiNDYwMzBjYzk4ZDY2NjY2ODRhN2NlMQ==
+  dependencies: []
+- name: redis24
+  version: 1
+  sha1: !binary |-
+    ZWEyYTZkN2E5N2E1ODRkYjk0MjBjZjgxYzljZThjMDZjMDczZDdiOQ==
+  fingerprint: !binary |-
+    MDIwZTZiMGU0YWE0NzIwMTcxOTRlZTFmMWM5ZjIwNTgwM2Q3YjI2Nw==
+  dependencies: []
+- name: redis26
+  version: 1
+  sha1: !binary |-
+    ZTMzM2I3MTY5ZjY0MmMyNDE3NDQ5M2I0NDNiN2M4Zjc0YzVhNDQ1Yg==
+  fingerprint: !binary |-
+    NTZlZTdmYmVhODM4MDU5NjRkZmMzNjRiZDE0MmU2ZjRjOTk4MmUyNg==
+  dependencies: []
+- name: redis_gateway
+  version: 1
+  sha1: !binary |-
+    NjgyYWYyZmZlYjY2ZGY5ZTAwYWQ1ZWQ0MzRjZWQ3MDYwMzU5MzNjOA==
+  fingerprint: !binary |-
+    MWVkYzYyZTUzM2EzODQ2NzBhZDJlOWVjNWZhOGY4OGJiOGFmODBmMg==
+  dependencies:
+  - sqlite
+  - ruby
+- name: redis_node_ng
+  version: 1
+  sha1: !binary |-
+    MTBmMWJkN2RhMzk3MWRhNjg5NTY0Mzc3ZGZlMmY3MmEwYjA3ODA1Nw==
+  fingerprint: !binary |-
+    N2U4ODllM2JlOTg2MzVlNTVhYmMxODFlZDQxZTVmOGZhMDRlZGNhZg==
+  dependencies:
+  - sqlite
+  - ruby
+- name: rootfs_lucid64
+  version: 1
+  sha1: !binary |-
+    YWZkOWIwMTMyMGVmNmYxNGEyYmM0MzQzNTIzYzU5MzAyOWI4YzMzMg==
+  fingerprint: !binary |-
+    NzViODBlMmQwNDg2M2E1N2EyM2UxYWRiMTc3ZGI5ODIyM2JjZWRlNA==
+  dependencies: []
+- name: ruby
+  version: 1
+  sha1: !binary |-
+    OTM1NDA3MGQyMDBlNWY3YmQyMGExMTQzM2Q0YjExMzM5NTY1MWE2Mg==
+  fingerprint: !binary |-
+    Yjg0MGYzYWRmMWZmYWRhOGUwMTkyNDA4NDg4MjFkYTMxODM4MmUyMA==
+  dependencies:
+  - libyaml
+- name: ruby_next
+  version: 1
+  sha1: !binary |-
+    NzRkY2FkNjFiMjlhNzg1YTI0NjBhZTZlMjlhNDU4YjE0NWEyZWYxNg==
+  fingerprint: !binary |-
+    M2I3OGM2ZGY1ZTlmMzMzYTRjNTk5ODAyNjVkMzU4ZWVhNDI3YTNkNg==
+  dependencies:
+  - libyaml
+- name: serialization_data_server
+  version: 1
+  sha1: !binary |-
+    MTg2ZWY5YmMwZmJhMjNiMmQ4ZmI0NzlkODIzODlhNjU1NGVkNDM1MA==
+  fingerprint: !binary |-
+    YzhlNmIxZDRiOGI0ZjE4ZjI4NWJmYTRkMGQ2OTA0ZDJkYzkzNzExYw==
+  dependencies:
+  - ruby
+- name: service_utilities
+  version: 1
+  sha1: !binary |-
+    ODAyM2U2NmQ1Zjc0YjY1YjFmNTkxZjQyY2RhMjEzYWM5M2U5MDI4Yg==
+  fingerprint: !binary |-
+    MDFmMGRjZWEzOTNlOGI1NmE0MTlhMDAyZTRjN2NjZDBhYWQ1MmM3OA==
+  dependencies:
+  - ruby
+- name: servicesmgmt
+  version: 1
+  sha1: !binary |-
+    YTc1YzkwOGE3YmRiOTRkNGMxYzJiMDJmZGY1Y2Q0MWIwMjhmMDU0OQ==
+  fingerprint: !binary |-
+    YTZhMmJjYzA5MTRmYmJkODJhYzkzZTE4MjBlNThmYmQxZWI2M2E5NA==
+  dependencies:
+  - ruby
+- name: sqlite
+  version: 1
+  sha1: !binary |-
+    ZmQ0YjI2NTE5MjUyNTMzMzk0YzRlZDAwZGFiNDRmMDAwMjkwYjc2ZA==
+  fingerprint: !binary |-
+    ZTNlOWI2MWY4Y2RjMjYxMDQ4MGMyYWE4NDFlODlkYzBiYjFkYzljOQ==
+  dependencies: []
+- name: swift_service
+  version: 1
+  sha1: !binary |-
+    YmIyMWUwN2Y1ZjA3OTkzMjVmMzMyYTBkOWY1MGYwYWI1YTlmMzBmMg==
+  fingerprint: !binary |-
+    ZjRiNTQwOGRlMTBhYWYwODk4OTc2Y2RlZWRmN2Y1MTYzMmQxNWNkYg==
+  dependencies:
+  - ruby_next
+  - sqlite
+- name: syslog_aggregator
+  version: 1
+  sha1: !binary |-
+    YmY4MmU0NTYyNzk5ZGZhZTBiNTJkOGI4Y2M4NDBmYzVkYmIyNDE3Nw==
+  fingerprint: !binary |-
+    YmNiNjUwNGI3ODUwZTcyMTQwNDkxYzRmYzBjOGJjMzdjODdiMTE3Zg==
+  dependencies: []
+- name: vblob
+  version: 1
+  sha1: !binary |-
+    NTFhZWYyNWJkNWM0YWVkZmM2MWU4MjI1MWZkYThhMTAzMjE3MTQyZA==
+  fingerprint: !binary |-
+    ZDZmNzQzM2IxOThmMjlkMTc5NzAzNTE5YzNjZGY3MzBhOGJkZDdlMw==
+  dependencies: []
+- name: vblob_gateway
+  version: 1
+  sha1: !binary |-
+    Zjg5M2I4NmE1YzgxNzQ3NDViMGQ1NmU3MDA0NWRkNjgzZmJkYWY3OA==
+  fingerprint: !binary |-
+    YTAwNmY3OWY4YjhiYTIxYmJjM2NiMTZmZGU0ZTFkNmRhM2I3YmZkYw==
+  dependencies:
+  - ruby
+  - sqlite
+- name: vblob_node_ng
+  version: 1
+  sha1: !binary |-
+    NzY5NDZkYzJkMmMwN2JlOGYwNTQ1MTI1Yjg3ZjI0M2Y2NTZlYzk1Mg==
+  fingerprint: !binary |-
+    MmJiYWRkNTA2Njg0Zjg4MDg5ZDFmNTgwNDk0NjQ3ZDIyM2Y4MTg0NQ==
+  dependencies:
+  - sqlite
+  - ruby
+jobs:
+- name: atmos_gateway
+  version: 1
+  fingerprint: !binary |-
+    NmI3ZGVlOWNlNDk3ODUyYzlhMTk4ZDIxMGJiOGRmN2RhMzFmZmJjYw==
+  sha1: !binary |-
+    YjhkYTg4Mzc2N2VlOGE0YTc1YmRkMWRkZWMzNmFjODFhOTc4MjhhMQ==
+- name: backup_manager
+  version: 1
+  fingerprint: !binary |-
+    MmNkYmMxNmRjNDc1ZjU5NjY2YTIxZGYzYWU3NzRlMDkzNWQ2NWE0MA==
+  sha1: !binary |-
+    ZDQyZGI5MjFkMWVlZjY1YWU1OGQ4YjNkYzc2N2FjNzQ4ODRlYzI0NA==
+- name: elasticsearch_gateway
+  version: 2
+  fingerprint: !binary |-
+    MTQwYzM1ODc3Njk2NjlmM2M3OTJjYjA4NDc3ZTM0YTc2OTRlOTg5OA==
+  sha1: !binary |-
+    YWU0NzMzODQ3MTY2ZjNhMWZmOWI0ZjcxMDY4N2I3ODE1ZWYwMjdhNA==
+- name: elasticsearch_node
+  version: 1
+  fingerprint: !binary |-
+    YTZlMzc2OGEzZWRmZGRjZDM0YmNmMjA1ZjU4YTk2MjhlYzc0ZmI3Yw==
+  sha1: !binary |-
+    NGFkYzE0MWQ0MWFiMjFjY2UzNDgzNTMzMGVmZTc3NmY1ZmYyMmI0NQ==
+- name: filesystem_gateway
+  version: 1
+  fingerprint: !binary |-
+    ODliOWI1Mzc0ZWI4NzJkMzViYzQ5MWY2OTQ4MjEyNzAzNDViM2M0ZQ==
+  sha1: !binary |-
+    NTc2NmUzNGQyNTM1MGM1OTg4ZmJlMWUzMDZhYTQyMTJkMDk5NGZjMA==
+- name: memcached_gateway
+  version: 2
+  fingerprint: !binary |-
+    NDA3NGQ2MzRlZmU0ZjYwYzI4NDdhZmI4MTkxZTVmZjAzZTI4NDM1Mg==
+  sha1: !binary |-
+    YTRjMmRhZGY3ZTJlMWM5NzkxZTA5YzJiMDRhYTM5NmVkYWIzN2E1MA==
+- name: memcached_node_ng
+  version: 2
+  fingerprint: !binary |-
+    NjhkMmQwOGYzMDIyNWE0NTI2OWJlMGE4MmIzNzg4YTNhMTBhODkxNQ==
+  sha1: !binary |-
+    NDIxNzgxZTlhN2MzNjdiNDlkZTY2ZTA0OWQ4NGU3ZmMzOGQyMzFkNw==
+- name: mongodb_gateway
+  version: 1
+  fingerprint: !binary |-
+    YmVjYzA5YTUyZThmMWMxZTAyYmVkZTU2NDNlNjMyNmFlYTc4OWU0MA==
+  sha1: !binary |-
+    NjBiZGQ2ZGI2ZTRmYTZmOWJlN2NhNTAwYWVlZTFhY2ViOTUyOGU4MQ==
+- name: mongodb_node_ng
+  version: 1
+  fingerprint: !binary |-
+    ZDAzYTgyNGM5M2IxNzljNjRhODNjZWFiZWQzZWQ2YThjOTk1YjQ1ZQ==
+  sha1: !binary |-
+    YmYyOGYxZTRmNjdkMGI5NjYzNTFjYjJiMzg1Nzk5ZTE2YTljODk1Nw==
+- name: oauth2_gateway
+  version: 1
+  fingerprint: !binary |-
+    NWQwNmJlNzgwYjA0MjVkYjJjMThkMTAxNTM5ZDJmMGM0MzA1N2U2Ng==
+  sha1: !binary |-
+    M2JkMzhjMmY5YTYwNDE0NGUzZTMxNzVlMTAyZjQzZmFhNGYzZTg2NQ==
+- name: postgresql_gateway_ng
+  version: 2
+  fingerprint: !binary |-
+    MjRjZGI1MDlmZjg0ZGZiYzYzMmUzNDEzNmMwMjk0ODc5Mzc5N2FhZA==
+  sha1: !binary |-
+    NTVmMDQ4MWQxZTNmNGZjN2NiYzQzM2M4NWIzMDUwZDJkZjAxM2EzZQ==
+- name: postgresql_node_ng
+  version: 2
+  fingerprint: !binary |-
+    M2Y2ZTNkMzM2MjdhNTUwNTJkYjg0ZTc0NTc2NDY0ODYxMTM4NTJmOA==
+  sha1: !binary |-
+    YTEwNjQxNmY3YWI4NDQ2M2IxMzhlZTY4M2Y1YzhjZDZhOGFkZjQ5Zg==
+- name: rabbit_gateway
+  version: 1
+  fingerprint: !binary |-
+    ZDJkZGNhZDVjNWZiZjdjYmUyNmZlM2MwZmVlYzI4ZDIwNzAyMGQ0Mg==
+  sha1: !binary |-
+    Mjk3MDY4ODQ5Y2Q1NzNlMjQ0ZTI0NmQ5ODliMmI5NjllYWQ4Yjk5Mg==
+- name: rabbit_node_ng
+  version: 1
+  fingerprint: !binary |-
+    MmIxNzAwNDhjZjE3Y2Q0OGYzNGIxMmExMmQxZmRlOTUyZjQ4YWRjMw==
+  sha1: !binary |-
+    MTI3MzJmZThjMTU2MDViMzQ3ODVkMGFhYTQ0NmQzMjg5YWE3N2QzMg==
+- name: redis_gateway
+  version: 1
+  fingerprint: !binary |-
+    NWIxNGUwMTI4MTk3NmQ5Mzk5MDExYzViZjYzNTcwYzE1MWVkMWE2Mg==
+  sha1: !binary |-
+    MWFhZjljZWY4NjA5ZWQ2ZmFhNjA2NjI5MjY5OGJiNTgzY2FmOTZlOA==
+- name: redis_node_ng
+  version: 1
+  fingerprint: !binary |-
+    MTdjZWY4ZWRkMWViN2YwNjg5MDFjODI5ZDUyNjBjYjQ5YjAwNTZmNA==
+  sha1: !binary |-
+    ODAxMzBhZTU5NDYxMWY5NGM5MTM1NzcyNTA2NmVmNzg4ZjJhMjFlZA==
+- name: serialization_data_server
+  version: 1
+  fingerprint: !binary |-
+    MGRhZTI2ODUxM2VkZWE2NTQ1YjFkOWRmNDU3NzhmNTliOTc5Y2M0MA==
+  sha1: !binary |-
+    ZDk3ZTkxYjI5NzUzZDhhMTEzOTcxYjIyNWY5NDNjNWI3ZWY1NTdhOQ==
+- name: service_utilities
+  version: 1
+  fingerprint: !binary |-
+    ZjY2NjM2Y2E3ZWE4ZmVkYjJiOTc4NTE5NzY5MzdlMjhkNzU3MDVjNQ==
+  sha1: !binary |-
+    ZGQzZjQxOGRmOGVjNTgyZGUwM2JiMGMyNDhkMjE2MGYxYTUyY2Q3NQ==
+- name: servicesmgmt
+  version: 1
+  fingerprint: !binary |-
+    YWE1MDVmOGQ1ZWI4YmU3ZDcwYWY0YTFmM2ZiMTdmNWU4MDFiNGRkNA==
+  sha1: !binary |-
+    NzNmNzJmZDEyOGJiNjBkN2NhOWVkYWQyODdiMTI5OTQ3ZmU2YjkzNQ==
+- name: swift_gateway
+  version: 1
+  fingerprint: !binary |-
+    ZjA3ZDAxNzQyYzUyZWNiYzc5MDk4NTZhNTNkYzU0MTg2YzYzODQyOQ==
+  sha1: !binary |-
+    ZjZmZGMwZTNmMzBhMjE2NzZjYzAwM2Q2NGM5YmRkNzYzNWJmNzU5Mw==
+- name: swift_node
+  version: 1
+  fingerprint: !binary |-
+    ZTgyOGMyODZkODY2MWRiODM4NWQxYTgwYzAyMTc2ZTU4ZDEzYmE1Mw==
+  sha1: !binary |-
+    NTM4MTlhODQyZWQwMGI3M2YzMjA5MTA3YWIzNWI5ZjhlYTEyZDk1OQ==
+- name: vblob_gateway
+  version: 1
+  fingerprint: !binary |-
+    M2Y4ZjE1MzQ0NDRlMmZjNTA5Mzc5ZDFlNmVlNzRhMTJkMzcyZWQ2NA==
+  sha1: !binary |-
+    ZWY4N2FhM2MwYWI4MmIxNjE4MTUzYjNlMGIyZDMxMzZlMWU3NTdiNg==
+- name: vblob_node_ng
+  version: 2
+  fingerprint: !binary |-
+    MWZiMDcwMmYwMjNlMGQyNjNlOWMwNzNkMGFlMTg3NWRjYjRhODJmYQ==
+  sha1: !binary |-
+    ZTA5OWNhYmQ2OTJkMWE4ZmY3MTBkZjFkNDk2ZDQ4MzMxOGI4MTJhNQ==
+commit_hash: 59465dc6
+uncommitted_changes: true
+name: cf-services-contrib
+version: 2
