@@ -383,5 +383,6 @@ properties:
         hp_use_upass_auth_style: true
         hp_avl_zone: 'nova'
         hp_auth_version: "v2"
+        self_signed_ssl: false
 
 
