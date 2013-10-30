@@ -383,5 +383,6 @@ properties:
         hp_use_upass_auth_style: true
         hp_avl_zone: 'nova'
         hp_auth_version: "v2"
+        hp_service_type: "Object Storage"
 
 
