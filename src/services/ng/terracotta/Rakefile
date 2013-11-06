@@ -1,6 +1,7 @@
 require 'rake'
 require 'yaml'
 require 'yajl'
+Dir.glob(File.expand_path("../lib/tasks/*", __FILE__)).each { |f| require f }
 
 desc "Run specs"
 task "spec" => ["test:spec"]

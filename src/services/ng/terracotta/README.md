@@ -33,7 +33,7 @@ Install Vagrant version 1.1 or higher.
 
 ```shell
 # initialize the test VM
-cd ~/workspace/cf-services-contrib-release
+cd ~/workspace/cf-services-contrib-release/src/services/terracotta
 vagrant up
 
 # shell into the VM
