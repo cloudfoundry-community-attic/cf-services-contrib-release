@@ -374,6 +374,7 @@ properties:
         openstack_username: "username"
         openstack_api_key: "password"
         openstack_auth_url:  'https://auth.example.de:5000/v2.0/tokens'
+        openstack_service_type: ['identity']
       storage:
         provider: 'HP'
         hp_access_key: "yourtenant"
@@ -384,5 +385,4 @@ properties:
         hp_avl_zone: 'nova'
         hp_auth_version: "v2"
         self_signed_ssl: false
-
-
+        hp_service_type: "Object Storage"
