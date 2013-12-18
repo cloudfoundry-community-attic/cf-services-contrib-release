@@ -22,7 +22,6 @@ gem 'warden-protocol', :require => ['warden/protocol'], :git => 'git://github.co
 group :test do
   gem "rake"
   gem "rspec"
-  gem "rcov"
   gem "simplecov"
   gem "simplecov-rcov"
   gem "ci_reporter"
