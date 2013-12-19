@@ -149,7 +149,6 @@ GEM
       dm-core (~> 1.2.0)
     do_sqlite3 (0.10.13)
       data_objects (= 0.10.13)
-    docile (1.1.1)
     em-http-request (1.1.1)
       addressable (>= 2.3.4)
       cookiejar
@@ -206,6 +205,7 @@ GEM
     rack-protection (1.5.1)
       rack
     rake (10.1.0)
+    rcov (1.0.0)
     redis (3.0.6)
     redis-namespace (1.4.1)
       redis (~> 3.0.4)
@@ -227,13 +227,6 @@ GEM
     rspec-mocks (2.14.4)
     ruby-hmac (0.4.0)
     rubyzip (0.9.9)
-    simplecov (0.8.2)
-      docile (~> 1.1.0)
-      multi_json
-      simplecov-html (~> 0.8.0)
-    simplecov-html (0.8.0)
-    simplecov-rcov (0.2.3)
-      simplecov (>= 0.4.1)
     sinatra (1.4.4)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -276,13 +269,12 @@ DEPENDENCIES
   eventmachine
   fadvise
   json
-  nats (>= 0.5.0.beta.12)
+  nats
   pg
   rake
+  rcov
   rspec
   ruby-hmac
-  simplecov
-  simplecov-rcov
   sinatra
   thin
   uuidtools
