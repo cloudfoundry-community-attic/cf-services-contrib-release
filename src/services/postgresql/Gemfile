@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "nats", ">= 0.5.0.beta.12"
+gem "nats"
 gem "datamapper", ">= 0.10.2"
 gem "do_sqlite3", :require => nil
 gem "dm-sqlite-adapter"
@@ -22,7 +22,6 @@ gem 'warden-protocol', :require => ['warden/protocol'], :git => 'git://github.co
 group :test do
   gem "rake"
   gem "rspec"
-  gem "simplecov"
-  gem "simplecov-rcov"
+  gem "rcov"
   gem "ci_reporter"
 end
