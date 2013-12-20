@@ -61,7 +61,7 @@ GIT
     warden-client (0.0.7)
       warden-protocol
     warden-protocol (0.0.9)
-      beefcakeb
+      beefcake
 
 GEM
   remote: http://rubygems.org/
@@ -279,7 +279,6 @@ DEPENDENCIES
   nats
   pg
   rake
-  rcov
   rspec
   ruby-hmac
   simplecov
