@@ -3,7 +3,7 @@ name: postgresql_gateway_ng
 dependencies:
 - postgresql
 - sqlite
-- ruby
+- ruby_next
 files:
 - services/postgresql/**/*
 - pkg_utils/*
