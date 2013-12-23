@@ -3,7 +3,7 @@ name: postgresql_node_ng
 dependencies:
 - postgresql
 - sqlite
-- ruby
+- ruby_next
 files:
 - services/postgresql/**/*
 - services_warden/warden/**/*

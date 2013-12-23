@@ -31,6 +31,8 @@ service:
   unique_id: <%= unique_id %>
   version: "9.0"
   description: 'PostgreSQL database'
+  provider: core
+  provider_name: 'Core'
   plans:
   <% for plan in plan_mgmt.fields.each %>
     <% plan_description = plan_mgmt.send(plan.to_sym).description || "#{plan} plan" %>
@@ -38,6 +40,7 @@ service:
     <%= "'#{plan}':" %>
       description: <%= "'#{plan_description}'" %>
       unique_id: "<%= plan %>-<%= unique_id %>"
+      extra: ''
       free: <%= !plan_free_flag.nil? && plan_free_flag.to_s || "true" %>
   <% end %>
   default_plan: '<%= gateway.default_plan || 'free' %>'
