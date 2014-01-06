@@ -2,7 +2,7 @@
 name: mongodb_node_ng
 dependencies:
 - sqlite
-- ruby
+- ruby_next
 files:
 - services/ng/mongodb/**/*
 - services_warden/warden/**/*
