@@ -4,10 +4,10 @@ set -e
 cp -a * ${BOSH_INSTALL_TARGET}
 
 (
-  export PATH=/var/vcap/packages/ruby_next/bin:$PATH
+  export PATH=/var/vcap/packages/ruby/bin:$PATH
 
   cd ${BOSH_INSTALL_TARGET}/services/ng/mongodb
-  bundle_cmd=/var/vcap/packages/ruby_next/bin/bundle
+  bundle_cmd=/var/vcap/packages/ruby/bin/bundle
   $bundle_cmd config build.do_sqlite3 --with-sqlite3-dir=/var/vcap/packages/sqlite
   $bundle_cmd install --local --deployment
 
