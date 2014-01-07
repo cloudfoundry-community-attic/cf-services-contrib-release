@@ -1,7 +1,7 @@
 ---
 name: mongodb_gateway
 dependencies:
-- ruby
+- ruby_next
 - sqlite
 files:
 - services/ng/mongodb/**/*
