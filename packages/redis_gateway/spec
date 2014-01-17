@@ -2,7 +2,7 @@
 name: redis_gateway
 dependencies:
 - sqlite
-- ruby
+- ruby_next
 files:
 - services/ng/redis/**/*
 - pkg_utils/*
