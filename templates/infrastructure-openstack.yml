@@ -1,0 +1,35 @@
+meta:
+
+  stemcell:
+    name: bosh-openstack-kvm-ubuntu
+    version: latest
+
+compilation:
+  cloud_properties:
+    instance_type: m1.medium
+
+networks: (( merge ))
+
+resource_pools:
+  - name: gateway_z1
+    cloud_properties:
+      instance_type: m1.medium
+
+  - name: node_z1
+    cloud_properties:
+      instance_type: m1.large
+
+jobs:
+  - name: mongodb_gateway
+    instances: 1
+    networks:
+      - name: services1
+        static_ips: (( static_ips(0) ))
+
+  - name: mongodb_node
+    instances: 2
+    persistent_disk: 8192
+    networks:
+      - name: services1
+        static_ips: (( static_ips(1, 2) ))
+
