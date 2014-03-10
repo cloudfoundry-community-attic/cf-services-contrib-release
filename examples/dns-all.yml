@@ -368,6 +368,7 @@ properties:
     default_version: "1.0"
     name_suffix: 'a9s.eu'
     swift_operator_role_id: '2021022271a74ecdb94ceeeeeae657ad'
+    admin_reseller_role_id: '3032033371a74ecdb94asedt4df896bj'
     fog:
       identity:
         provider: 'OpenStack'
