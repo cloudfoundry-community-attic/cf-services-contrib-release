@@ -3,6 +3,7 @@
 
 # This is the OpenStack ID of your swift operator role
 :swift_operator_role_id: <%= properties.swift_node.swift_operator_role_id %>
+:admin_reseller_role_id: <%= properties.swift_node.admin_reseller_role_id %>
 
 :identity:
    :provider: <%= properties.swift_node.fog.identity.provider || 'OpenStack' %>
