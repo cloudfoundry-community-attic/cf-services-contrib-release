@@ -33,13 +33,25 @@ $ gem install bosh_cli -v "~> 1.5.0.pre" --source http://s3.amazonaws.com/bosh-j
 
 ## Usage
 
-First, upload the latest final release to your bosh:
+To use this bosh release, first upload it to your bosh:
 
 ```
-$ bosh upload release releases/cf-services-contrib-2.yml
+bosh target BOSH_HOST
+git clone https://github.com/cloudfoundry-community/nats-service-boshrelease.git
+cd nats-service-boshrelease
+bosh upload release releases/nats-service-1.yml
 ```
 
-Then create a deployment file to describe the services you want to activate and support. Say, call it `cf-services-contrib.yml`.
+### Bosh-lite
+For [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can quickly create a deployment manifest:
+
+```
+templates/make_manifest warden
+bosh -n deploy
+```
+
+### Other
+Create a deployment file to describe the services you want to activate and support. Say, call it `cf-services-contrib.yml`.
 
 See the [examples/dns-all.yml](https://github.com/cloudfoundry/cf-services-contrib-release/blob/master/examples/dns-all.yml) for an example deployment file that runs all the services listed above.
 
@@ -139,4 +151,3 @@ Questions about the Cloud Foundry Open Source Project can be directed to our Goo
 ## File a bug
 
 Bugs can be filed using [Github Issues](https://github.com/cloudfoundry/cf-services-contrib-release/issues).
-
