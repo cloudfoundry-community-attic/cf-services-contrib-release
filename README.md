@@ -37,9 +37,9 @@ To use this bosh release, first upload it to your bosh:
 
 ```
 bosh target BOSH_HOST
-git clone https://github.com/cloudfoundry-community/nats-service-boshrelease.git
-cd nats-service-boshrelease
-bosh upload release releases/nats-service-1.yml
+git clone https://github.com/cloudfoundry-community/cf-services-contrib-release.git
+cd cf-services-contrib-release
+bosh upload release releases/cf-services-contrib-4.yml
 ```
 
 ### Bosh-lite
