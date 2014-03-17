@@ -51,6 +51,19 @@ jobs:
       - name: services1
         static_ips: (( static_ips(20) ))
 
+  - name: rabbit_gateway
+    instances: 1
+    networks:
+      - name: services1
+        static_ips: (( static_ips(1) ))
+
+  - name: rabbit_node
+    instances: 1
+    persistent_disk: 8192
+    networks:
+      - name: services1
+        static_ips: (( static_ips(21) ))
+
 compilation:
   cloud_properties:
     name: random
