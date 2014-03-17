@@ -1,0 +1,30 @@
+networks: (( merge ))
+
+meta:
+  release:
+    name: cf-services-contrib
+
+jobs:
+  - name: mongodb_gateway
+    release: (( meta.release.name ))
+    template:
+      - mongodb_gateway
+    instances: 1
+    resource_pool: gateway_z1
+    networks:
+      - name: cf1
+        static_ips: (( merge ))
+
+  - name: mongodb_node
+    release: (( meta.release.name ))
+    template: mongodb_node_ng
+    instances: 1
+    resource_pool: node_z1
+    persistent_disk: 10000
+    networks:
+      - name: cf1
+        static_ips: (( merge ))
+    properties:
+      plan: default
+
+

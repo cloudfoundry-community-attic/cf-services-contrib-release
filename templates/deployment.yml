@@ -1,0 +1,48 @@
+meta:
+  # override this in your stub to set the environment name,
+  # which is used for the deployment name
+  #
+  # i.e. cf-tabasco
+  environment: ~
+
+  stemcell:
+    name: bosh-aws-xen-ubuntu
+    version: latest
+
+name: (( meta.environment ))
+
+director_uuid: (( merge ))
+
+releases: (( merge ))
+
+networks: (( merge ))
+
+jobs: (( merge ))
+
+properties: (( merge ))
+
+compilation:
+  workers: 3
+  network: cf1
+  reuse_compilation_vms: true
+  cloud_properties: (( merge ))
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 30000-600000
+  update_watch_time: 5000-600000
+  serial: true
+
+resource_pools:
+  - name: gateway_z1
+    network: cf1
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))
+
+  - name: node_z1
+    network: cf1
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))

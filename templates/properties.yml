@@ -1,0 +1,94 @@
+meta:
+  environment: ~
+
+properties:
+  networks:
+    apps: cf1
+    management: cf1
+
+  cc:
+    srv_api_uri: (( merge ))
+
+  uaa_client_id: "cf"
+  uaa_endpoint: (( merge ))
+  uaa_client_auth_credentials:
+    username: (( merge || "admin" ))
+    password: (( merge || "admin" ))
+
+
+  nats:
+    address: (( merge ))
+    port: (( merge || "4222" ))
+    user: (( merge || "nats" ))
+    password: (( merge || "nats" ))
+    authorization_timeout: 5
+
+  service_plans:
+    mongodb:
+      default:
+        description: "Developer, shared VM, 250MB storage, 10 connections"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+          max_clients: 10
+          quota_files: 4
+          quota_data_size: 240
+          enable_journaling: true
+          backup:
+            enable: true
+          lifecycle:
+            enable: true
+            serialization: enable
+            snapshot:
+              quota: 1
+
+    postgresql:
+      default:
+        description: "Developer, 250MB storage, 10 connections"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+          max_clients: 10
+          quota_files: 4
+          quota_data_size: 240
+          enable_journaling: true
+          backup:
+            enable: false
+          lifecycle:
+            enable: false
+            serialization: enable
+            snapshot:
+              quota: 1
+
+  mongodb_gateway:
+    token: (( merge ))
+    default_plan: default
+    supported_versions: ["2.2"]
+    version_aliases:
+      current: "2.2"
+    cc_api_version: v2
+  mongodb_node:
+    supported_versions: ["2.2"]
+    default_version: "2.2"
+    max_tmp: 900
+    loopback_required: true
+
+  postgresql_gateway:
+    token: (( merge ))
+    default_plan: default
+    supported_versions: ["9.3"]
+    version_aliases:
+      current: "9.3"
+    cc_api_version: v2
+  postgresql_node:
+    supported_versions: ["9.3"]
+    default_version: "9.3"
+    max_tmp: 900
+    password: (( merge ))
+
