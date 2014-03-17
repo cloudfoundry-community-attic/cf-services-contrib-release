@@ -66,6 +66,27 @@ properties:
             snapshot:
               quota: 1
 
+    rabbit:
+      default:
+        description: "Developer, 250MB storage, 100 connections"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+          max_clients: 100
+          quota_files: 4
+          quota_data_size: 240
+          enable_journaling: true
+          backup:
+            enable: false
+          lifecycle:
+            enable: false
+            serialization: enable
+            snapshot:
+              quota: 1
+
   mongodb_gateway:
     token: (( merge ))
     default_plan: default
@@ -91,4 +112,16 @@ properties:
     default_version: "9.3"
     max_tmp: 900
     password: (( merge ))
+
+  rabbit_gateway:
+    token: (( merge ))
+    default_plan: "default"
+    supported_versions: ["3.0"]
+    version_aliases:
+      current: "3.0"
+    cc_api_version: v2
+  rabbit_node:
+    supported_versions: ["3.0"]
+    default_version: "3.0"
+    max_tmp: 900
 

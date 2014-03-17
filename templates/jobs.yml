@@ -5,24 +5,24 @@ meta:
     name: cf-services-contrib
 
 jobs:
-  - name: mongodb_gateway
+  - name: rabbit_gateway
     release: (( meta.release.name ))
     template:
-      - mongodb_gateway
+      - rabbit_gateway
     instances: 1
     resource_pool: gateway_z1
     networks:
-      - name: cf1
+      - name: services1
         static_ips: (( merge ))
 
-  - name: mongodb_node
+  - name: rabbit_node
     release: (( meta.release.name ))
-    template: mongodb_node_ng
+    template: rabbit_node_ng
     instances: 1
     resource_pool: node_z1
     persistent_disk: 10000
     networks:
-      - name: cf1
+      - name: services1
         static_ips: (( merge ))
     properties:
       plan: default
