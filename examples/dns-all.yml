@@ -177,10 +177,6 @@ properties:
           quota_files: 4
           quota_data_size: 240
           enable_journaling: true
-          bandwidth_quotas:
-            per_second: 1
-            per_day: 10
-            time_window: 86400          
           backup:
             enable: true
           lifecycle:
@@ -275,6 +271,10 @@ properties:
           quota_files: 4
           quota_data_size: 240
           enable_journaling: true
+          bandwidth_quotas:
+            per_second: 1
+            per_day: 10
+            time_window: 86400          
           backup:
             enable: false
           lifecycle:
