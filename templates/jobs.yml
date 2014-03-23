@@ -51,4 +51,29 @@ jobs:
     properties:
       plan: default
 
+  - name: postgres_gateway
+    release: (( meta.release.name ))
+    template:
+      - postgresql_gateway_ng
+    instances: (( merge ))
+    resource_pool: gateway_z1
+    networks:
+      - name: services1
+        static_ips: (( merge ))
+
+  - name: postgres_node
+    release: (( meta.release.name ))
+    template: 
+      - postgresql_node_ng
+    instances: (( merge ))
+    resource_pool: node_z1
+    persistent_disk: 10000
+    networks:
+      - name: services1
+        static_ips: (( merge ))
+    properties:
+      postgresql_node:
+        plan: default
+
+
 
