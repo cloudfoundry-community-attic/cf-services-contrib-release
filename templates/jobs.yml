@@ -9,7 +9,7 @@ jobs:
     release: (( meta.release.name ))
     template:
       - mongodb_gateway
-    instances: 1
+    instances: (( merge ))
     resource_pool: gateway_z1
     networks:
       - name: services1
@@ -19,7 +19,7 @@ jobs:
     release: (( meta.release.name ))
     template: 
       - mongodb_node_ng
-    instances: 1
+    instances: (( merge ))
     resource_pool: node_z1
     persistent_disk: 10000
     networks:
@@ -32,7 +32,7 @@ jobs:
     release: (( meta.release.name ))
     template:
       - rabbit_gateway
-    instances: 1
+    instances: (( merge ))
     resource_pool: gateway_z1
     networks:
       - name: services1
@@ -42,7 +42,7 @@ jobs:
     release: (( meta.release.name ))
     template: 
       - rabbit_node_ng
-    instances: 1
+    instances: (( merge ))
     resource_pool: node_z1
     persistent_disk: 10000
     networks:
