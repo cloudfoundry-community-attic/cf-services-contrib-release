@@ -39,39 +39,39 @@ properties:
 
 jobs:
   - name: mongodb_gateway
-    instances: (( merge || "1" ))
+    instances: (( merge || 1 ))
     networks:
       - name: services1
         static_ips: (( static_ips(0) || [] ))
 
   - name: mongodb_node
-    instances: (( merge || "1" ))
+    instances: (( merge || 1 ))
     persistent_disk: 8192
     networks:
       - name: services1
         static_ips: (( static_ips(20) || [] ))
 
   - name: rabbit_gateway
-    instances: (( merge || "1" ))
+    instances: (( merge || 1 ))
     networks:
       - name: services1
         static_ips: (( static_ips(1) || [] ))
 
   - name: rabbit_node
-    instances: (( merge || "1" ))
+    instances: (( merge || 1 ))
     persistent_disk: 8192
     networks:
       - name: services1
         static_ips: (( static_ips(21) || [] ))
 
   - name: postgres_gateway
-    instances: (( merge || "1" ))
+    instances: (( merge || 1 ))
     networks:
       - name: services1
         static_ips: (( static_ips(2) || [] ))
 
   - name: postgres_node
-    instances: (( merge || "1" ))
+    instances: (( merge || 1 ))
     persistent_disk: 8192
     networks:
       - name: services1
