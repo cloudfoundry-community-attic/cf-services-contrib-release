@@ -87,6 +87,27 @@ properties:
             snapshot:
               quota: 1
 
+    redis:
+      default:
+        description: "Developer, 250MB storage, 10 connections"
+        free: true
+        job_management:
+          high_water: 230
+          low_water: 20
+        configuration:
+          capacity: 125
+          max_clients: 10
+          quota_files: 4
+          quota_data_size: 240
+          enable_journaling: true
+          backup:
+            enable: false
+          lifecycle:
+            enable: false
+            serialization: enable
+            snapshot:
+              quota: 1
+
   mongodb_gateway:
     token: (( merge ))
     default_plan: default
@@ -125,3 +146,14 @@ properties:
     default_version: "3.0"
     max_tmp: 900
 
+  redis_gateway:
+    token: (( merge ))
+    default_plan: default
+    supported_versions: ["2.6"]
+    version_aliases:
+      current: "2.6"
+    cc_api_version: v2
+  redis_node:
+    supported_versions: ["2.6"]
+    default_version: "2.6"
+    max_tmp: 900

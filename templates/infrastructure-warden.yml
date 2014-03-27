@@ -33,6 +33,9 @@ properties:
   rabbit_gateway:
     token: c1oudc0w
 
+  redis_gateway:
+    token: c1oudc0w
+
   # Loopback devices are not supported on when running inside a warden container
   mongodb_node:
     loopback_required: false
@@ -77,6 +80,18 @@ jobs:
       - name: services1
         static_ips: (( static_ips(22) || [] ))
 
+  - name: redis_gateway
+    instances: (( merge || 1 ))
+    networks:
+      - name: services1
+        static_ips: (( static_ips(3) || [] ))
+
+  - name: redis_node
+    instances: (( merge || 1 ))
+    persistent_disk: 8192
+    networks:
+      - name: services1
+        static_ips: (( static_ips(23) || [] ))
 
 compilation:
   cloud_properties:
