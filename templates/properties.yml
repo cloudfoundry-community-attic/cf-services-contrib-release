@@ -120,6 +120,7 @@ properties:
     default_version: "2.2"
     max_tmp: 900
     loopback_required: true
+    m_actions: ["restart"]
 
   postgresql_gateway:
     token: (( merge ))
@@ -133,6 +134,7 @@ properties:
     default_version: "9.3"
     max_tmp: 900
     password: (( merge ))
+    m_actions: ["restart"]
 
   rabbit_gateway:
     token: (( merge ))
@@ -145,6 +147,7 @@ properties:
     supported_versions: ["3.0"]
     default_version: "3.0"
     max_tmp: 900
+    m_actions: ["restart"]
 
   redis_gateway:
     token: (( merge ))
@@ -157,3 +160,4 @@ properties:
     supported_versions: ["2.6"]
     default_version: "2.6"
     max_tmp: 900
+    m_actions: ["restart"]
