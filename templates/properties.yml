@@ -95,6 +95,7 @@ properties:
           high_water: 230
           low_water: 20
         configuration:
+          persistent: true
           capacity: 125
           max_clients: 10
           quota_files: 4
