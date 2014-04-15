@@ -33,10 +33,16 @@ greedy_level=<%= properties.mongodb_node.tmp_greedy_level || 1 %>
 
 case $1 in
   create)
+    loopback_required=<%= p("mongodb_node.loopback_required", true) %>
     will_create_file=0
     will_setup_loop=0
     will_create_dir=0
     # check whether the mongodb_tmp_loop has been created, if not, try to create it
+
+    if [ "$loopback_required" == "false" ]; then
+      echo "Skipping creation of loopback dir for mongodb tmp; using local filesystem"
+      exit 0
+    fi
 
     if [ ! -f "$mongodb_tmp_loop_file" ]; then
       create_tmp_file $mongodb_tmp_size $mongodb_tmp_loop_file
