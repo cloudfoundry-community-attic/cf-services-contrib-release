@@ -3,7 +3,7 @@
 set -e
 
 infrastructure=$1
-template_prefix="nats-service"
+template_prefix="contrib-services"
 
 if [ "$infrastructure" != "openstack-nova" ] && \
     [ "$infrastructure" != "aws-ec2" ] && \
