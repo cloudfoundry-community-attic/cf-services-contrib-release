@@ -20,6 +20,10 @@ describe "service life cycles" do
       expect(app_api.post(path: path, body: value).body).to eq value
       expect(app_api.get(path: path).body).to eq value
     end
+
+    after do
+      delete_service(service)
+    end
   end
 
   after(:all) do
