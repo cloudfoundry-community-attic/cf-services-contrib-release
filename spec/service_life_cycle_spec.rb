@@ -1,5 +1,5 @@
 describe "service life cycles" do
-  SERVICES = %w(postgresql)
+  SERVICES = %w(postgresql mongodb)
 
   let(:app_api) { @app_api ||= Excon.new(app_url) }
   let(:value) { "bar" }
@@ -27,6 +27,6 @@ describe "service life cycles" do
   end
 
   after(:all) do
-    delete_space
+  #  delete_space
   end
 end

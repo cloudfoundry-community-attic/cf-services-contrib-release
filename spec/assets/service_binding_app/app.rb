@@ -2,6 +2,7 @@ require 'sinatra'
 require 'cf-app-utils'
 
 require_relative 'services/postgresql'
+require_relative 'services/mongodb'
 
 get '/env' do
   ENV['VCAP_SERVICES']
