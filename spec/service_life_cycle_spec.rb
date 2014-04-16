@@ -1,5 +1,5 @@
 describe "service life cycles" do
-  SERVICES = %w(postgresql mongodb redis)
+  SERVICES = %w(postgresql mongodb redis rabbitmq)
 
   let(:app_api) { @app_api ||= Excon.new(app_url) }
   let(:key) { SecureRandom.hex(5) }

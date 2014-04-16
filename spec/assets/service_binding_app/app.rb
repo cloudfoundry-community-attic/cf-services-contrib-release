@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'cf-app-utils'
 
-%w(postgresql mongodb redis).each do |service|
+%w(postgresql mongodb redis rabbitmq).each do |service|
   require_relative "services/#{service}"
 end
 

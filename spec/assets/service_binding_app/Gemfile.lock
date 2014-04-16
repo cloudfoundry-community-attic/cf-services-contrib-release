@@ -1,7 +1,10 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    amq-protocol (1.9.2)
     bson (1.10.0)
+    bunny (1.2.1)
+      amq-protocol (>= 1.9.2)
     cf-app-utils (0.2)
     mongo (1.10.0)
       bson (~> 1.10.0)
@@ -20,6 +23,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bunny
   cf-app-utils
   mongo
   pg

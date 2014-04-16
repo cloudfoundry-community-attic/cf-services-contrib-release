@@ -5,7 +5,7 @@ task :setup do
   sh "cf create-space contrib -o services"
   sh "cf target -o services -s contrib"
 
-  %w(mongodb postgresql redis).each do |service|
+  %w(mongodb postgresql redis rabbitmq).each do |service|
     create_service_auth_token(service, "c1oudc0w")
   end
 end
