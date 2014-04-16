@@ -10,5 +10,5 @@ end
 
 def load_redis
   c = OpenStruct.new(CF::App::Credentials.find_by_service_label('redis'))
-  Redis.new(host: c.host, port: c.port, password: c.password, db: c.name)
+  Redis.new(host: c.host, port: c.port, password: c.password)
 end
