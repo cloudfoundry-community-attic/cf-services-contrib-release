@@ -5,3 +5,4 @@ gem 'cf-app-utils'
 
 gem 'mongo'
 gem 'pg'
+gem 'redis'

@@ -1,8 +1,9 @@
 describe "service life cycles" do
-  SERVICES = %w(postgresql mongodb)
+  SERVICES = %w(postgresql mongodb redis)
 
   let(:app_api) { @app_api ||= Excon.new(app_url) }
-  let(:value) { "bar" }
+  let(:key) { SecureRandom.hex(5) }
+  let(:value) { SecureRandom.hex(5) }
 
   before(:all) do
     login
@@ -16,7 +17,7 @@ describe "service life cycles" do
     it "provisions #{service}" do
       pending "#{service}: not available" unless service_available?(service)
 
-      path = "service/#{service}/foo"
+      path = "service/#{service}/#{key}"
       expect(app_api.post(path: path, body: value).body).to eq value
       expect(app_api.get(path: path).body).to eq value
     end

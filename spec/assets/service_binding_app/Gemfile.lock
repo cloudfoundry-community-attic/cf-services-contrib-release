@@ -9,6 +9,7 @@ GEM
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
+    redis (3.0.7)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -22,4 +23,5 @@ DEPENDENCIES
   cf-app-utils
   mongo
   pg
+  redis
   sinatra

@@ -1,8 +1,9 @@
 require 'sinatra'
 require 'cf-app-utils'
 
-require_relative 'services/postgresql'
-require_relative 'services/mongodb'
+%w(postgresql mongodb redis).each do |service|
+  require_relative "services/#{service}"
+end
 
 get '/env' do
   ENV['VCAP_SERVICES']
