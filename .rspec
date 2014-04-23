@@ -1,0 +1,6 @@
+--backtrace
+--format progress
+--colour
+--profile
+--order rand
+--require spec_helper

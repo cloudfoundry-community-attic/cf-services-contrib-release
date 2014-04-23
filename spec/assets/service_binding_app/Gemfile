@@ -1,0 +1,9 @@
+source "http://rubygems.org"
+
+gem 'sinatra'
+gem 'cf-app-utils'
+
+gem 'mongo'
+gem 'pg'
+gem 'redis'
+gem 'bunny'
