@@ -50,6 +50,15 @@ templates/make_manifest warden
 bosh -n deploy
 ```
 
+### Openstack with Neutron
+For openstack you will need to provide a stub file with your network details.
+You can use `examples/openstack-neutron-stub.yml` as a starting point.
+
+```
+templates/make_manifest openstack-neutron [path to your stub file]
+bosh -n deploy
+```
+
 ### Other
 Create a deployment file to describe the services you want to activate and support. Say, call it `cf-services-contrib.yml`.
 
