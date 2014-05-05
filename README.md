@@ -113,6 +113,12 @@ See the [documentation on bosh](http://docs.cloudfoundry.com/docs/running/bosh/)
 
 In order to deploy Cloud Foundry with BOSH, you will need to create a manifest. You can view a sample manifest [examples/dns.yml](https://github.com/cloudfoundry/cf-services-contrib-release/blob/master/examples/dns.yml).
 
+## Running integration specs
+1. Deploy Cloud Foundry on bosh-lite [instructions](https://github.com/cloudfoundry/bosh-lite#deploy-cloud-foundry)
+2. Deploy Contrib Services on bosh-lite [instructions](https://github.com/cloudfoundry-community/cf-services-contrib-release#bosh-lite)
+3. Install Service auth tokens by running: `bundle install && rake setup`
+4. run specs: `rspec spec`
+
 ## Source Code
 
 The source code for these services can be found inside this repo in the [src/services](https://github.com/cloudfoundry/cf-services-contrib-release/tree/master/src/services) folder
