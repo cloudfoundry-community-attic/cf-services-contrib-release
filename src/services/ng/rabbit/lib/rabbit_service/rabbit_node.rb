@@ -299,6 +299,7 @@ class VCAP::Services::Rabbit::Node
       "vhost" => instance.vhost,
     }
     yield credentials
+    credentials["url"] = "amqp://#{credentials["user"]}:#{credentials["pass"]}@#{credentials["host"]}:#{credentials["port"]}/#{credentials["vhost"]}"
     credentials["uri"] = "amqp://#{credentials["user"]}:#{credentials["pass"]}@#{credentials["host"]}:#{credentials["port"]}/#{credentials["vhost"]}"
     credentials
   end
