@@ -32,7 +32,6 @@ $ gem install bosh_cli -v "~> 1.5.0.pre" --source http://s3.amazonaws.com/bosh-j
 ```
 
 ## Usage
-
 To use this bosh release, first upload it to your bosh:
 
 ```
@@ -103,6 +102,21 @@ Releases:
 See the [documentation on bosh](http://docs.cloudfoundry.com/docs/running/bosh/) for more information about using BOSH.
 
 In order to deploy Cloud Foundry with BOSH, you will need to create a manifest. You can view a sample manifest [examples/dns.yml](https://github.com/cloudfoundry/cf-services-contrib-release/blob/master/examples/dns.yml).
+
+## Development
+
+### Creating a dev-release
+If you want to use all changes in master you can create a bosh dev release:
+
+```
+git clone https://github.com/cloudfoundry-community/cf-services-contrib-release
+cd cf-services-contrib-release
+./update
+bosh create release
+bosh upload release
+bosh deploy
+```
+
 
 ## Source Code
 
