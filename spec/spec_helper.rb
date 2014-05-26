@@ -103,8 +103,12 @@ module ContribServices
   end
 
   def cf(args, options={})
+    sh "cf #{args}", options
+  end
+
+  def sh(args, options={})
     begin
-      Bosh::Exec.sh "cf #{args}", options
+      Bosh::Exec.sh args, options
     rescue Bosh::Exec::Error => e
       raise [e.message, e.output].join(":\n")
     end

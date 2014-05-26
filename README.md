@@ -49,6 +49,15 @@ templates/make_manifest warden
 bosh -n deploy
 ```
 
+### Openstack with Neutron
+For openstack you will need to provide a stub file with your network details.
+You can use `examples/openstack-neutron-stub.yml` as a starting point.
+
+```
+templates/make_manifest openstack-neutron [path to your stub file]
+bosh -n deploy
+```
+
 ### Other
 Create a deployment file to describe the services you want to activate and support. Say, call it `cf-services-contrib.yml`.
 
@@ -105,6 +114,12 @@ In order to deploy Cloud Foundry with BOSH, you will need to create a manifest. 
 
 ## Development
 
+### Running integration specs
+1. Deploy Cloud Foundry on bosh-lite [instructions](https://github.com/cloudfoundry/bosh-lite#deploy-cloud-foundry)
+2. Deploy Contrib Services on bosh-lite [instructions](https://github.com/cloudfoundry-community/cf-services-contrib-release#bosh-lite)
+3. Install Service auth tokens by running: `bundle install && rake setup`
+4. run specs: `rspec spec`
+
 ### Creating a dev-release
 If you want to use all changes in master you can create a bosh dev release:
 
@@ -117,8 +132,7 @@ bosh upload release
 bosh deploy
 ```
 
-
-## Source Code
+### Source Code
 
 The source code for these services can be found inside this repo in the [src/services](https://github.com/cloudfoundry/cf-services-contrib-release/tree/master/src/services) folder
 

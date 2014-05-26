@@ -1,9 +1,6 @@
 ---
 meta:
   environment: cf-services-contrib
-  network_name: services1
-  security_groups:
-    - services1
 
 director_uuid: PLACEHOLDER-DIRECTOR-UUID
 

@@ -18,8 +18,14 @@ properties:
 
   uaa_endpoint: http://uaa.10.244.0.34.xip.io
 
+  uaa_client_auth_credentials:
+    username: admin
+    password: admin
+
   nats:
     address: 10.244.0.6
+    user: nats
+    password: nats
 
   postgresql_gateway:
     token: c1oudc0w
@@ -67,13 +73,13 @@ jobs:
       - name: services1
         static_ips: (( static_ips(21) ))
 
-  - name: postgres_gateway
+  - name: postgresql_gateway
     instances: 1
     networks:
       - name: services1
         static_ips: (( static_ips(2) ))
 
-  - name: postgres_node
+  - name: postgresql_node
     instances: 1
     persistent_disk: 8192
     networks:

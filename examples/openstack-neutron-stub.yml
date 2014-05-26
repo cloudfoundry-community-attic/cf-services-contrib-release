@@ -1,0 +1,33 @@
+meta:
+  environment: cf-services-contrib
+  networks:
+    services1:
+      net_id: example-net-id
+      subnet: example-subnet-id
+      range: 10.0.0.0/24
+      gateway: 10.0.0.254
+      reserved: 
+        - 10.0.0.1 - 10.0.0.10 # Can be used by for example (micro) bosh
+      static: 
+        - 10.0.0.11 - 10.0.0.240 # All jobs need statics ips (dynamic for compilation)
+
+  service-tokens:
+    mongodb: mongodb-token
+    rabbit: rabbit-token
+    postgresql: postgresql-token
+    redis: redis-token
+
+  passwords:
+    postgresql: postgresql-pw
+
+  nats:
+    address: 10.0.1.10
+    user: nats
+    password: nats
+
+  cc:
+    uaa_endpoint: https://uaa.10.0.1.50.xip.io
+    srv_api_uri: https://api.10.0.1.50.xip.io
+    username: admin
+    password: admin
+

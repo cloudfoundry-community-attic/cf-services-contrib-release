@@ -5,39 +5,41 @@ set -e
 infrastructure=$1
 template_prefix="contrib-services"
 
-if [ "$infrastructure" != "openstack-nova" ] && \
-    [ "$infrastructure" != "aws-ec2" ] && \
+if [ "$infrastructure" != "openstack-neutron" ] && \
     [ "$infrastructure" != "warden" ] ; then
-  echo "usage: ./make_manifest <openstack-nova|warden>"
+  echo "usage: ./make_manifest <openstack-neutron|warden>"
   exit 1
 fi
 
 shift
 
-BOSH_STATUS=$(bosh status)
-DIRECTOR_UUID=$(echo "$BOSH_STATUS" | grep UUID | awk '{print $2}')
-DIRECTOR_CPI=$(echo "$BOSH_STATUS" | grep CPI | awk '{print $2}')
-DIRECTOR_NAME=$(echo "$BOSH_STATUS" | grep Name | awk '{print $2}')
 NAME=$template_prefix-$infrastructure
 
-if [[ $DIRECTOR_NAME = "warden" ]]; then
-  if [[ $infrastructure != "warden" ]]; then
-    echo "Not targeting bosh-lite with warden CPI. Please use 'bosh target' before running this script."
-    exit 1
-  fi
-fi
+if [ -z $DIRECTOR_UUID ] ; then
+  BOSH_STATUS=$(bosh status)
+  DIRECTOR_UUID=$(echo "$BOSH_STATUS" | grep UUID | awk '{print $2}')
+  DIRECTOR_CPI=$(echo "$BOSH_STATUS" | grep CPI | awk '{print $2}')
+  DIRECTOR_NAME=$(echo "$BOSH_STATUS" | grep Name | awk '{print $2}')
 
-if [[ $DIRECTOR_CPI = "aws" ]]; then
-  if [[ $infrastructure = "aws-ec2" ]]; then
-    echo "Not targeting an AWS BOSH. Please use 'bosh target' before running this script."
-    exit 1
+  if [[ $DIRECTOR_NAME = "warden" ]]; then
+    if [[ $infrastructure != "warden" ]]; then
+      echo "Not targeting bosh-lite with warden CPI. Please use 'bosh target' before running this script."
+      exit 1
+    fi
   fi
-fi
 
-if [[ $DIRECTOR_CPI != "openstack" ]]; then
-  if [[ $infrastructure = "openstack-nova" ]]; then
-    echo "Not targeting an OpenStack BOSH. Please use 'bosh target' before running this script."
-    exit 1
+  if [[ $DIRECTOR_CPI = "aws" ]]; then
+    if [[ $infrastructure = "aws-ec2" ]]; then
+      echo "Not targeting an AWS BOSH. Please use 'bosh target' before running this script."
+      exit 1
+    fi
+  fi
+
+  if [[ $DIRECTOR_CPI != "openstack" ]]; then
+    if [[ $infrastructure = "openstack-neutron" ]]; then
+      echo "Not targeting an OpenStack BOSH. Please use 'bosh target' before running this script."
+      exit 1
+    fi
   fi
 fi
 
@@ -59,5 +61,10 @@ spiff merge \
   $tmpdir/stub-with-uuid.yml \
   $* > $tmpdir/$NAME-manifest.yml
 
-bosh deployment $tmpdir/$NAME-manifest.yml
-bosh status
+if [ -z "$BOSH_STATUS" ] ; then
+  echo "generated manifest:"
+  echo $tmpdir/$NAME-manifest.yml
+else
+  bosh deployment $tmpdir/$NAME-manifest.yml
+  bosh status
+fi
