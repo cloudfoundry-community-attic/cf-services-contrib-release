@@ -1,6 +1,6 @@
 meta:
   stemcell:
-    name: bosh-openstack-kvm-ubuntu
+    name: bosh-openstack-kvm-ubuntu-lucid
     version: latest
 
   networks:

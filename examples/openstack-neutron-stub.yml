@@ -1,4 +1,5 @@
 meta:
+  environment: cf-services-contrib
   networks:
     services1:
       net_id: example-net-id
