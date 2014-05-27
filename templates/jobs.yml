@@ -5,6 +5,7 @@ meta:
     name: cf-services-contrib
 
 jobs:
+  - <<: (( merge || nil ))
   - name: mongodb_gateway
     release: (( meta.release.name ))
     template:
