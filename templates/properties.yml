@@ -147,6 +147,8 @@ properties:
     supported_versions: ["3.0"]
     default_version: "3.0"
     max_tmp: 900
+    op_time_limit: 15
+    service_start_timeout: 10
     m_actions: ["restart"]
 
   redis_gateway:
