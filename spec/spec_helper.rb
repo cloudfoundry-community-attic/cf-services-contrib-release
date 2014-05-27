@@ -1,5 +1,6 @@
 require "common/exec"
 require "excon"
+require "securerandom"
 
 module ContribServices
   def deploy_app(app_dir)
@@ -34,7 +35,7 @@ module ContribServices
   end
 
   def domain_name
-    target.split(".")[1..-1].join(".")
+    ENV['VCAP_APPS_DOMAIN'] || target.split(".")[1..-1].join(".")
   end
 
   def app_name
