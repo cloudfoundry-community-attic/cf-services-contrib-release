@@ -1,4 +1,4 @@
 ---
 name: libyaml
 files:
-  - libyaml/yaml-0.1.4.tgz
+  - libyaml/yaml-0.1.6.tar.gz

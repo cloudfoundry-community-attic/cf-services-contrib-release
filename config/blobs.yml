@@ -224,3 +224,13 @@ postgresql/postgresql-9.3.0.tar.gz:
   sha: !binary |-
     OWI5YmY1ODQ4MzVmMjg1OGI1OGIyZmJjNDliZmMzMGY0ZmI1MjYwOQ==
   size: 22140691
+libyaml/yaml-0.1.6.tar.gz:
+  object_id: 1a2b6b5e-51ff-4b62-8d1c-6805392d8be9
+  sha: !binary |-
+    ZjNkNDA0ZTExYmVjM2M0ZWZjZGRmZDE0YzQyZDQ2ZjFhYWJlMGI1ZA==
+  size: 503012
+ruby/ruby-1.9.3-p545.tar.gz:
+  object_id: f96c8013-fedd-4679-b8aa-85df27391554
+  sha: !binary |-
+    MDM0NTUzNjQ3NDA5MTRlOGQyZGZkNjQyMWY2ODFiM2ZiNjhhNDMxMw==
+  size: 12582277
