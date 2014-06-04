@@ -10,7 +10,7 @@ module ContribServices
 
   def login
     puts "Running tests on #{target} on behalf of #{test_user}"
-    cf "api #{target}"
+    cf "api #{target} --skip-ssl-validation"
     cf "auth #{test_user} #{test_pwd}"
   end
 
@@ -61,7 +61,7 @@ module ContribServices
 
   def create_space
     if cf("space #{space}", on_error: :return).failed?
-      cf("create-space #{space}")
+      cf("create-space #{space} -o #{organization}")
     end
   end
 

@@ -1,5 +1,5 @@
 task :setup do
-  sh "cf api api.10.244.0.34.xip.io"
+  sh "cf api api.10.244.0.34.xip.io --skip-ssl-validation"
   sh "cf auth admin admin"
   sh "cf create-org services"
   sh "cf create-space contrib -o services"
