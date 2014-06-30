@@ -1,17 +1,18 @@
-## Cloud Foundry Services Contrib Release
+Cloud Foundry Services Contrib Release
+--------------------------------------
 
 This repository contains a wide set of interesting services that can be added into your own Cloud Foundry.
 
 You can find the following services in this repository (in alphabetical order):
 
-* elastic search
-* memcached
-* mongodbc
-* postgresql
-* rabbitmq
-* redis
-* vblob
-* swift
+- elastic search
+- memcached
+- mongodbc
+- postgresql
+- rabbitmq
+- redis
+- vblob
+- swift
 
 Each of these services are offered in a similar way - a single database or running instance running on a single machine.
 
@@ -21,7 +22,8 @@ When choosing data services for your applications you should always consult a da
 
 You can deploy one or more of these services. If you don't run them, then your developers won't use them, and you won't have to support them. ZING!
 
-## Requirements
+Requirements
+------------
 
 It is assumed that you already have bosh running with a Cloud Foundry deployment.
 
@@ -31,17 +33,25 @@ You will need Ruby 1.9.3+ locally and the `bosh_cli` installed:
 $ gem install bosh_cli -v "~> 1.5.0.pre" --source http://s3.amazonaws.com/bosh-jenkins-gems/
 ```
 
-## Usage
-To use this bosh release, first upload it to your bosh:
+Usage
+-----
+
+To use this BOSH release, first upload it to your bosh:
 
 ```
-bosh target BOSH_HOST
-git clone https://github.com/cloudfoundry-community/cf-services-contrib-release.git
-cd cf-services-contrib-release
-bosh upload release releases/cf-services-contrib-4.yml
+bosh upload release https://cf-services-contrib-boshrelease.s3.amazonaws.com/boshrelease-cf-services-contrib-5.tgz
+```
+
+To deploy it you will need the source repository that contains templates:
+
+```
+git clone https://github.com/cloudfoundry-community/cf-services-contrib-boshrelease.git
+cd cf-services-contrib-boshrelease
+git checkout v5
 ```
 
 ### Bosh-lite
+
 For [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can quickly create a deployment manifest:
 
 ```
@@ -50,8 +60,8 @@ bosh -n deploy
 ```
 
 ### Openstack with Neutron
-For openstack you will need to provide a stub file with your network details.
-You can use `examples/openstack-neutron-stub.yml` as a starting point.
+
+For openstack you will need to provide a stub file with your network details. You can use `examples/openstack-neutron-stub.yml` as a starting point.
 
 ```
 templates/make_manifest openstack-neutron [path to your stub file]
@@ -59,6 +69,7 @@ bosh -n deploy
 ```
 
 ### Other
+
 Create a deployment file to describe the services you want to activate and support. Say, call it `cf-services-contrib.yml`.
 
 See the [examples/dns-all.yml](https://github.com/cloudfoundry/cf-services-contrib-release/blob/master/examples/dns-all.yml) for an example deployment file that runs all the services listed above.
@@ -91,7 +102,8 @@ $ cf create-service --provider core --offering postgresql --version 9.3 --name t
 Creating service test... OK
 ```
 
-## Repository Contents
+Repository Contents
+-------------------
 
 This repository is structures for use with BOSH, an open source tool for release engineering, deployment and lifecycle management of large scale distributed services. The directories are for two purposes:
 
@@ -112,15 +124,18 @@ See the [documentation on bosh](http://docs.cloudfoundry.com/docs/running/bosh/)
 
 In order to deploy Cloud Foundry with BOSH, you will need to create a manifest. You can view a sample manifest [examples/dns.yml](https://github.com/cloudfoundry/cf-services-contrib-release/blob/master/examples/dns.yml).
 
-## Development
+Development
+-----------
 
 ### Running integration specs
+
 1. Deploy Cloud Foundry on bosh-lite [instructions](https://github.com/cloudfoundry/bosh-lite#deploy-cloud-foundry)
 2. Deploy Contrib Services on bosh-lite [instructions](https://github.com/cloudfoundry-community/cf-services-contrib-release#bosh-lite)
 3. Install Service auth tokens by running: `bundle install && rake setup`
 4. run specs: `rspec spec`
 
 ### Creating a dev-release
+
 If you want to use all changes in master you can create a bosh dev release:
 
 ```
@@ -136,14 +151,15 @@ bosh deploy
 
 The source code for these services can be found inside this repo in the [src/services](https://github.com/cloudfoundry/cf-services-contrib-release/tree/master/src/services) folder
 
-## OSS Contributions
+OSS Contributions
+-----------------
 
 The Cloud Foundry team uses GitHub and accepts contributions via [pull request](https://help.github.com/articles/using-pull-requests)
 
 Follow these steps to make a contribution to any of our open source repositories:
 
 1. Complete our CLA Agreement for [individuals](http://www.cloudfoundry.org/individualcontribution.pdf) or [corporations](http://www.cloudfoundry.org/corpcontribution.pdf)
-1. Set your name and email
+2. Set your name and email
 
 ```
 git config --global user.name "Firstname Lastname"
@@ -151,31 +167,31 @@ git config --global user.email "your_email@youremail.com"
 ```
 
 1. Fork the repo
-
-1. Make your changes on a topic branch, commit, and push to github and open a pull request.
+2. Make your changes on a topic branch, commit, and push to github and open a pull request.
 
 Your pull request is much more likely to be accepted if:
 
 - It is small and focused with a clear commit message that conveys the intent behind your change.
-
 - The tests pass in CI (we use Travis CI for many of our components in large part because of their excellent support for pull requests).
-
 - Your pull request includes tests.
 
 We review pull requests regularly.
 
-## Documentation
+Documentation
+-------------
 
 Our documentation, currently a work in progress, is available here: http://docs.cloudfoundry.com/
 
-## Ask Questions
+Ask Questions
+-------------
 
 Questions about the Cloud Foundry Open Source Project can be directed to our Google Groups.
 
-* BOSH Developers: [https://groups.google.com/a/cloudfoundry.org/group/bosh-dev/topics](https://groups.google.com/a/cloudfoundry.org/group/bosh-dev/topics)
-* BOSH Users:[https://groups.google.com/a/cloudfoundry.org/group/bosh-users/topics](https://groups.google.com/a/cloudfoundry.org/group/bosh-users/topics)
-* VCAP (Cloud Foundry) Developers: [https://groups.google.com/a/cloudfoundry.org/group/vcap-dev/topics](https://groups.google.com/a/cloudfoundry.org/group/vcap-dev/topics)
+- BOSH Developers: [https://groups.google.com/a/cloudfoundry.org/group/bosh-dev/topics](https://groups.google.com/a/cloudfoundry.org/group/bosh-dev/topics)
+- BOSH Users:[https://groups.google.com/a/cloudfoundry.org/group/bosh-users/topics](https://groups.google.com/a/cloudfoundry.org/group/bosh-users/topics)
+- VCAP (Cloud Foundry) Developers: [https://groups.google.com/a/cloudfoundry.org/group/vcap-dev/topics](https://groups.google.com/a/cloudfoundry.org/group/vcap-dev/topics)
 
-## File a bug
+File a bug
+----------
 
 Bugs can be filed using [Github Issues](https://github.com/cloudfoundry/cf-services-contrib-release/issues).
