@@ -8,4 +8,5 @@ group :development do
   gem 'rubocop'
   gem 'guard-rspec'
   gem 'excon'
+  gem 'bosh-gen'
 end
