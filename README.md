@@ -30,7 +30,7 @@ It is assumed that you already have bosh running with a Cloud Foundry deployment
 You will need Ruby 1.9.3+ locally and the `bosh_cli` installed:
 
 ```
-$ gem install bosh_cli -v "~> 1.5.0.pre" --source http://s3.amazonaws.com/bosh-jenkins-gems/
+$ gem install bosh_cli
 ```
 
 Usage
