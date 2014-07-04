@@ -39,7 +39,7 @@ Usage
 To use this BOSH release, first upload it to your bosh:
 
 ```
-bosh upload release https://cf-services-contrib-boshrelease.s3.amazonaws.com/boshrelease-cf-services-contrib-5.tgz
+bosh upload release https://cf-contrib.s3.amazonaws.com/boshrelease-cf-services-contrib-5.tgz
 ```
 
 To deploy it you will need the source repository that contains templates:
