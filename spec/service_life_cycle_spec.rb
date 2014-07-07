@@ -1,7 +1,6 @@
 describe "service life cycles" do
   SERVICES = %w(postgresql mongodb redis rabbitmq)
 
-  let(:app_api) { @app_api ||= Excon.new(app_url) }
   let(:key) { SecureRandom.hex(5) }
   let(:value) { SecureRandom.hex(5) }
 
@@ -17,9 +16,9 @@ describe "service life cycles" do
     it "provisions #{service}" do
       pending "#{service}: not available" unless service_available?(service)
 
-      path = "service/#{service}/#{key}"
-      expect(app_api.post(path: path, body: value).body).to eq value
-      expect(app_api.get(path: path).body).to eq value
+      url = "#{app_url}/service/#{service}/#{key}"
+      expect(Excon.post(url, body: value).body).to eq value
+      expect(Excon.get(url).body).to eq value
     end
 
     after do
