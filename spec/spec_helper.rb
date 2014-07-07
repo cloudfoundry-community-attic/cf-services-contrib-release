@@ -5,7 +5,7 @@ require "securerandom"
 module ContribServices
   def deploy_app(app_dir)
     app_path = File.join(File.dirname(__FILE__), "assets", app_dir)
-    cf "push #{app_name} -p=#{app_path} --no-start"
+    cf "push #{app_name} -p=#{app_path} --no-start -b ruby_buildpack"
   end
 
   def login
