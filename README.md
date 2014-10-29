@@ -45,7 +45,7 @@ bosh upload release https://cf-contrib.s3.amazonaws.com/boshrelease-cf-services-
 To deploy it you will need the source repository that contains templates:
 
 ```
-git clone https://github.com/cloudfoundry-community/cf-services-contrib-boshrelease.git
+git clone https://github.com/cloudfoundry-community/cf-services-contrib-release.git
 cd cf-services-contrib-boshrelease
 git checkout v5
 ```
