@@ -8,8 +8,7 @@ jobs:
   - <<: (( merge || nil ))
   - name: mongodb_gateway
     release: (( meta.release.name ))
-    template:
-      - mongodb_gateway
+    template: mongodb_gateway
     instances: (( merge ))
     resource_pool: gateway_z1
     networks:
@@ -18,8 +17,7 @@ jobs:
 
   - name: mongodb_node
     release: (( meta.release.name ))
-    template: 
-      - mongodb_node_ng
+    template: mongodb_node_ng
     instances: (( merge ))
     resource_pool: node_z1
     persistent_disk: 10000
@@ -31,8 +29,7 @@ jobs:
 
   - name: rabbit_gateway
     release: (( meta.release.name ))
-    template:
-      - rabbit_gateway
+    template: rabbit_gateway
     instances: (( merge ))
     resource_pool: gateway_z1
     networks:
@@ -41,8 +38,7 @@ jobs:
 
   - name: rabbit_node
     release: (( meta.release.name ))
-    template: 
-      - rabbit_node_ng
+    template: rabbit_node_ng
     instances: (( merge ))
     resource_pool: node_z1
     persistent_disk: 10000
@@ -54,8 +50,7 @@ jobs:
 
   - name: postgresql_gateway
     release: (( meta.release.name ))
-    template:
-      - postgresql_gateway_ng
+    template: postgresql_gateway_ng
     instances: (( merge ))
     resource_pool: gateway_z1
     networks:
@@ -64,8 +59,7 @@ jobs:
 
   - name: postgresql_node
     release: (( meta.release.name ))
-    template: 
-      - postgresql_node_ng
+    template: postgresql_node_ng
     instances: (( merge ))
     resource_pool: node_z1
     persistent_disk: 10000
@@ -78,8 +72,7 @@ jobs:
 
   - name: redis_gateway
     release: (( meta.release.name ))
-    template:
-      - redis_gateway
+    template: redis_gateway
     instances: (( merge ))
     resource_pool: gateway_z1
     networks:
@@ -88,8 +81,7 @@ jobs:
 
   - name: redis_node
     release: (( meta.release.name ))
-    template: 
-      - redis_node_ng
+    template: redis_node_ng
     instances: (( merge ))
     resource_pool: node_z1
     persistent_disk: 10000
