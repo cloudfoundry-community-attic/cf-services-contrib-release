@@ -10,4 +10,6 @@ builds:
     version: 4
   !binary "NzA4MWUyZWM4NmIyN2QzN2U3MzY4NjQ5Njg0MzQwNGViNzQ2ZWY5Nw==":
     version: 5
+  1f7584ff-f345-40d5-b6e1-fdee9fc6a129:
+    version: '6'
 format-version: '2'
