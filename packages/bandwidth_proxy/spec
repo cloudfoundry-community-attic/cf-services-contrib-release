@@ -2,7 +2,9 @@
 name: bandwidth_proxy
 
 dependencies:
+- rootfs_lucid64
 - golang
 
 files:
 - services/tools/bandwidth_proxy/**/*
+- warden_helpers/*

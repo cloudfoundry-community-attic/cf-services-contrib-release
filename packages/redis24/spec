@@ -1,4 +1,7 @@
 ---
 name: redis24
+dependencies:
+- rootfs_lucid64
 files:
 - redis/redis-2.4.17.tar.gz
+- warden_helpers/*

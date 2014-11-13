@@ -1,4 +1,7 @@
 ---
 name: redis22
+dependencies:
+- rootfs_lucid64
 files:
 - redis/redis-2.2.15.tar.gz
+- warden_helpers/*

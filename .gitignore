@@ -16,3 +16,5 @@ blobs
 .cache
 src_alt
 /tmp/*
+releases/**/*.tgz
+.DS_Store

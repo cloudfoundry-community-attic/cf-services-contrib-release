@@ -1,4 +1,7 @@
 ---
 name: golang
+dependencies:
+- rootfs_lucid64
 files:
 - golang/go1.1.1.src.tar.gz
+- warden_helpers/*

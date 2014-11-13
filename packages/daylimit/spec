@@ -2,6 +2,8 @@
 name: daylimit
 dependencies:
 - golang
+- rootfs_lucid64
 files:
 - services/tools/daylimit/**/*
 - services/govendor/**/*
+- warden_helpers/*

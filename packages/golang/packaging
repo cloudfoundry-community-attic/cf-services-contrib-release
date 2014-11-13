@@ -1,8 +1,14 @@
 # abort script on any command that exit with a non zero value
 set -e
+exec >&2
+
+source warden_helpers/compile_in_chroot_helper.sh
 
 tar xzf golang/go1.1.1.src.tar.gz
-cd go/src
-./all.bash
-cd ../..
-cp -R go/* ${BOSH_INSTALL_TARGET}
+
+compile_in_chroot /var/vcap/packages/rootfs_lucid64 "
+  cd $BOSH_COMPILE_TARGET/go/src
+  ./all.bash
+  cd ../..
+  cp -R go/* ${BOSH_INSTALL_TARGET}
+"

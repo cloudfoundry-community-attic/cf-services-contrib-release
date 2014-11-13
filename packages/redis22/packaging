@@ -1,10 +1,12 @@
 # abort script on any command that exit with a non zero value
 set -e
 
+source warden_helpers/compile_in_chroot_helper.sh
+
 tar zxf redis/redis-2.2.15.tar.gz
 
-(
-  cd redis-2.2.15
+compile_in_chroot /var/vcap/packages/rootfs_lucid64 "
+  cd $BOSH_COMPILE_TARGET/redis-2.2.15
   make
   make PREFIX=$BOSH_INSTALL_TARGET install
-)
+"

@@ -234,3 +234,18 @@ ruby/ruby-1.9.3-p545.tar.gz:
   sha: !binary |-
     MDM0NTUzNjQ3NDA5MTRlOGQyZGZkNjQyMWY2ODFiM2ZiNjhhNDMxMw==
   size: 12582277
+erlang/otp_src_17.3.tar.gz:
+  object_id: 0883ae69-a899-4d02-b51f-da12c19bfacc
+  sha: !binary |-
+    NjRkNmUyOWZmZjA3NjU0M2QyOTk0OGI1NTkwYjc3NDA5ZDUzYTdjZg==
+  size: 67050599
+ruby/yaml-0.1.6.tar.gz:
+  object_id: 942b1c9e-21a6-4d38-8662-41d6238f2aaf
+  sha: !binary |-
+    ZjNkNDA0ZTExYmVjM2M0ZWZjZGRmZDE0YzQyZDQ2ZjFhYWJlMGI1ZA==
+  size: 503012
+ruby/ruby-1.9.3-p547.tar.gz:
+  object_id: b71c2106-6e58-430f-9bc5-5b10507e4a5d
+  sha: !binary |-
+    MDFhNzkyZjk3MmY1Nzg3Y2U1MjZhMWFhZDYyOTc2YzU2YzkzMTc0Yg==
+  size: 12582375

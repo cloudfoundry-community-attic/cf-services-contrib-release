@@ -1,13 +1,14 @@
 # abort script on any command that exit with a non zero value
 set -e
 
+source warden_helpers/compile_in_chroot_helper.sh
+
 tar xzf erlang/otp_src_17.3.tar.gz
 
-export HOME=/home/vcap
-
-(
-  cd otp_src_17.3
+compile_in_chroot /var/vcap/packages/rootfs_lucid64 "
+  export HOME=/root/
+  cd $BOSH_COMPILE_TARGET/otp_src_17.3
   ./configure --prefix=${BOSH_INSTALL_TARGET} --without-termcap
   make
   make install
-)
+"

@@ -1,4 +1,7 @@
 ---
 name: erlang
+dependencies:
+- rootfs_lucid64
 files:
 - erlang/otp_src_17.3.tar.gz
+- warden_helpers/*
