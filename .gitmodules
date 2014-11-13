@@ -16,3 +16,6 @@
 [submodule "src/postgresql/pgextwlist"]
 	path = src/postgresql/pgextwlist
 	url = https://github.com/dimitri/pgextwlist.git
+[submodule "packages/ruby"]
+	path = packages/ruby
+	url = https://github.com/cloudfoundry/ruby-package.git
