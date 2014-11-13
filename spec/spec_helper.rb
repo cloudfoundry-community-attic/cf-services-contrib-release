@@ -65,6 +65,15 @@ module ContribServices
     end
   end
 
+  def security_group_file
+    File.join(File.dirname(__FILE__), "assets/services_security_group.json")
+  end
+
+  def create_and_bind_security_group
+    cf "create-security-group services #{security_group_file}"
+    cf "bind-running-security-group services"
+  end
+
   def delete_space
     unless cf("space #{space}", on_error: :return).failed?
       cf "delete-space #{space} -f"

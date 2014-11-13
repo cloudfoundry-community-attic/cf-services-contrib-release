@@ -1,0 +1,6 @@
+[
+    {
+        "protocol": "all",
+        "destination": "10.244.1.0/24"
+    }
+]

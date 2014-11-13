@@ -7,6 +7,7 @@ describe "service life cycles" do
   before(:all) do
     login
     target_space
+    create_and_bind_security_group
     deploy_app("service_binding_app")
     SERVICES.each { |service_name| provision_service(service_name) }
     start_app
