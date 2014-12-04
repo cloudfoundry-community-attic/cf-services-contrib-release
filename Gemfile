@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'bosh_cli', '~> 1.2765.0'
+gem 'bosh_cli', '1.2778.0'
 
 group :development do
   gem 'rake'
