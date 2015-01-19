@@ -11,6 +11,7 @@ meta:
       gateway: (( merge ))
       reserved: (( merge ))
       static: (( merge ))
+      dns: (( merge ))
 
   service-tokens:
     mongodb: (( merge ))
@@ -71,6 +72,7 @@ networks:
         gateway: (( meta.networks.services1.gateway ))
         reserved: (( meta.networks.services1.reserved ))
         static: (( meta.networks.services1.static ))
+        dns: (( meta.networks.services1.dns ))
         cloud_properties:
           net_id: (( meta.networks.services1.net_id ))
           subnet: (( meta.networks.services1.subnet ))
@@ -83,7 +85,7 @@ resource_pools:
 
   - name: node_z1
     cloud_properties:
-      instance_type: m1.large
+      instance_type: m1.xlarge
 
 jobs:
   - name: mongodb_gateway
@@ -97,7 +99,7 @@ jobs:
     persistent_disk: 8192
     networks:
       - name: services1
-        static_ips: (( static_ips(1, 2) ))
+        static_ips: (( static_ips(1, 2, 3, 4) ))
 
   - name: postgresql_gateway
     instances: 1
@@ -110,7 +112,7 @@ jobs:
     persistent_disk: 8192
     networks:
       - name: services1
-        static_ips: (( static_ips(6, 7) ))
+        static_ips: (( static_ips(6, 7, 8, 9) ))
 
   - name: rabbit_gateway
     instances: 1
@@ -123,7 +125,7 @@ jobs:
     persistent_disk: 8192
     networks:
       - name: services1
-        static_ips: (( static_ips(11, 12) ))
+        static_ips: (( static_ips(11, 12, 13, 14) ))
 
   - name: redis_gateway
     instances: 1
@@ -136,4 +138,4 @@ jobs:
     persistent_disk: 8192
     networks:
       - name: services1
-        static_ips: (( static_ips(16, 17) ))
+        static_ips: (( static_ips(16, 17, 18, 19) ))
