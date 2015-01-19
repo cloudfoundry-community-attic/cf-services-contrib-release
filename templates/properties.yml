@@ -32,7 +32,7 @@ properties:
           high_water: 230
           low_water: 20
         configuration:
-          capacity: 125
+          capacity: (( merge || "20" ))
           max_clients: 10
           quota_files: 4
           quota_data_size: 240
@@ -76,7 +76,7 @@ properties:
           high_water: 230
           low_water: 20
         configuration:
-          capacity: 125
+          capacity: (( merge || "25" ))
           max_clients: 100
           quota_files: 4
           quota_data_size: 240
@@ -99,7 +99,7 @@ properties:
           low_water: 20
         configuration:
           persistent: true
-          capacity: 125
+          capacity: (( merge || "40" ))
           max_clients: 10
           quota_files: 4
           quota_data_size: 240
