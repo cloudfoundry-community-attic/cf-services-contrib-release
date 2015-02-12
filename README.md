@@ -131,7 +131,7 @@ Releases:
 
 See the [documentation on bosh](http://docs.cloudfoundry.com/docs/running/bosh/) for more information about using BOSH.
 
-In order to deploy Cloud Foundry with BOSH, you will need to create a manifest. You can view a sample manifest [examples/dns.yml](https://github.com/cloudfoundry/cf-services-contrib-release/blob/master/examples/dns.yml).
+In order to deploy Cloud Foundry with BOSH, you will need to create a manifest. You can view a sample manifest [examples/dns-all.yml](https://github.com/cloudfoundry/cf-services-contrib-release/blob/master/examples/dns-all.yml).
 
 Development
 -----------
