@@ -9,7 +9,7 @@ You can find the following services in this repository (in alphabetical order):
 -	memcached
 -	mongodbc
 -	postgresql
--	rabbitmq
+-	rabbitmq (see [doc](docs/rabbitmq.md))
 -	redis
 -	vblob
 -	swift

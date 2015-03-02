@@ -1,0 +1,40 @@
+Following is the source of the uml diagrams rendered from http://www.plantuml.com/plantuml/ as markdown seems to make
+it hard to keep them as comments within the markdown source.
+
+<!--
+
+@startuml
+
+[CC] <--> [rabbitmq_gateway]: Service broker V1 REST API
+[rabbitmq_gateway] <--> [rabbitmq_node0]: nats
+[rabbitmq_gateway] <--> [rabbitmq_node1]: nats
+
+@enduml
+
+-->
+
+
+
+<!--
+
+@startuml
+
+node "rabbitmq_node" {
+    [rabbit_node]
+    [rabbit_node] --> [warden container1]: warden sock
+    [rabbit_node] --> sqlite
+'    [rabbit_node] --> rabbitmq1
+    database "sqlite"
+    [daylimit]
+
+    package "warden container1" {
+       [rabbitmq1]
+    }
+    package "warden container2" {
+       [rabbitmq2]
+    }
+}
+
+@enduml
+
+-->
