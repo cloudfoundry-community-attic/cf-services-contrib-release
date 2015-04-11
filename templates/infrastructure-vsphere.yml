@@ -1,0 +1,142 @@
+meta:
+  stemcell:
+    name: bosh-vsphere-esxi-ubuntu-trusty-go_agent
+    version: latest
+
+  networks:
+    services1:
+      range: (( merge ))
+      gateway: (( merge ))
+      static: (( merge ))
+      reserved: (( merge ))
+      dns: (( merge ))
+      name: (( merge ))
+
+  service-tokens:
+    mongodb: (( merge ))
+    rabbit: (( merge ))
+    postgresql: (( merge ))
+    redis: (( merge ))
+
+  passwords:
+    postgresql: (( merge ))
+
+  nats:
+    address: (( merge ))
+    user: (( merge ))
+    password: (( merge ))
+
+  cc:
+    uaa_endpoint: (( merge ))
+    srv_api_uri: (( merge ))
+    username: (( merge ))
+    password: (( merge ))
+
+properties:
+  mongodb_gateway:
+    token: (( meta.service-tokens.mongodb ))
+  rabbit_gateway:
+    token: (( meta.service-tokens.rabbit ))
+  postgresql_gateway:
+    token: (( meta.service-tokens.postgresql ))
+  redis_gateway:
+    token: (( meta.service-tokens.redis ))
+
+  postgresql_node:
+    password: (( meta.passwords.postgresql ))
+
+  nats:
+    address: (( meta.nats.address ))
+    user: (( meta.nats.user ))
+    password: (( meta.nats.password ))
+
+  uaa_endpoint: (( meta.cc.uaa_endpoint ))
+  uaa_client_auth_credentials:
+    username: (( meta.cc.username ))
+    password: (( meta.cc.password ))
+
+  cc:
+    srv_api_uri: (( meta.cc.srv_api_uri ))
+
+networks:
+  - name: services1
+    subnets:
+      - range: (( meta.networks.services1.range ))
+        gateway: (( meta.networks.services1.gateway ))
+        reserved: (( meta.networks.services1.reserved ))
+        static: (( meta.networks.services1.static ))
+        dns: (( meta.networks.services1.dns ))
+        cloud_properties:
+          name: (( meta.networks.services1.name ))
+
+compilation:
+  cloud_properties:
+    ram: 1024
+    disk: 10240
+    cpu: 2
+
+resource_pools:
+  - name: gateway_z1
+    cloud_properties:
+      ram: 3072
+      disk: 10480
+      cpu: 2
+
+  - name: node_z1
+    cloud_properties:
+      ram: 3072
+      disk: 10480
+      cpu: 2
+
+jobs:
+  - name: mongodb_gateway
+    instances: 1
+    networks:
+      - name: services1
+        static_ips: (( static_ips(0) ))
+
+  - name: mongodb_node
+    instances: 2
+    persistent_disk: 8192
+    networks:
+      - name: services1
+        static_ips: (( static_ips(1, 2, 3, 4) ))
+
+  - name: postgresql_gateway
+    instances: 1
+    networks:
+      - name: services1
+        static_ips: (( static_ips(5) ))
+
+  - name: postgresql_node
+    instances: 2
+    persistent_disk: 8192
+    networks:
+      - name: services1
+        static_ips: (( static_ips(6, 7, 8, 9) ))
+
+  - name: rabbit_gateway
+    instances: 1
+    networks:
+      - name: services1
+        static_ips: (( static_ips(10) ))
+
+  - name: rabbit_node
+    instances: 2
+    persistent_disk: 8192
+    networks:
+      - name: services1
+        static_ips: (( static_ips(11, 12, 13, 14) ))
+
+  - name: redis_gateway
+    instances: 1
+    networks:
+      - name: services1
+        static_ips: (( static_ips(15) ))
+
+  - name: redis_node
+    instances: 2
+    persistent_disk: 8192
+    networks:
+      - name: services1
+        static_ips: (( static_ips(16, 17, 18, 19) ))

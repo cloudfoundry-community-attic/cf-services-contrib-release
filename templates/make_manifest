@@ -6,8 +6,9 @@ infrastructure=$1
 template_prefix="contrib-services"
 
 if [ "$infrastructure" != "openstack-neutron" ] && \
-    [ "$infrastructure" != "warden" ] ; then
-  echo "usage: ./make_manifest <openstack-neutron|warden>"
+   [ "$infrastructure" != "vsphere" ] && \
+   [ "$infrastructure" != "warden" ] ; then
+  echo "usage: ./make_manifest <openstack-neutron|vsphere|warden>"
   exit 1
 fi
 
