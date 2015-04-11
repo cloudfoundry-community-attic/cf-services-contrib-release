@@ -46,7 +46,7 @@ To deploy it you will need the source repository that contains templates:
 
 ```
 git clone https://github.com/cloudfoundry-community/cf-services-contrib-release.git
-cd cf-services-contrib-boshrelease
+cd cf-services-contrib-release
 git checkout v6
 ```
 
