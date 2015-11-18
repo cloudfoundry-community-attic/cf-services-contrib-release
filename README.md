@@ -111,6 +111,11 @@ Creating service my-mongodb in org <org> / space <space> as <user>...
 OK
 ```
 
+If you're using bosh-lite, and have used the warden deployment manifest, you can authorize your services by executing:
+```
+$ rake setup
+```
+
 Repository Contents
 -------------------
 
