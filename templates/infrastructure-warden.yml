@@ -14,9 +14,9 @@ update:
 
 properties:
   cc:
-    srv_api_uri: http://api.10.244.0.34.xip.io
+    srv_api_uri: http://api.bosh-lite.com
 
-  uaa_endpoint: http://uaa.10.244.0.34.xip.io
+  uaa_endpoint: http://uaa.bosh-lite.com
 
   uaa_client_auth_credentials:
     username: admin
