@@ -41,7 +41,7 @@ Usage
 To use this BOSH release, first upload it to your bosh:
 
 ```
-bosh upload release https://cf-contrib.s3.amazonaws.com/boshrelease-cf-services-contrib-6.tgz
+bosh upload release https://bosh.io/d/github.com/cloudfoundry-community/cf-services-contrib-release?v=6
 ```
 
 To deploy it you will need the source repository that contains templates:
