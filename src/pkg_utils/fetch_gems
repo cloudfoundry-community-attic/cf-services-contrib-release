@@ -72,7 +72,7 @@ to_fetch.map do |gem_basename|
       next
     end
     File.open(cached, "wb") do |file|
-      uri = URI.parse("http://production.s3.rubygems.org/gems/#{gem_basename}")
+      uri = URI.parse("http://rubygems.global.ssl.fastly.net/gems/#{gem_basename}")
       download(uri, file)
     end
     FileUtils.copy(cached, target)
