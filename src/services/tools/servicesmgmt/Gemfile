@@ -6,7 +6,7 @@ gem "rack-proxy"
 gem "sinatra"
 gem "sinatra-contrib"
 gem "yajl-ruby"
-gem "omniauth-uaa-oauth2", :git => "git://github.com/cloudfoundry/omniauth-uaa-oauth2.git", :ref => "ffa3468e93"
+gem "omniauth-uaa-oauth2", :git => "git://github.com/cloudfoundry/omniauth-uaa-oauth2.git", :ref => "f892fd3415"
 gem "vcap_logging", :require => ["vcap/logging"], :git => "git://github.com/cloudfoundry/common.git", :ref => "b96ec1192"
 gem "cfoundry", :git => "git://github.com/cloudfoundry/vmc-lib.git", :submodules => true
 
