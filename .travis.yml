@@ -7,6 +7,7 @@ env:
     - FOLDER_NAME=src/services/echo
     - FOLDER_NAME=src/services/tools/servicesmgmt
     - FOLDER_NAME=src/services/oauth2
+    - FOLDER_NAME=src/services/postgresql WARDENIZED_SERVICE=true
     - FOLDER_NAME=src/services/ng/memcached WARDENIZED_SERVICE=true
   global: []
 matrix:

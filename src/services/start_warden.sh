@@ -1,4 +1,7 @@
 #! /bin/bash 
+
+export rvmsudo_secure_path=1
+
 START_DIR=`pwd`
 (
   git clone --recursive --depth=100 --quiet --branch=master git://github.com/cloudfoundry/warden.git warden
