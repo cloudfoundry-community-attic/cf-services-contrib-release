@@ -14,6 +14,12 @@ jobs:
     networks:
       - name: services1
         static_ips: (( merge ))
+    properties:
+      uaa_client_id: "cf"
+      uaa_endpoint: (( merge ))
+      uaa_client_auth_credentials:
+        username: (( merge ))
+        password: (( merge ))
 
   - name: mongodb_node
     release: (( meta.release.name ))
@@ -78,6 +84,13 @@ jobs:
     networks:
       - name: services1
         static_ips: (( merge ))
+    properties:
+      uaa_client_id: "cf"
+      uaa_endpoint: (( merge ))
+      uaa_client_auth_credentials:
+        username: (( merge ))
+        password: (( merge ))
+
 
   - name: redis_node
     release: (( meta.release.name ))
